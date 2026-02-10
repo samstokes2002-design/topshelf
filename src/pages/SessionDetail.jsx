@@ -120,13 +120,27 @@ export default function SessionDetail() {
 
       {/* Stats */}
       {session.type === "game" && (
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <StatBlock label="Goals" value={session.goals || 0} color="text-sky-400" />
-          <StatBlock label="Assists" value={session.assists || 0} color="text-emerald-400" />
-          <StatBlock label="Shots" value={session.shots || 0} color="text-white" />
-          <StatBlock label="+/-" value={`${(session.plus_minus || 0) > 0 ? "+" : ""}${session.plus_minus || 0}`}
-            color={(session.plus_minus || 0) >= 0 ? "text-emerald-400" : "text-red-400"} />
-        </div>
+        <>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <StatBlock label="Goals" value={session.goals || 0} color="text-sky-400" />
+            <StatBlock label="Assists" value={session.assists || 0} color="text-emerald-400" />
+            <StatBlock label="Shots" value={session.shots || 0} color="text-white" />
+            <StatBlock label="+/-" value={`${(session.plus_minus || 0) > 0 ? "+" : ""}${session.plus_minus || 0}`}
+              color={(session.plus_minus || 0) >= 0 ? "text-emerald-400" : "text-red-400"} />
+          </div>
+          
+          {((session.hits || 0) > 0 || (session.blocked_shots || 0) > 0 || (session.takeaways || 0) > 0 || (session.giveaways || 0) > 0) && (
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+              <h3 className="text-white font-semibold text-sm mb-3">Defense & Possession</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {(session.hits || 0) > 0 && <StatBlock label="Hits" value={session.hits} color="text-white" />}
+                {(session.blocked_shots || 0) > 0 && <StatBlock label="Blocked Shots" value={session.blocked_shots} color="text-white" />}
+                {(session.takeaways || 0) > 0 && <StatBlock label="Takeaways" value={session.takeaways} color="text-emerald-400" />}
+                {(session.giveaways || 0) > 0 && <StatBlock label="Giveaways" value={session.giveaways} color="text-red-400" />}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Duration */}

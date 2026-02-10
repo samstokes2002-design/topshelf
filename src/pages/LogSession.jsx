@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import StarRating from "@/components/ui/StarRating";
 import ShiftTimer from "@/components/ShiftTimer";
+import StatControl from "@/components/StatControl";
 
 const sessionTypes = [
   { value: "game", label: "Game", icon: Trophy, color: "bg-sky-500/20 text-sky-400 border-sky-500/30" },
@@ -31,10 +32,14 @@ export default function LogSession() {
     date: format(new Date(), "yyyy-MM-dd"),
     type: "game",
     duration: "",
-    goals: "",
-    assists: "",
-    shots: "",
-    plus_minus: "",
+    goals: 0,
+    assists: 0,
+    shots: 0,
+    plus_minus: 0,
+    hits: 0,
+    blocked_shots: 0,
+    takeaways: 0,
+    giveaways: 0,
     rating: 0,
     notes: "",
     opponent: "",
@@ -64,10 +69,14 @@ export default function LogSession() {
         date: editSession.date || format(new Date(), "yyyy-MM-dd"),
         type: editSession.type || "game",
         duration: editSession.duration?.toString() || "",
-        goals: editSession.goals?.toString() || "",
-        assists: editSession.assists?.toString() || "",
-        shots: editSession.shots?.toString() || "",
-        plus_minus: editSession.plus_minus?.toString() || "",
+        goals: editSession.goals || 0,
+        assists: editSession.assists || 0,
+        shots: editSession.shots || 0,
+        plus_minus: editSession.plus_minus || 0,
+        hits: editSession.hits || 0,
+        blocked_shots: editSession.blocked_shots || 0,
+        takeaways: editSession.takeaways || 0,
+        giveaways: editSession.giveaways || 0,
         rating: editSession.rating || 0,
         notes: editSession.notes || "",
         opponent: editSession.opponent || "",
@@ -110,10 +119,6 @@ export default function LogSession() {
     const payload = {
       ...form,
       duration: form.duration ? parseInt(form.duration) : 0,
-      goals: form.goals ? parseInt(form.goals) : 0,
-      assists: form.assists ? parseInt(form.assists) : 0,
-      shots: form.shots ? parseInt(form.shots) : 0,
-      plus_minus: form.plus_minus ? parseInt(form.plus_minus) : 0,
     };
 
     if (editId) {
@@ -239,54 +244,35 @@ export default function LogSession() {
               </div>
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-4 gap-2">
-              <div>
-                <Label className="text-slate-400 text-[10px] mb-1 block text-center">Goals</Label>
-                <Input
-                  type="number"
-                  placeholder="0"
-                  value={form.goals}
-                  onChange={(e) => update("goals", e.target.value)}
-                  className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl text-center"
-                />
+            {/* Primary Stats */}
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+              <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
+              <div className="grid grid-cols-4 gap-3">
+                <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
+                <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
+                <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
+                <StatControl label="+/-" value={form.plus_minus} onChange={(v) => update("plus_minus", v)} 
+                  color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} />
               </div>
-              <div>
-                <Label className="text-slate-400 text-[10px] mb-1 block text-center">Assists</Label>
-                <Input
-                  type="number"
-                  placeholder="0"
-                  value={form.assists}
-                  onChange={(e) => update("assists", e.target.value)}
-                  className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl text-center"
-                />
-              </div>
-              <div>
-                <Label className="text-slate-400 text-[10px] mb-1 block text-center">Shots</Label>
-                <Input
-                  type="number"
-                  placeholder="0"
-                  value={form.shots}
-                  onChange={(e) => update("shots", e.target.value)}
-                  className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl text-center"
-                />
-              </div>
-              <div>
-                <Label className="text-slate-400 text-[10px] mb-1 block text-center">+/-</Label>
-                <Input
-                  type="number"
-                  placeholder="0"
-                  value={form.plus_minus}
-                  onChange={(e) => update("plus_minus", e.target.value)}
-                  className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl text-center"
-                />
+            </div>
+
+            {/* Advanced Stats */}
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+              <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
+              <div className="grid grid-cols-4 gap-3">
+                <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
+                <StatControl label="Blocks" value={form.blocked_shots} onChange={(v) => update("blocked_shots", v)} />
+                <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
+                <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} color="text-red-400" />
               </div>
             </div>
           </>
         )}
 
-        {/* Shift Timer */}
-        <ShiftTimer shifts={form.shifts} onShiftsChange={(s) => update("shifts", s)} />
+        {/* Shift Timer - Only for Games */}
+        {form.type === "game" && (
+          <ShiftTimer shifts={form.shifts} onShiftsChange={(s) => update("shifts", s)} />
+        )}
 
         {/* Rating */}
         <div>

@@ -54,29 +54,59 @@ export default function SessionCard({ session, profileName, showProfile = false,
       )}
 
       {session.type === "game" && (
-        <div className="flex gap-4 text-xs">
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-500">G</span>
-            <span className="text-white font-bold">{session.goals || 0}</span>
+        <div className="space-y-2">
+          <div className="flex gap-4 text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-500">G</span>
+              <span className="text-white font-bold">{session.goals || 0}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-500">A</span>
+              <span className="text-white font-bold">{session.assists || 0}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-500">P</span>
+              <span className="text-sky-400 font-bold">{points}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-500">SOG</span>
+              <span className="text-white font-bold">{session.shots || 0}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-500">+/-</span>
+              <span className={cn("font-bold", (session.plus_minus || 0) >= 0 ? "text-emerald-400" : "text-red-400")}>
+                {(session.plus_minus || 0) > 0 ? "+" : ""}{session.plus_minus || 0}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-500">A</span>
-            <span className="text-white font-bold">{session.assists || 0}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-500">P</span>
-            <span className="text-sky-400 font-bold">{points}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-500">SOG</span>
-            <span className="text-white font-bold">{session.shots || 0}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-500">+/-</span>
-            <span className={cn("font-bold", (session.plus_minus || 0) >= 0 ? "text-emerald-400" : "text-red-400")}>
-              {(session.plus_minus || 0) > 0 ? "+" : ""}{session.plus_minus || 0}
-            </span>
-          </div>
+          {((session.hits || 0) > 0 || (session.blocked_shots || 0) > 0 || (session.takeaways || 0) > 0 || (session.giveaways || 0) > 0) && (
+            <div className="flex gap-4 text-xs border-t border-slate-700/50 pt-2">
+              {(session.hits || 0) > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-500">H</span>
+                  <span className="text-white font-bold">{session.hits}</span>
+                </div>
+              )}
+              {(session.blocked_shots || 0) > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-500">BLK</span>
+                  <span className="text-white font-bold">{session.blocked_shots}</span>
+                </div>
+              )}
+              {(session.takeaways || 0) > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-500">TK</span>
+                  <span className="text-emerald-400 font-bold">{session.takeaways}</span>
+                </div>
+              )}
+              {(session.giveaways || 0) > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-500">GV</span>
+                  <span className="text-red-400 font-bold">{session.giveaways}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 

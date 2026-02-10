@@ -55,6 +55,7 @@ import Friends from './pages/Friends';
 import CreateProfile from './pages/CreateProfile';
 import EditProfile from './pages/EditProfile';
 import SessionDetail from './pages/SessionDetail';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -67,6 +68,7 @@ export const PAGES = {
     "CreateProfile": CreateProfile,
     "EditProfile": EditProfile,
     "SessionDetail": SessionDetail,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {

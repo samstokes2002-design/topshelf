@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Home, Plus, BarChart3, User, Users } from "lucide-react";
+import { Home, Plus, BarChart3, User, Users, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { name: "Log", icon: Plus, page: "LogSession", isAction: true },
   { name: "Friends", icon: Users, page: "Friends" },
   { name: "Profile", icon: User, page: "Profile" },
+  { name: "Settings", icon: Settings, page: "Settings" },
 ];
 
 const hideNavPages = ["CreateProfile", "EditProfile", "SessionDetail", "LogSession"];
@@ -50,7 +51,7 @@ export default function Layout({ children, currentPageName }) {
       {/* Bottom Navigation */}
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 z-50">
-          <div className="max-w-lg mx-auto flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] pt-1">
+          <div className="max-w-lg mx-auto flex items-center justify-between px-2 pb-[env(safe-area-inset-bottom)] pt-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const url = createPageUrl(item.page);
