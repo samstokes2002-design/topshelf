@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
-import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
+import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Star } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from "date-fns";
@@ -152,6 +152,9 @@ export default function Stats() {
                   </div>
                 ))}
                 <div className="text-center ml-auto">
+                  <div className="flex items-center justify-center gap-1 mb-1">
+                    <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  </div>
                   <span className="text-2xl font-bold text-white">{avgRating}</span>
                   <span className="text-[10px] text-slate-400 block">Avg Rating</span>
                 </div>

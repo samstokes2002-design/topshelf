@@ -49,22 +49,38 @@ export default function Home() {
   // Calculate streak
   const getStreak = () => {
     if (sessions.length === 0) return 0;
-    const sorted = [...sessions]
-      .filter((s) => s.date)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
     
-    let streak = 0;
-    let checkDate = new Date();
-    checkDate.setHours(0, 0, 0, 0);
-
-    for (const session of sorted) {
-      const sessionDate = new Date(session.date);
-      sessionDate.setHours(0, 0, 0, 0);
-      const diff = differenceInCalendarDays(checkDate, sessionDate);
-      
-      if (diff <= 1) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Get unique dates only (one session per day counts)
+    const uniqueDates = [...new Set(
+      sessions
+        .filter((s) => s.date && new Date(s.date) <= today)
+        .map((s) => {
+          const d = new Date(s.date);
+          d.setHours(0, 0, 0, 0);
+          return d.getTime();
+        })
+    )]
+      .sort((a, b) => b - a)
+      .map((t) => new Date(t));
+    
+    if (uniqueDates.length === 0) return 0;
+    
+    // Check if most recent session is today or yesterday
+    const mostRecent = uniqueDates[0];
+    const daysSinceRecent = differenceInCalendarDays(today, mostRecent);
+    if (daysSinceRecent > 1) return 0;
+    
+    let streak = 1;
+    let checkDate = mostRecent;
+    
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const diff = differenceInCalendarDays(checkDate, uniqueDates[i]);
+      if (diff === 1) {
         streak++;
-        checkDate = sessionDate;
+        checkDate = uniqueDates[i];
       } else {
         break;
       }
