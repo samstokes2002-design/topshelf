@@ -15,7 +15,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "" });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "" });
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profile-edit", profileId],
@@ -38,6 +38,8 @@ export default function EditProfile() {
         position: p.position || "",
         username: p.username || "",
         photo_url: p.photo_url || "",
+        height: p.height || "",
+        weight: p.weight?.toString() || "",
       });
     }
   }, [profiles]);
@@ -68,7 +70,11 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMutation.mutate({ ...form, age: form.age ? parseInt(form.age) : undefined });
+    updateMutation.mutate({ 
+      ...form, 
+      age: form.age ? parseInt(form.age) : undefined,
+      weight: form.weight ? parseInt(form.weight) : undefined
+    });
   };
 
   if (saved) {
@@ -113,19 +119,28 @@ export default function EditProfile() {
           <Label className="text-slate-400 text-xs mb-1.5 block">Username</Label>
           <Input value={form.username} onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Position</Label>
-            <Select value={form.position} onValueChange={(v) => setForm((f) => ({ ...f, position: v }))}>
-              <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"><SelectValue /></SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
-                {positions.map((p) => <SelectItem key={p} value={p} className="text-white focus:bg-slate-700">{p}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Position</Label>
+          <Select value={form.position} onValueChange={(v) => setForm((f) => ({ ...f, position: v }))}>
+            <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"><SelectValue /></SelectTrigger>
+            <SelectContent className="bg-slate-800 border-slate-700">
+              {positions.map((p) => <SelectItem key={p} value={p} className="text-white focus:bg-slate-700">{p}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Age</Label>
             <Input type="number" value={form.age} onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
+            <Input placeholder='6\'2"' value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
+            <Input type="number" placeholder="185" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
         </div>
 

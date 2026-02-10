@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
-import { Trophy, Target, TrendingUp, Flame } from "lucide-react";
+import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from "date-fns";
@@ -37,6 +37,11 @@ export default function Stats() {
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
   const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
   const totalShots = games.reduce((s, g) => s + (g.shots || 0), 0);
+  const totalHits = games.reduce((s, g) => s + (g.hits || 0), 0);
+  const totalBlocks = games.reduce((s, g) => s + (g.blocked_shots || 0), 0);
+  const totalTakeaways = games.reduce((s, g) => s + (g.takeaways || 0), 0);
+  const totalGiveaways = games.reduce((s, g) => s + (g.giveaways || 0), 0);
+  const totalPlusMinus = games.reduce((s, g) => s + (g.plus_minus || 0), 0);
   const wins = games.filter((g) => g.result === "win").length;
   const losses = games.filter((g) => g.result === "loss").length;
   const ties = games.filter((g) => g.result === "tie").length;
@@ -106,6 +111,34 @@ export default function Stats() {
             <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
             <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
           </div>
+
+          {/* Advanced Stats */}
+          {games.length > 0 && (
+            <>
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+                <h3 className="text-white font-semibold text-sm mb-3">Game Stats</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard label="Shots" value={totalShots} icon={Target} color="text-white" />
+                  <StatCard 
+                    label="+/-" 
+                    value={totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus} 
+                    icon={totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle} 
+                    color={totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400"} 
+                  />
+                </div>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+                <h3 className="text-white font-semibold text-sm mb-3">Defense & Possession</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
+                  <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-white" />
+                  <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
+                  <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Record */}
           {games.length > 0 && (
