@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { User, Settings, ChevronRight, Trophy, Target, Dumbbell, Calendar } from "lucide-react";
+import { User, Settings, UserCog, ChevronRight, Trophy, Target, Dumbbell, Calendar } from "lucide-react";
 import { format } from "date-fns";
 import SessionCard from "@/components/SessionCard";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
@@ -48,10 +48,10 @@ export default function Profile() {
       <div className="flex items-center justify-between py-4">
         <h1 className="text-white font-bold text-xl">Profile</h1>
         <div className="flex gap-2">
-          <Link to={createPageUrl("Settings")} className="text-slate-400 hover:text-white transition-colors">
-            <Settings className="w-5 h-5" />
-          </Link>
           <Link to={createPageUrl("EditProfile") + `?id=${activeProfile?.id}`} className="text-slate-400 hover:text-white transition-colors">
+            <UserCog className="w-5 h-5" />
+          </Link>
+          <Link to={createPageUrl("Settings")} className="text-slate-400 hover:text-white transition-colors">
             <Settings className="w-5 h-5" />
           </Link>
         </div>
