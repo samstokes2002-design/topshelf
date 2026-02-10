@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Home, Plus, BarChart3, User, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AuthGuard from "@/components/AuthGuard";
 
 const navItems = [
   { name: "Home", icon: Home, page: "Home" },
@@ -18,8 +19,9 @@ export default function Layout({ children, currentPageName }) {
   const showNav = !hideNavPages.includes(currentPageName);
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <style>{`
+    <AuthGuard>
+      <div className="min-h-screen bg-slate-900">
+        <style>{`
         :root {
           --background: 222.2 47.4% 6.2%;
           --foreground: 210 40% 98%;
@@ -83,6 +85,7 @@ export default function Layout({ children, currentPageName }) {
           </div>
         </nav>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }
