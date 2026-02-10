@@ -124,6 +124,7 @@ export default function LogSession() {
     const payload = {
       ...form,
       duration: form.duration ? parseInt(form.duration) : 0,
+      date: form.date || format(new Date(), "yyyy-MM-dd"),
     };
 
     if (editId) {
