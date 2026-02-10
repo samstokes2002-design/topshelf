@@ -136,7 +136,7 @@ export default function EditProfile() {
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
-            <Input placeholder='6\'2"' value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input placeholder='6&#39;2"' value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
