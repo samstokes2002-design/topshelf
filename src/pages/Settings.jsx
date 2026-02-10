@@ -38,13 +38,7 @@ export default function Settings() {
   };
 
   const handleLogout = async () => {
-    try {
-      await base44.auth.logout();
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Force logout by redirecting to login
-      window.location.href = '/';
-    }
+    await base44.auth.logout();
   };
 
   return (
