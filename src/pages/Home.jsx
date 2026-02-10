@@ -13,9 +13,17 @@ import { differenceInCalendarDays, parseISO } from "date-fns";
 export default function Home() {
   const [activeProfile, setActiveProfile] = useState(null);
 
+  const { data: user } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => base44.auth.me(),
+  });
+
   const { data: profiles = [], isLoading: profilesLoading } = useQuery({
     queryKey: ["profiles"],
-    queryFn: () => base44.entities.Profile.list("-created_date"),
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Profile.filter({ created_by: currentUser.email }, "-created_date");
+    },
   });
 
   const { data: sessions = [], isLoading: sessionsLoading } = useQuery({

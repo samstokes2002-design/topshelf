@@ -49,7 +49,10 @@ export default function LogSession() {
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
-    queryFn: () => base44.entities.Profile.list("-created_date"),
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Profile.filter({ created_by: currentUser.email }, "-created_date");
+    },
   });
 
   // Load session for editing
