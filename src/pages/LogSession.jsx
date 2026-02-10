@@ -92,8 +92,10 @@ export default function LogSession() {
   useEffect(() => {
     if (profileId && !form.profile_id) {
       setForm((f) => ({ ...f, profile_id: profileId }));
+    } else if (!profileId && profiles.length > 0 && !form.profile_id) {
+      setForm((f) => ({ ...f, profile_id: profiles[0].id }));
     }
-  }, [profileId]);
+  }, [profileId, profiles]);
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Session.create(data),
