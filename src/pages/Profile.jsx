@@ -47,9 +47,14 @@ export default function Profile() {
       {/* Header */}
       <div className="flex items-center justify-between py-4">
         <h1 className="text-white font-bold text-xl">Profile</h1>
-        <Link to={createPageUrl("EditProfile") + `?id=${activeProfile?.id}`} className="text-slate-400 hover:text-white transition-colors">
-          <Settings className="w-5 h-5" />
-        </Link>
+        <div className="flex gap-2">
+          <Link to={createPageUrl("Settings")} className="text-slate-400 hover:text-white transition-colors">
+            <Settings className="w-5 h-5" />
+          </Link>
+          <Link to={createPageUrl("EditProfile") + `?id=${activeProfile?.id}`} className="text-slate-400 hover:text-white transition-colors">
+            <Settings className="w-5 h-5" />
+          </Link>
+        </div>
       </div>
 
       {/* Profile Card */}
