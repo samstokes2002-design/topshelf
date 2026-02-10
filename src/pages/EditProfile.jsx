@@ -19,7 +19,13 @@ export default function EditProfile() {
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profile-edit", profileId],
-    queryFn: () => base44.entities.Profile.filter({ id: profileId }),
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Profile.filter({ 
+        id: profileId,
+        created_by: currentUser.email 
+      });
+    },
     enabled: !!profileId,
   });
 

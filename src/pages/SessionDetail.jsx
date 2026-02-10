@@ -24,7 +24,21 @@ export default function SessionDetail() {
 
   const { data: sessions = [], isLoading } = useQuery({
     queryKey: ["session-detail", sessionId],
-    queryFn: () => base44.entities.Session.filter({ id: sessionId }),
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      const sessions = await base44.entities.Session.filter({ id: sessionId });
+      const session = sessions[0];
+      
+      if (session) {
+        const profiles = await base44.entities.Profile.filter({ 
+          id: session.profile_id,
+          created_by: currentUser.email 
+        });
+        if (profiles.length === 0) return [];
+      }
+      
+      return sessions;
+    },
     enabled: !!sessionId,
   });
 
