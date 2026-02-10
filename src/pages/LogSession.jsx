@@ -257,7 +257,7 @@ export default function LogSession() {
                 <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
                 <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
                 <StatControl label="+/-" value={form.plus_minus} onChange={(v) => update("plus_minus", v)} 
-                  color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} />
+                  color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
               </div>
             </div>
 

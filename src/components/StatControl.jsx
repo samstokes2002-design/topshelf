@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function StatControl({ label, value, onChange, color = "text-white" }) {
+export default function StatControl({ label, value, onChange, color = "text-white", allowNegative = false }) {
   const decrement = () => {
-    const newValue = Math.max(0, (value || 0) - 1);
+    const newValue = allowNegative ? (value || 0) - 1 : Math.max(0, (value || 0) - 1);
     onChange(newValue);
   };
 
