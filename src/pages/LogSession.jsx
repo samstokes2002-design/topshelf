@@ -103,27 +103,8 @@ export default function LogSession() {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       setSaved(true);
       setTimeout(() => {
-        setSaved(false);
-        setForm({
-          profile_id: profileId || "",
-          date: format(new Date(), "yyyy-MM-dd"),
-          type: "game",
-          duration: "",
-          goals: 0,
-          assists: 0,
-          shots: 0,
-          plus_minus: 0,
-          hits: 0,
-          blocked_shots: 0,
-          takeaways: 0,
-          giveaways: 0,
-          rating: 0,
-          notes: "",
-          opponent: "",
-          result: "",
-          shifts: [],
-        });
-      }, 1000);
+        window.location.href = createPageUrl("Home");
+      }, 800);
     },
   });
 
