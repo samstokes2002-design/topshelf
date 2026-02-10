@@ -101,8 +101,27 @@ export default function LogSession() {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("Home");
-      }, 800);
+        setSaved(false);
+        setForm({
+          profile_id: profileId || "",
+          date: format(new Date(), "yyyy-MM-dd"),
+          type: "game",
+          duration: "",
+          goals: 0,
+          assists: 0,
+          shots: 0,
+          plus_minus: 0,
+          hits: 0,
+          blocked_shots: 0,
+          takeaways: 0,
+          giveaways: 0,
+          rating: 0,
+          notes: "",
+          opponent: "",
+          result: "",
+          shifts: [],
+        });
+      }, 1000);
     },
   });
 
@@ -250,7 +269,7 @@ export default function LogSession() {
             {/* Primary Stats */}
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
               <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-4 gap-4">
                 <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
                 <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
                 <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
@@ -262,7 +281,7 @@ export default function LogSession() {
             {/* Advanced Stats */}
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
               <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-4 gap-4">
                 <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
                 <StatControl label="Blocks" value={form.blocked_shots} onChange={(v) => update("blocked_shots", v)} />
                 <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
