@@ -49,9 +49,8 @@ export default function Settings() {
         </button>
         <h1 className="text-white font-bold text-xl">Settings</h1>
       </div>
-      <div className="mb-6"></div>
 
-        {/* Profile Section */}
+      {/* Profile Section */}
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-4">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center">
@@ -104,16 +103,15 @@ export default function Settings() {
           </div>
         </div>
 
-        {/* Logout */}
-        <Button
-          onClick={handleLogout}
-          variant="ghost"
-          className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl h-12 font-semibold"
-        >
-          <LogOut className="w-4 h-4 mr-2" />
-          Log Out
-        </Button>
-      </div>
+      {/* Logout */}
+      <Button
+        onClick={handleLogout}
+        variant="ghost"
+        className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl h-12 font-semibold"
+      >
+        <LogOut className="w-4 h-4 mr-2" />
+        Log Out
+      </Button>
     </div>
   );
 }
