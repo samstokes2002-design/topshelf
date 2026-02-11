@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LogOut, Save } from "lucide-react";
+import { User, LogOut, Save, ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function Settings() {
@@ -43,8 +43,13 @@ export default function Settings() {
 
   return (
     <div className="px-4 pb-24">
-      <div className="py-4">
-        <h1 className="text-white font-bold text-xl mb-6">Settings</h1>
+      <div className="flex items-center gap-3 py-4">
+        <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <h1 className="text-white font-bold text-xl">Settings</h1>
+      </div>
+      <div className="mb-6"></div>
 
         {/* Profile Section */}
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-4">
