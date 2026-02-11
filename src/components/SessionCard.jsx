@@ -1,5 +1,5 @@
 import React from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Trophy, Target, Clock, TrendingUp, Dumbbell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import StarRating from "@/components/ui/StarRating";
@@ -41,7 +41,7 @@ export default function SessionCard({ session, profileName, showProfile = false,
               )}
             </div>
             <p className="text-slate-400 text-xs">
-              {session.date ? format(new Date(session.date), "MMM d, yyyy") : ""}
+              {session.date ? format(parseISO(session.date + "T12:00:00"), "MMM d, yyyy") : ""}
               {session.opponent ? ` vs ${session.opponent}` : ""}
             </p>
           </div>

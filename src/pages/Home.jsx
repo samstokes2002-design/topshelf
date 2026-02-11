@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import SessionCard from "@/components/SessionCard";
 import EmptyState from "@/components/EmptyState";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
-import { differenceInCalendarDays, parseISO } from "date-fns";
+import { differenceInCalendarDays, parseISO, parse } from "date-fns";
 
 export default function Home() {
   const [activeProfile, setActiveProfile] = useState(null);
@@ -56,9 +56,9 @@ export default function Home() {
     // Get unique dates only (one session per day counts)
     const uniqueDates = [...new Set(
       sessions
-        .filter((s) => s.date && new Date(s.date) <= today)
+        .filter((s) => s.date && parse(s.date, "yyyy-MM-dd", new Date()) <= today)
         .map((s) => {
-          const d = new Date(s.date);
+          const d = parse(s.date, "yyyy-MM-dd", new Date());
           d.setHours(0, 0, 0, 0);
           return d.getTime();
         })
