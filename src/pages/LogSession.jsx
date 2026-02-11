@@ -29,7 +29,7 @@ export default function LogSession() {
   const [saved, setSaved] = useState(false);
   const [form, setForm] = useState({
     profile_id: profileId || "",
-    date: format(new Date(), "yyyy-MM-dd"),
+    date: "",
     type: "game",
     duration: "",
     goals: 0,
@@ -88,6 +88,12 @@ export default function LogSession() {
       });
     }
   }, [editSession]);
+
+  useEffect(() => {
+    if (!editId && !form.date) {
+      setForm((f) => ({ ...f, date: format(new Date(), "yyyy-MM-dd") }));
+    }
+  }, [editId, form.date]);
 
   useEffect(() => {
     if (profileId && !form.profile_id) {
