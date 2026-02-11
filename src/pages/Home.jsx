@@ -56,7 +56,7 @@ export default function Home() {
     // Get unique dates only (one session per day counts)
     const uniqueDates = [...new Set(
       sessions
-        .filter((s) => s.date && parse(s.date, "yyyy-MM-dd", new Date()) <= today)
+        .filter((s) => s.date)
         .map((s) => {
           const d = parse(s.date, "yyyy-MM-dd", new Date());
           d.setHours(0, 0, 0, 0);
