@@ -151,6 +151,13 @@ export default function SessionDetail() {
                 {(session.blocked_shots || 0) > 0 && <StatBlock label="Blocked Shots" value={session.blocked_shots} color="text-white" />}
                 {(session.takeaways || 0) > 0 && <StatBlock label="Takeaways" value={session.takeaways} color="text-emerald-400" />}
                 {(session.giveaways || 0) > 0 && <StatBlock label="Giveaways" value={session.giveaways} color="text-red-400" />}
+                {((session.faceoff_wins || 0) > 0 || (session.faceoff_losses || 0) > 0) && (
+                  <StatBlock 
+                    label="FO%" 
+                    value={`${((session.faceoff_wins / (session.faceoff_wins + session.faceoff_losses)) * 100).toFixed(1)}%`}
+                    color="text-sky-400"
+                  />
+                )}
               </div>
             </div>
           )}
