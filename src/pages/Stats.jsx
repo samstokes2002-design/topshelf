@@ -50,6 +50,12 @@ export default function Stats() {
     : "—";
   const shootingPct = totalShots > 0 ? ((totalGoals / totalShots) * 100).toFixed(1) : "0";
   const ppg = games.length > 0 ? ((totalGoals + totalAssists) / games.length).toFixed(2) : "0";
+  
+  const totalFaceoffWins = games.reduce((s, g) => s + (g.faceoff_wins || 0), 0);
+  const totalFaceoffLosses = games.reduce((s, g) => s + (g.faceoff_losses || 0), 0);
+  const faceoffPct = (totalFaceoffWins + totalFaceoffLosses) > 0 
+    ? ((totalFaceoffWins / (totalFaceoffWins + totalFaceoffLosses)) * 100).toFixed(1) 
+    : "0";
 
   // Monthly chart data
   const last6Months = eachMonthOfInterval({
@@ -135,6 +141,9 @@ export default function Stats() {
                   <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-white" />
                   <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
                   <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
+                  {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
+                    <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
+                  )}
                 </div>
               </div>
             </>
