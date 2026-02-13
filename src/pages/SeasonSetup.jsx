@@ -112,10 +112,7 @@ export default function SeasonSetup() {
     mutationFn: ({ id, data }) => base44.entities.Season.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
-      setSaved(true);
-      setTimeout(() => {
-        window.location.href = createPageUrl("Settings");
-      }, 1000);
+      window.location.href = createPageUrl("Settings");
     },
   });
 
@@ -295,6 +292,15 @@ export default function SeasonSetup() {
 
         {/* Actions */}
         <div className="flex gap-3">
+          {editId && (
+            <Button
+              onClick={() => window.location.href = createPageUrl("Settings")}
+              variant="outline"
+              className="flex-1 bg-slate-800/60 border-slate-700/50 text-white hover:bg-slate-800 rounded-xl h-12"
+            >
+              Cancel
+            </Button>
+          )}
           {step === 2 && !editId && (
             <Button
               onClick={() => setStep(1)}
