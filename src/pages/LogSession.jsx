@@ -104,7 +104,8 @@ export default function LogSession() {
         blocked_shots: editSession.blocked_shots || 0,
         takeaways: editSession.takeaways || 0,
         giveaways: editSession.giveaways || 0,
-        faceoff_percentage: editSession.faceoff_percentage || 0,
+        faceoff_wins: editSession.faceoff_wins || 0,
+        faceoff_losses: editSession.faceoff_losses || 0,
         power_play_goals: editSession.power_play_goals || 0,
         power_play_points: editSession.power_play_points || 0,
         shorthanded_goals: editSession.shorthanded_goals || 0,
@@ -336,7 +337,10 @@ export default function LogSession() {
                     <StatControl label="PIM" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
                   )}
                   {selectedStats.includes("faceoff_percentage") && (
-                    <StatControl label="FO%" value={form.faceoff_percentage} onChange={(v) => update("faceoff_percentage", v)} />
+                    <>
+                      <StatControl label="FO Won" value={form.faceoff_wins} onChange={(v) => update("faceoff_wins", v)} color="text-emerald-400" />
+                      <StatControl label="FO Lost" value={form.faceoff_losses} onChange={(v) => update("faceoff_losses", v)} color="text-red-400" />
+                    </>
                   )}
                   {selectedStats.includes("time_on_ice") && (
                     <StatControl label="TOI" value={form.time_on_ice} onChange={(v) => update("time_on_ice", v)} />
