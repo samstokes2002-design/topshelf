@@ -36,10 +36,17 @@ export default function LogSession() {
     assists: 0,
     shots: 0,
     plus_minus: 0,
+    penalty_minutes: 0,
     hits: 0,
     blocked_shots: 0,
     takeaways: 0,
     giveaways: 0,
+    faceoff_percentage: 0,
+    power_play_goals: 0,
+    power_play_points: 0,
+    shorthanded_goals: 0,
+    shorthanded_points: 0,
+    time_on_ice: 0,
     rating: 0,
     notes: "",
     opponent: "",
@@ -54,6 +61,21 @@ export default function LogSession() {
       return base44.entities.Profile.filter({ created_by: currentUser.email }, "-created_date");
     },
   });
+
+  const { data: activeSeason } = useQuery({
+    queryKey: ["activeSeason", form.profile_id],
+    queryFn: async () => {
+      if (!form.profile_id) return null;
+      const seasons = await base44.entities.Season.filter({ 
+        profile_id: form.profile_id,
+        is_active: true 
+      });
+      return seasons[0] || null;
+    },
+    enabled: !!form.profile_id,
+  });
+
+  const selectedStats = activeSeason?.selected_stats || [];
 
   // Load session for editing
   const { data: editSession } = useQuery({
@@ -76,10 +98,17 @@ export default function LogSession() {
         assists: editSession.assists || 0,
         shots: editSession.shots || 0,
         plus_minus: editSession.plus_minus || 0,
+        penalty_minutes: editSession.penalty_minutes || 0,
         hits: editSession.hits || 0,
         blocked_shots: editSession.blocked_shots || 0,
         takeaways: editSession.takeaways || 0,
         giveaways: editSession.giveaways || 0,
+        faceoff_percentage: editSession.faceoff_percentage || 0,
+        power_play_goals: editSession.power_play_goals || 0,
+        power_play_points: editSession.power_play_points || 0,
+        shorthanded_goals: editSession.shorthanded_goals || 0,
+        shorthanded_points: editSession.shorthanded_points || 0,
+        time_on_ice: editSession.time_on_ice || 0,
         rating: editSession.rating || 0,
         notes: editSession.notes || "",
         opponent: editSession.opponent || "",
@@ -155,7 +184,7 @@ export default function LogSession() {
   }
 
   return (
-    <div className="px-4 pb-24">
+    <div className="px-4 pb-32">
       {/* Header */}
       <div className="flex items-center gap-3 py-4">
         <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
@@ -256,28 +285,76 @@ export default function LogSession() {
               </div>
             </div>
 
-            {/* Primary Stats */}
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-              <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
-              <div className="grid grid-cols-4 gap-4">
-                <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
-                <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
-                <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
-                <StatControl label="+/-" value={form.plus_minus} onChange={(v) => update("plus_minus", v)} 
-                  color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
+            {/* Dynamic Stats Based on Season Selection */}
+            {selectedStats.includes("goals") && selectedStats.includes("assists") && selectedStats.includes("shots") && selectedStats.includes("plus_minus") && (
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {selectedStats.includes("goals") && (
+                    <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
+                  )}
+                  {selectedStats.includes("assists") && (
+                    <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
+                  )}
+                  {selectedStats.includes("shots") && (
+                    <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
+                  )}
+                  {selectedStats.includes("plus_minus") && (
+                    <StatControl label="+/-" value={form.plus_minus} onChange={(v) => update("plus_minus", v)} 
+                      color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Advanced Stats */}
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-              <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
-              <div className="grid grid-cols-4 gap-4">
-                <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
-                <StatControl label="Blocks" value={form.blocked_shots} onChange={(v) => update("blocked_shots", v)} />
-                <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
-                <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} color="text-red-400" />
+            {(selectedStats.includes("hits") || selectedStats.includes("blocked_shots") || selectedStats.includes("takeaways") || selectedStats.includes("giveaways")) && (
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {selectedStats.includes("hits") && (
+                    <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
+                  )}
+                  {selectedStats.includes("blocked_shots") && (
+                    <StatControl label="Blocks" value={form.blocked_shots} onChange={(v) => update("blocked_shots", v)} />
+                  )}
+                  {selectedStats.includes("takeaways") && (
+                    <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
+                  )}
+                  {selectedStats.includes("giveaways") && (
+                    <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} color="text-red-400" />
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+
+            {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("time_on_ice") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Special Stats</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {selectedStats.includes("penalty_minutes") && (
+                    <StatControl label="PIM" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
+                  )}
+                  {selectedStats.includes("faceoff_percentage") && (
+                    <StatControl label="FO%" value={form.faceoff_percentage} onChange={(v) => update("faceoff_percentage", v)} />
+                  )}
+                  {selectedStats.includes("time_on_ice") && (
+                    <StatControl label="TOI" value={form.time_on_ice} onChange={(v) => update("time_on_ice", v)} />
+                  )}
+                  {selectedStats.includes("power_play_goals") && (
+                    <StatControl label="PPG" value={form.power_play_goals} onChange={(v) => update("power_play_goals", v)} color="text-sky-400" />
+                  )}
+                  {selectedStats.includes("power_play_points") && (
+                    <StatControl label="PPP" value={form.power_play_points} onChange={(v) => update("power_play_points", v)} color="text-sky-400" />
+                  )}
+                  {selectedStats.includes("shorthanded_goals") && (
+                    <StatControl label="SHG" value={form.shorthanded_goals} onChange={(v) => update("shorthanded_goals", v)} color="text-emerald-400" />
+                  )}
+                  {selectedStats.includes("shorthanded_points") && (
+                    <StatControl label="SHP" value={form.shorthanded_points} onChange={(v) => update("shorthanded_points", v)} color="text-emerald-400" />
+                  )}
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -287,10 +364,12 @@ export default function LogSession() {
         )}
 
         {/* Rating */}
-        <div>
-          <Label className="text-slate-400 text-xs mb-2 block">How'd it go?</Label>
-          <StarRating value={form.rating} onChange={(v) => update("rating", v)} size="lg" />
-        </div>
+        {selectedStats.includes("rating") && (
+          <div>
+            <Label className="text-slate-400 text-xs mb-2 block">How'd it go?</Label>
+            <StarRating value={form.rating} onChange={(v) => update("rating", v)} size="lg" />
+          </div>
+        )}
 
         {/* Notes */}
         <div>
