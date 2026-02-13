@@ -124,10 +124,9 @@ export default function Settings() {
           ) : (
             <div className="space-y-2">
               {seasons.map((season) => (
-                <button
+                <div
                   key={season.id}
-                  onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
-                  className="w-full flex items-center justify-between p-3 bg-slate-900/50 rounded-xl hover:bg-slate-900/80 transition-colors text-left"
+                  className="w-full flex items-center justify-between p-3 bg-slate-900/50 rounded-xl"
                 >
                   <div className="flex items-center gap-3">
                     <Trophy className="w-4 h-4 text-sky-400" />
@@ -138,12 +137,21 @@ export default function Settings() {
                       )}
                     </div>
                   </div>
-                  {season.is_active && (
-                    <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-md bg-sky-500/20 text-sky-400">
-                      Active
-                    </span>
-                  )}
-                </button>
+                  <div className="flex items-center gap-2">
+                    {season.is_active && (
+                      <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-md bg-sky-500/20 text-sky-400">
+                        Active
+                      </span>
+                    )}
+                    <Button
+                      size="sm"
+                      onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
+                      className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 text-xs rounded-lg h-7 px-3"
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                </div>
               ))}
             </div>
           )}
