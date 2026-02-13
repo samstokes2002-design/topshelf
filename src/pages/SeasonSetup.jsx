@@ -125,6 +125,19 @@ export default function SeasonSetup() {
     );
   };
 
+  const selectAllInCategory = (category) => {
+    const categoryStatIds = AVAILABLE_STATS.filter((s) => s.category === category).map((s) => s.id);
+    const allSelected = categoryStatIds.every((id) => selectedStats.includes(id));
+    
+    if (allSelected) {
+      // Deselect all in category
+      setSelectedStats((prev) => prev.filter((id) => !categoryStatIds.includes(id)));
+    } else {
+      // Select all in category
+      setSelectedStats((prev) => [...new Set([...prev, ...categoryStatIds])]);
+    }
+  };
+
   const handleSubmit = () => {
     const selectedType = SEASON_TYPES.find((t) => t.value === seasonType);
     const seasonYear = selectedType.format(year);
@@ -244,11 +257,21 @@ export default function SeasonSetup() {
             {["scoring", "overall", "physical", "defense", "discipline", "special"].map((category) => {
               const categoryStats = AVAILABLE_STATS.filter((s) => s.category === category);
               if (categoryStats.length === 0) return null;
+              const allSelected = categoryStats.every((s) => selectedStats.includes(s.id));
               return (
                 <div key={category} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-                  <h3 className="text-white font-semibold text-xs uppercase tracking-wider mb-3">
-                    {category}
-                  </h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-white font-semibold text-xs uppercase tracking-wider">
+                      {category}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => selectAllInCategory(category)}
+                      className="text-xs text-sky-400 hover:text-sky-300 font-medium"
+                    >
+                      {allSelected ? "Deselect All" : "Select All"}
+                    </button>
+                  </div>
                   <div className="space-y-2">
                     {categoryStats.map((stat) => (
                       <label
