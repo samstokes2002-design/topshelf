@@ -23,11 +23,11 @@ export default function CreateProfile() {
 
   const mutation = useMutation({
     mutationFn: (data) => base44.entities.Profile.create(data),
-    onSuccess: () => {
+    onSuccess: (newProfile) => {
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("Home");
+        window.location.href = createPageUrl("SeasonSetup") + `?profileId=${newProfile.id}`;
       }, 800);
     },
   });
