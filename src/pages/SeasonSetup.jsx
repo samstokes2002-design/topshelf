@@ -158,7 +158,7 @@ export default function SeasonSetup() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 px-4 py-8">
+    <div className="min-h-screen bg-slate-900 px-4 py-8 pb-32">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
