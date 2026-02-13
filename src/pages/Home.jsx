@@ -26,6 +26,19 @@ export default function Home() {
     },
   });
 
+  const { data: activeSeason } = useQuery({
+    queryKey: ["activeSeason", activeProfile?.id],
+    queryFn: async () => {
+      if (!activeProfile?.id) return null;
+      const seasons = await base44.entities.Season.filter({ 
+        profile_id: activeProfile.id,
+        is_active: true 
+      });
+      return seasons[0] || null;
+    },
+    enabled: !!activeProfile?.id,
+  });
+
   const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
     queryKey: ["sessions", activeProfile?.id],
     queryFn: () =>
@@ -45,6 +58,13 @@ export default function Home() {
       setActiveProfile(profiles[0]);
     }
   }, [profiles, activeProfile]);
+
+  // Check if active season exists, redirect to setup if not
+  useEffect(() => {
+    if (activeProfile && activeSeason === null && !profilesLoading) {
+      window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile.id}`;
+    }
+  }, [activeProfile, activeSeason, profilesLoading]);
 
   // Calculate streak
   const getStreak = () => {

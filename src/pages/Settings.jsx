@@ -4,8 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LogOut, Save, ArrowLeft } from "lucide-react";
+import { User, LogOut, Save, ArrowLeft, Trophy, Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { createPageUrl } from "@/utils";
 
 export default function Settings() {
   const { toast } = useToast();
@@ -15,6 +16,25 @@ export default function Settings() {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
+  });
+
+  const { data: profiles = [] } = useQuery({
+    queryKey: ["profiles"],
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Profile.filter({ created_by: currentUser.email });
+    },
+  });
+
+  const { data: seasons = [] } = useQuery({
+    queryKey: ["seasons"],
+    queryFn: async () => {
+      if (profiles.length === 0) return [];
+      return base44.entities.Season.filter({ 
+        profile_id: profiles[0]?.id 
+      }, "-created_date");
+    },
+    enabled: profiles.length > 0,
   });
 
   React.useEffect(() => {
@@ -86,6 +106,47 @@ export default function Settings() {
             </div>
             <p className="text-slate-500 text-xs">Your unique username for the app</p>
           </div>
+        </div>
+
+        {/* Seasons */}
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white font-semibold text-sm">Seasons</h3>
+            <button
+              onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${profiles[0]?.id || ""}`}
+              className="text-sky-400 hover:text-sky-300 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+          {seasons.length === 0 ? (
+            <p className="text-slate-500 text-xs">No seasons yet</p>
+          ) : (
+            <div className="space-y-2">
+              {seasons.map((season) => (
+                <button
+                  key={season.id}
+                  onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
+                  className="w-full flex items-center justify-between p-3 bg-slate-900/50 rounded-xl hover:bg-slate-900/80 transition-colors text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <Trophy className="w-4 h-4 text-sky-400" />
+                    <div>
+                      <p className="text-white text-sm font-medium">{season.season_year}</p>
+                      {season.team_name && (
+                        <p className="text-slate-400 text-xs">{season.team_name}</p>
+                      )}
+                    </div>
+                  </div>
+                  {season.is_active && (
+                    <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-md bg-sky-500/20 text-sky-400">
+                      Active
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* App Info */}
