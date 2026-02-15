@@ -50,13 +50,13 @@
 import CreateProfile from './pages/CreateProfile';
 import EditProfile from './pages/EditProfile';
 import Friends from './pages/Friends';
+import Home from './pages/Home';
 import LogSession from './pages/LogSession';
 import Profile from './pages/Profile';
 import SeasonSetup from './pages/SeasonSetup';
 import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
-import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -64,13 +64,13 @@ export const PAGES = {
     "CreateProfile": CreateProfile,
     "EditProfile": EditProfile,
     "Friends": Friends,
+    "Home": Home,
     "LogSession": LogSession,
     "Profile": Profile,
     "SeasonSetup": SeasonSetup,
     "SessionDetail": SessionDetail,
     "Settings": Settings,
     "Stats": Stats,
-    "Home": Home,
 }
 
 export const pagesConfig = {

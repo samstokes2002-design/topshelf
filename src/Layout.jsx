@@ -16,7 +16,22 @@ const navItems = [
 const hideNavPages = ["CreateProfile", "EditProfile", "SessionDetail", "LogSession"];
 
 export default function Layout({ children, currentPageName }) {
-  const showNav = !hideNavPages.includes(currentPageName);
+  const [hasProfiles, setHasProfiles] = React.useState(true);
+
+  React.useEffect(() => {
+    const checkProfiles = async () => {
+      try {
+        const currentUser = await base44.auth.me();
+        const profiles = await base44.entities.Profile.filter({ created_by: currentUser.email });
+        setHasProfiles(profiles.length > 0);
+      } catch (error) {
+        setHasProfiles(true);
+      }
+    };
+    checkProfiles();
+  }, [currentPageName]);
+
+  const showNav = !hideNavPages.includes(currentPageName) && hasProfiles;
 
   return (
     <AuthGuard>
