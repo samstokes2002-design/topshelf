@@ -13,6 +13,11 @@ export default function AuthGuard({ children }) {
           base44.auth.redirectToLogin(createPageUrl("Home"));
         } else {
           setIsAuthenticated(true);
+          
+          // After login, always redirect to Home if user is on Settings
+          if (window.location.pathname.includes('Settings')) {
+            window.location.href = createPageUrl("Home");
+          }
         }
       } catch (error) {
         base44.auth.redirectToLogin(createPageUrl("Home"));
