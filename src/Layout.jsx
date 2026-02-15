@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { Home, Plus, BarChart3, User, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AuthGuard from "@/components/AuthGuard";
+import { base44 } from "@/api/base44Client";
 
 const navItems = [
   { name: "Home", icon: Home, page: "Home" },
