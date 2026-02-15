@@ -124,14 +124,26 @@ export default function Home() {
 
   if (profiles.length === 0) {
     return (
-      <div className="px-4 pt-8">
-        <EmptyState
-          icon={Activity}
-          title="Welcome to TopShelf"
-          description="Create your first player profile to start tracking your hockey sessions."
-          actionLabel="Create Profile"
-          onAction={() => window.location.href = createPageUrl("CreateProfile")}
-        />
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="text-center max-w-md">
+          <div className="mb-6 flex justify-center">
+            <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-xl shadow-sky-500/30">
+              <Activity className="w-10 h-10 text-white" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-3">Welcome to TopShelf</h1>
+          <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+            Your personal hockey tracker starts here. Create your profile and begin logging your journey on the ice.
+          </p>
+          <Button 
+            size="lg"
+            onClick={() => window.location.href = createPageUrl("CreateProfile")}
+            className="bg-sky-500 hover:bg-sky-600 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg shadow-sky-500/30"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Create Your Profile
+          </Button>
+        </div>
       </div>
     );
   }
