@@ -31,7 +31,11 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (profiles.length > 0 && !activeProfile) setActiveProfile(profiles[0]);
+    if (profiles.length === 0 && profiles !== undefined) {
+      window.location.href = createPageUrl("CreateProfile");
+    } else if (profiles.length > 0 && !activeProfile) {
+      setActiveProfile(profiles[0]);
+    }
   }, [profiles, activeProfile]);
 
   const filteredSessions = filter === "all"
