@@ -10,19 +10,12 @@ export default function AuthGuard({ children }) {
       try {
         const authenticated = await base44.auth.isAuthenticated();
         if (!authenticated) {
-          base44.auth.redirectToLogin(window.location.pathname + window.location.search);
+          base44.auth.redirectToLogin(createPageUrl("Home"));
         } else {
           setIsAuthenticated(true);
-          
-          // Redirect to Home if user just logged in and is on Settings
-          const urlParams = new URLSearchParams(window.location.search);
-          const justLoggedIn = urlParams.get('just_logged_in');
-          if (justLoggedIn && window.location.pathname.includes('Settings')) {
-            window.location.href = createPageUrl("Home");
-          }
         }
       } catch (error) {
-        base44.auth.redirectToLogin(window.location.pathname + window.location.search);
+        base44.auth.redirectToLogin(createPageUrl("Home"));
       }
     };
     checkAuth();
