@@ -66,13 +66,6 @@ export default function Home() {
     }
   }, [activeProfile, activeSeason, profilesLoading]);
 
-  // Redirect first-time users to Profile page
-  useEffect(() => {
-    if (!sessionsLoading && sessions.length === 0 && profiles.length > 0 && activeSeason !== null) {
-      window.location.href = createPageUrl("Profile");
-    }
-  }, [sessionsLoading, sessions.length, profiles.length, activeSeason]);
-
   // Calculate streak
   const getStreak = () => {
     if (sessions.length === 0) return 0;
