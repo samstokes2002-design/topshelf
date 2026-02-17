@@ -83,7 +83,6 @@ export default function Settings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
       queryClient.invalidateQueries({ queryKey: ["activeSeason"] });
-      toast({ title: "Season activated!" });
     },
   });
 

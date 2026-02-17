@@ -148,7 +148,9 @@ export default function LogSession() {
     if (profileId && !form.profile_id) {
       setForm((f) => ({ ...f, profile_id: profileId }));
     } else if (!profileId && profiles.length > 0 && !form.profile_id) {
-      setForm((f) => ({ ...f, profile_id: profiles[0].id }));
+      const savedProfileId = localStorage.getItem("activeProfileId");
+      const savedProfile = profiles.find(p => p.id === savedProfileId);
+      setForm((f) => ({ ...f, profile_id: savedProfile?.id || profiles[0].id }));
     }
   }, [profileId, profiles]);
 
