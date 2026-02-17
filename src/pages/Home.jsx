@@ -66,12 +66,7 @@ export default function Home() {
     localStorage.setItem("activeProfileId", profile.id);
   };
 
-  // Check if active season exists, redirect to setup if not
-  useEffect(() => {
-    if (activeProfile && activeSeason === null && !profilesLoading) {
-      window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile.id}`;
-    }
-  }, [activeProfile, activeSeason, profilesLoading]);
+
 
   // Calculate streak
   const getStreak = () => {
