@@ -88,10 +88,10 @@ export default function LogSession() {
 
   // Auto-select active season
   useEffect(() => {
-    if (activeSeason && !form.season_id) {
+    if (activeSeason) {
       setForm((f) => ({ ...f, season_id: activeSeason.id }));
     }
-  }, [activeSeason, form.season_id]);
+  }, [activeSeason]);
 
   const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
   const selectedStats = selectedSeason?.selected_stats || [];
