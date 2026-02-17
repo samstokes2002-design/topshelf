@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,13 @@ import { Label } from "@/components/ui/label";
 import { User, LogOut, Save, ArrowLeft, Trophy, Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
+import ProfileSwitcher from "@/components/ProfileSwitcher";
 
 export default function Settings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
+  const [activeProfile, setActiveProfile] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -22,20 +24,33 @@ export default function Settings() {
     queryKey: ["profiles"],
     queryFn: async () => {
       const currentUser = await base44.auth.me();
-      return base44.entities.Profile.filter({ created_by: currentUser.email });
+      return base44.entities.Profile.filter({ created_by: currentUser.email }, "-created_date");
     },
   });
 
   const { data: seasons = [] } = useQuery({
-    queryKey: ["seasons"],
+    queryKey: ["seasons", activeProfile?.id],
     queryFn: async () => {
-      if (profiles.length === 0) return [];
+      if (!activeProfile?.id) return [];
       return base44.entities.Season.filter({ 
-        profile_id: profiles[0]?.id 
+        profile_id: activeProfile.id 
       }, "-created_date");
     },
-    enabled: profiles.length > 0,
+    enabled: !!activeProfile?.id,
   });
+
+  useEffect(() => {
+    if (profiles.length > 0 && !activeProfile) {
+      const savedProfileId = localStorage.getItem("activeProfileId");
+      const savedProfile = profiles.find(p => p.id === savedProfileId);
+      setActiveProfile(savedProfile || profiles[0]);
+    }
+  }, [profiles, activeProfile]);
+
+  const handleProfileSwitch = (profile) => {
+    setActiveProfile(profile);
+    localStorage.setItem("activeProfileId", profile.id);
+  };
 
   React.useEffect(() => {
     if (user?.username) {
@@ -84,11 +99,21 @@ export default function Settings() {
 
   return (
     <div className="px-4 pb-24">
-      <div className="flex items-center gap-3 py-4">
-        <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <h1 className="text-white font-bold text-xl">Settings</h1>
+      <div className="flex items-center justify-between py-4">
+        <div className="flex items-center gap-3">
+          <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-white font-bold text-xl">Settings</h1>
+        </div>
+        {profiles.length > 1 && (
+          <ProfileSwitcher
+            profiles={profiles}
+            activeProfile={activeProfile}
+            onSwitch={handleProfileSwitch}
+            onAdd={() => window.location.href = createPageUrl("CreateProfile")}
+          />
+        )}
       </div>
 
       {/* Profile Section */}
@@ -134,7 +159,7 @@ export default function Settings() {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white font-semibold text-sm">Seasons</h3>
             <button
-              onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${profiles[0]?.id || ""}`}
+              onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id || ""}`}
               className="text-sky-400 hover:text-sky-300 transition-colors"
             >
               <Plus className="w-4 h-4" />
