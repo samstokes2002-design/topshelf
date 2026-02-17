@@ -145,7 +145,7 @@ export default function SeasonSetup() {
     const seasonYear = selectedType.format(year);
 
     const payload = {
-      profile_id: profileId || profiles[0]?.id,
+      profile_id: editId ? (editSeason?.profile_id || profileId || profiles[0]?.id) : (profileId || profiles[0]?.id),
       season_year: seasonYear,
       team_name: teamName,
       selected_stats: selectedStats,
@@ -328,7 +328,9 @@ export default function SeasonSetup() {
           >
             {isSubmitting ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : step === 1 && !editId ? (
+            ) : editId ? (
+              "Save Changes"
+            ) : step === 1 ? (
               "Next"
             ) : (
               "Start Season"
