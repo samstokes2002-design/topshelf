@@ -34,9 +34,16 @@ export default function Profile() {
     if (profiles.length === 0 && profiles !== undefined) {
       window.location.href = createPageUrl("CreateProfile");
     } else if (profiles.length > 0 && !activeProfile) {
-      setActiveProfile(profiles[0]);
+      const savedProfileId = localStorage.getItem("activeProfileId");
+      const savedProfile = profiles.find(p => p.id === savedProfileId);
+      setActiveProfile(savedProfile || profiles[0]);
     }
   }, [profiles, activeProfile]);
+
+  const handleProfileSwitch = (profile) => {
+    setActiveProfile(profile);
+    localStorage.setItem("activeProfileId", profile.id);
+  };
 
   const filteredSessions = filter === "all"
     ? sessions
