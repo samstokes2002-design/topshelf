@@ -51,6 +51,27 @@ export default function Settings() {
     },
   });
 
+  const activateSeasonMutation = useMutation({
+    mutationFn: async (seasonId) => {
+      const seasonToActivate = seasons.find(s => s.id === seasonId);
+      if (!seasonToActivate) return;
+      
+      // Deactivate all other seasons for this profile
+      const otherSeasons = seasons.filter(s => s.id !== seasonId && s.is_active);
+      await Promise.all(
+        otherSeasons.map(s => base44.entities.Season.update(s.id, { is_active: false }))
+      );
+      
+      // Activate the selected season
+      await base44.entities.Season.update(seasonId, { is_active: true });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seasons"] });
+      queryClient.invalidateQueries({ queryKey: ["activeSeason"] });
+      toast({ title: "Season activated!" });
+    },
+  });
+
   const handleSaveUsername = () => {
     if (username.trim()) {
       updateUserMutation.mutate({ username: username.trim() });
