@@ -106,7 +106,7 @@ export default function Stats() {
         <ProfileSwitcher
           profiles={profiles}
           activeProfile={activeProfile}
-          onSwitch={setActiveProfile}
+          onSwitch={handleProfileSwitch}
           onAdd={() => window.location.href = createPageUrl("CreateProfile")}
         />
       </div>
