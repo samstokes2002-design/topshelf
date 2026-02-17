@@ -92,7 +92,7 @@ export default function Profile() {
           <ProfileSwitcher
             profiles={profiles}
             activeProfile={activeProfile}
-            onSwitch={setActiveProfile}
+            onSwitch={handleProfileSwitch}
             onAdd={() => window.location.href = createPageUrl("CreateProfile")}
           />
         )}
