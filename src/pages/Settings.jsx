@@ -159,10 +159,19 @@ export default function Settings() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {season.is_active && (
+                    {season.is_active ? (
                       <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-md bg-sky-500/20 text-sky-400">
                         Active
                       </span>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => activateSeasonMutation.mutate(season.id)}
+                        disabled={activateSeasonMutation.isPending}
+                        className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-xs rounded-lg h-7 px-3"
+                      >
+                        Activate
+                      </Button>
                     )}
                     <Button
                       size="sm"
