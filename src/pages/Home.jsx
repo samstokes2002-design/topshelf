@@ -162,7 +162,7 @@ export default function Home() {
         <ProfileSwitcher
           profiles={profiles}
           activeProfile={activeProfile}
-          onSwitch={setActiveProfile}
+          onSwitch={handleProfileSwitch}
           onAdd={() => window.location.href = createPageUrl("CreateProfile")}
         />
         <Link to={createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`}>
