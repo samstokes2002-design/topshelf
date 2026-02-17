@@ -31,9 +31,7 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (profiles.length === 0 && profiles !== undefined) {
-      window.location.href = createPageUrl("CreateProfile");
-    } else if (profiles.length > 0 && !activeProfile) {
+    if (profiles.length > 0 && !activeProfile) {
       const savedProfileId = localStorage.getItem("activeProfileId");
       const savedProfile = profiles.find(p => p.id === savedProfileId);
       setActiveProfile(savedProfile || profiles[0]);
