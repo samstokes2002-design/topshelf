@@ -30,8 +30,17 @@ export default function Stats() {
   });
 
   useEffect(() => {
-    if (profiles.length > 0 && !activeProfile) setActiveProfile(profiles[0]);
+    if (profiles.length > 0 && !activeProfile) {
+      const savedProfileId = localStorage.getItem("activeProfileId");
+      const savedProfile = profiles.find(p => p.id === savedProfileId);
+      setActiveProfile(savedProfile || profiles[0]);
+    }
   }, [profiles, activeProfile]);
+
+  const handleProfileSwitch = (profile) => {
+    setActiveProfile(profile);
+    localStorage.setItem("activeProfileId", profile.id);
+  };
 
   const games = sessions.filter((s) => s.type === "game");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
