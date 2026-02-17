@@ -87,6 +87,15 @@ export default function Settings() {
     },
   });
 
+  const deleteSeasonMutation = useMutation({
+    mutationFn: (seasonId) => base44.entities.Season.delete(seasonId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seasons"] });
+      queryClient.invalidateQueries({ queryKey: ["activeSeason"] });
+      toast({ title: "Season deleted!" });
+    },
+  });
+
   const handleSaveUsername = () => {
     if (username.trim()) {
       updateUserMutation.mutate({ username: username.trim() });
@@ -204,6 +213,18 @@ export default function Settings() {
                       className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 text-xs rounded-lg h-7 px-3"
                     >
                       Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        if (confirm("Delete this season? This action cannot be undone.")) {
+                          deleteSeasonMutation.mutate(season.id);
+                        }
+                      }}
+                      disabled={deleteSeasonMutation.isPending}
+                      className="bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs rounded-lg h-7 px-3"
+                    >
+                      Delete
                     </Button>
                   </div>
                 </div>
