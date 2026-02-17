@@ -29,6 +29,7 @@ export default function LogSession() {
   const [saved, setSaved] = useState(false);
   const [form, setForm] = useState({
     profile_id: profileId || "",
+    season_id: "",
     date: "",
     type: "game",
     duration: "",
@@ -63,20 +64,37 @@ export default function LogSession() {
     },
   });
 
-  const { data: activeSeason } = useQuery({
-    queryKey: ["activeSeason", form.profile_id],
+  const { data: seasons = [] } = useQuery({
+    queryKey: ["seasons", form.profile_id],
     queryFn: async () => {
-      if (!form.profile_id) return null;
-      const seasons = await base44.entities.Season.filter({ 
-        profile_id: form.profile_id,
-        is_active: true 
-      });
-      return seasons[0] || null;
+      if (!form.profile_id) return [];
+      return base44.entities.Season.filter({ profile_id: form.profile_id }, "-created_date");
     },
     enabled: !!form.profile_id,
   });
 
-  const selectedStats = activeSeason?.selected_stats || [];
+  const { data: activeSeason } = useQuery({
+    queryKey: ["activeSeason", form.profile_id],
+    queryFn: async () => {
+      if (!form.profile_id) return null;
+      const activeSeasons = await base44.entities.Season.filter({ 
+        profile_id: form.profile_id,
+        is_active: true 
+      });
+      return activeSeasons[0] || null;
+    },
+    enabled: !!form.profile_id,
+  });
+
+  // Auto-select active season
+  useEffect(() => {
+    if (activeSeason && !form.season_id) {
+      setForm((f) => ({ ...f, season_id: activeSeason.id }));
+    }
+  }, [activeSeason, form.season_id]);
+
+  const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
+  const selectedStats = selectedSeason?.selected_stats || [];
 
   // Load session for editing
   const { data: editSession } = useQuery({
@@ -219,25 +237,45 @@ export default function LogSession() {
           })}
         </div>
 
-        {/* Profile + Date */}
+        {/* Profile + Season Selection */}
+        {profiles.length > 1 && (
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Profile</Label>
+            <Select value={form.profile_id} onValueChange={(v) => update("profile_id", v)}>
+              <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
+                <SelectValue placeholder="Select profile" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-slate-700">
+                {profiles.map((p) => (
+                  <SelectItem key={p.id} value={p.id} className="text-white focus:bg-slate-700">
+                    {p.name} — {p.position}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {seasons.length > 0 && (
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Season</Label>
+            <Select value={form.season_id} onValueChange={(v) => update("season_id", v)}>
+              <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
+                <SelectValue placeholder="Select season" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-slate-700">
+                {seasons.map((s) => (
+                  <SelectItem key={s.id} value={s.id} className="text-white focus:bg-slate-700">
+                    {s.season_year} {s.team_name && `— ${s.team_name}`} {s.is_active && "✓"}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {/* Date + Duration */}
         <div className="grid grid-cols-2 gap-3">
-          {profiles.length > 1 && (
-            <div className="col-span-2">
-              <Label className="text-slate-400 text-xs mb-1.5 block">Profile</Label>
-              <Select value={form.profile_id} onValueChange={(v) => update("profile_id", v)}>
-                <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
-                  <SelectValue placeholder="Select profile" />
-                </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
-                  {profiles.map((p) => (
-                    <SelectItem key={p.id} value={p.id} className="text-white focus:bg-slate-700">
-                      {p.name} — {p.position}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Date</Label>
             <Input
@@ -291,7 +329,7 @@ export default function LogSession() {
             {selectedStats.includes("goals") && selectedStats.includes("assists") && selectedStats.includes("shots") && selectedStats.includes("plus_minus") && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                 <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("goals") && (
                     <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
                   )}
@@ -312,7 +350,7 @@ export default function LogSession() {
             {(selectedStats.includes("hits") || selectedStats.includes("blocked_shots") || selectedStats.includes("takeaways") || selectedStats.includes("giveaways")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                 <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("hits") && (
                     <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
                   )}
@@ -332,7 +370,7 @@ export default function LogSession() {
             {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("time_on_ice") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                 <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Special Stats</h3>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("penalty_minutes") && (
                     <StatControl label="PIM" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
                   )}
