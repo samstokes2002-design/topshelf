@@ -103,7 +103,7 @@ export default function SeasonSetup() {
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("Home");
+        window.location.href = createPageUrl("Profile");
       }, 1000);
     },
   });
@@ -112,7 +112,10 @@ export default function SeasonSetup() {
     mutationFn: ({ id, data }) => base44.entities.Season.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
-      window.location.href = createPageUrl("Settings");
+      setSaved(true);
+      setTimeout(() => {
+        window.location.href = createPageUrl("Profile");
+      }, 1000);
     },
   });
 
