@@ -145,7 +145,7 @@ export default function SeasonSetup() {
     const seasonYear = selectedType.format(year);
 
     const payload = {
-      profile_id: editId ? (editSeason?.profile_id || profileId || profiles[0]?.id) : (profileId || profiles[0]?.id),
+      profile_id: editId ? editSeason?.profile_id : (profileId || profiles[0]?.id),
       season_year: seasonYear,
       team_name: teamName,
       selected_stats: selectedStats,
