@@ -7,6 +7,7 @@ import { User, Settings, UserCog, ChevronRight, Trophy, Target, Dumbbell, Calend
 import { format } from "date-fns";
 import SessionCard from "@/components/SessionCard";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
+import SeasonStats from "@/components/SeasonStats";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Profile() {
