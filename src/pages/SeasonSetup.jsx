@@ -23,7 +23,6 @@ const AVAILABLE_STATS = [
   { id: "power_play_points", label: "Power Play Points (PPP)", category: "special" },
   { id: "shorthanded_goals", label: "Shorthanded Goals (SHG)", category: "special" },
   { id: "shorthanded_points", label: "Shorthanded Points (SHP)", category: "special" },
-  { id: "time_on_ice", label: "Time on Ice (TOI)", category: "special" },
   { id: "rating", label: "Performance Rating (1-5 stars)", category: "overall" },
 ];
 
