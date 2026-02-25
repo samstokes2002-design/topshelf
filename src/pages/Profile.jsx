@@ -56,10 +56,15 @@ export default function Profile() {
   };
 
   const activeSeason = seasons.find((s) => s.is_active);
+  
   const currentSeasonSessions = activeSeason
     ? sessions.filter((s) => {
         const sessionDate = new Date(s.date);
-        return sessionDate >= new Date(activeSeason.created_date);
+        const seasonStart = new Date(activeSeason.created_date);
+        const seasonIndex = seasons.findIndex((se) => se.id === activeSeason.id);
+        const nextSeason = seasons[seasonIndex - 1];
+        const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
+        return sessionDate >= seasonStart && sessionDate < seasonEnd;
       })
     : sessions;
 
