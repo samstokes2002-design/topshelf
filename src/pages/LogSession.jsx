@@ -196,7 +196,10 @@ export default function LogSession() {
         return acc;
       }, {});
       
-      payload = { ...payload, ...aggregatedStats };
+      const totalIceTimeSeconds = form.shifts.reduce((sum, shift) => sum + shift.duration_seconds, 0);
+      const totalIceTimeMinutes = Math.round(totalIceTimeSeconds / 60);
+      
+      payload = { ...payload, ...aggregatedStats, time_on_ice: totalIceTimeMinutes };
     }
 
     if (editId) {
@@ -394,7 +397,7 @@ export default function LogSession() {
               </div>
             )}
 
-            {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("time_on_ice") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
+            {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                 <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Special Stats</h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -406,9 +409,6 @@ export default function LogSession() {
                       <StatControl label="FO Won" value={form.faceoff_wins} onChange={(v) => update("faceoff_wins", v)} color="text-emerald-400" />
                       <StatControl label="FO Lost" value={form.faceoff_losses} onChange={(v) => update("faceoff_losses", v)} color="text-red-400" />
                     </>
-                  )}
-                  {selectedStats.includes("time_on_ice") && (
-                    <StatControl label="TOI" value={form.time_on_ice} onChange={(v) => update("time_on_ice", v)} />
                   )}
                   {selectedStats.includes("power_play_goals") && (
                     <StatControl label="PPG" value={form.power_play_goals} onChange={(v) => update("power_play_goals", v)} color="text-sky-400" />
