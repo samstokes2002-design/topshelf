@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Trophy, Target, Dumbbell, Check } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Dumbbell, Timer, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import StarRating from "@/components/ui/StarRating";
@@ -18,6 +18,7 @@ const sessionTypes = [
   { value: "game", label: "Game", icon: Trophy, color: "bg-sky-500/20 text-sky-400 border-sky-500/30" },
   { value: "practice", label: "Practice", icon: Target, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
   { value: "training", label: "Training", icon: Dumbbell, color: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
+  { value: "shift_by_shift", label: "Shift by Shift", icon: Timer, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
 ];
 
 export default function LogSession() {
@@ -217,7 +218,7 @@ export default function LogSession() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Session Type */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {sessionTypes.map((t) => {
             const Icon = t.icon;
             return (
@@ -293,7 +294,17 @@ export default function LogSession() {
               type="number"
               placeholder="60"
               value={form.duration}
-              onChange={(e) => update("duration", e.target.value)}
+              onChange={(e) => {
+                const val = parseInt(e.target.value);
+                if (isNaN(val)) {
+                  update("duration", "");
+                } else if (val < 0) {
+                  update("duration", "0");
+                } else {
+                  update("duration", val.toString());
+                }
+              }}
+              min="0"
               className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
             />
           </div>
@@ -403,8 +414,8 @@ export default function LogSession() {
           </>
         )}
 
-        {/* Shift Timer - Only for Games */}
-        {form.type === "game" && (
+        {/* Shift Timer - Only for Shift by Shift */}
+        {form.type === "shift_by_shift" && (
           <ShiftTimer shifts={form.shifts} onShiftsChange={(s) => update("shifts", s)} />
         )}
 
