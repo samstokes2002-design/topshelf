@@ -1,6 +1,6 @@
 import React from "react";
 import { format, parseISO } from "date-fns";
-import { Trophy, Target, Clock, TrendingUp, Dumbbell } from "lucide-react";
+import { Trophy, Target, Clock, TrendingUp, Dumbbell, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import StarRating from "@/components/ui/StarRating";
 
@@ -8,6 +8,7 @@ const typeConfig = {
   game: { icon: Trophy, color: "bg-sky-500/20 text-sky-400", label: "Game" },
   practice: { icon: Target, color: "bg-emerald-500/20 text-emerald-400", label: "Practice" },
   training: { icon: Dumbbell, color: "bg-violet-500/20 text-violet-400", label: "Training" },
+  shift_by_shift: { icon: Timer, color: "bg-amber-500/20 text-amber-400", label: "Shift by Shift" },
 };
 
 const resultBadge = {
@@ -53,7 +54,7 @@ export default function SessionCard({ session, profileName, showProfile = false,
         <p className="text-xs text-slate-500 mb-2">{profileName}</p>
       )}
 
-      {session.type === "game" && (
+      {(session.type === "game" || session.type === "shift_by_shift") && (
         <div className="space-y-2">
           <div className="flex gap-4 text-xs">
             <div className="flex items-center gap-1.5">

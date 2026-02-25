@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPageUrl } from "@/utils";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Pencil, Trash2, Trophy, Target, Dumbbell, Clock, Calendar } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Trophy, Target, Dumbbell, Timer, Clock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import StarRating from "@/components/ui/StarRating";
@@ -13,6 +13,7 @@ const typeConfig = {
   game: { icon: Trophy, color: "text-sky-400", bg: "bg-sky-500/20", label: "Game" },
   practice: { icon: Target, color: "text-emerald-400", bg: "bg-emerald-500/20", label: "Practice" },
   training: { icon: Dumbbell, color: "text-violet-400", bg: "bg-violet-500/20", label: "Training" },
+  shift_by_shift: { icon: Timer, color: "text-amber-400", bg: "bg-amber-500/20", label: "Shift by Shift" },
 };
 
 const resultColors = { win: "text-emerald-400", loss: "text-red-400", tie: "text-amber-400" };
@@ -133,7 +134,7 @@ export default function SessionDetail() {
       </div>
 
       {/* Stats */}
-      {session.type === "game" && (
+      {(session.type === "game" || session.type === "shift_by_shift") && (
         <>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <StatBlock label="Goals" value={session.goals || 0} color="text-sky-400" />
@@ -181,9 +182,23 @@ export default function SessionDetail() {
           </div>
           <div className="space-y-1.5">
             {session.shifts.map((shift, i) => (
-              <div key={i} className="flex items-center justify-between bg-slate-900/50 rounded-lg px-3 py-2">
-                <span className="text-xs text-slate-400">{shift.label}</span>
-                <span className="text-xs text-white font-mono">{formatTime(shift.duration_seconds)}</span>
+              <div key={i} className="bg-slate-900/50 rounded-lg px-3 py-2">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-slate-400">{shift.label}</span>
+                  <span className="text-xs text-white font-mono">{formatTime(shift.duration_seconds)}</span>
+                </div>
+                {shift.stats && Object.keys(shift.stats).length > 0 && (
+                  <div className="flex gap-2 flex-wrap text-[10px] text-slate-500">
+                    {shift.stats.goals > 0 && <span>G: {shift.stats.goals}</span>}
+                    {shift.stats.assists > 0 && <span>A: {shift.stats.assists}</span>}
+                    {shift.stats.shots > 0 && <span>S: {shift.stats.shots}</span>}
+                    {shift.stats.plus_minus !== 0 && <span>+/-: {shift.stats.plus_minus}</span>}
+                    {shift.stats.hits > 0 && <span>H: {shift.stats.hits}</span>}
+                    {shift.stats.blocked_shots > 0 && <span>BLK: {shift.stats.blocked_shots}</span>}
+                    {shift.stats.takeaways > 0 && <span>TK: {shift.stats.takeaways}</span>}
+                    {shift.stats.giveaways > 0 && <span>GV: {shift.stats.giveaways}</span>}
+                  </div>
+                )}
               </div>
             ))}
           </div>
