@@ -179,11 +179,25 @@ export default function LogSession() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {
+    
+    let payload = {
       ...form,
       duration: form.duration ? parseInt(form.duration) : 0,
       date: form.date || format(new Date(), "yyyy-MM-dd"),
     };
+
+    if (form.type === "shift_by_shift" && form.shifts.length > 0) {
+      const aggregatedStats = form.shifts.reduce((acc, shift) => {
+        if (shift.stats) {
+          Object.keys(shift.stats).forEach(stat => {
+            acc[stat] = (acc[stat] || 0) + (shift.stats[stat] || 0);
+          });
+        }
+        return acc;
+      }, {});
+      
+      payload = { ...payload, ...aggregatedStats };
+    }
 
     if (editId) {
       updateMutation.mutate({ id: editId, data: payload });
@@ -416,7 +430,11 @@ export default function LogSession() {
 
         {/* Shift Timer - Only for Shift by Shift */}
         {form.type === "shift_by_shift" && (
-          <ShiftTimer shifts={form.shifts} onShiftsChange={(s) => update("shifts", s)} />
+          <ShiftTimer 
+            shifts={form.shifts} 
+            onShiftsChange={(s) => update("shifts", s)} 
+            selectedStats={selectedStats}
+          />
         )}
 
         {/* Rating */}
