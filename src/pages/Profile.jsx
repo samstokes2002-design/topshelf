@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function Profile() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [selectedSeasonId, setSelectedSeasonId] = useState(null);
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
@@ -19,6 +20,15 @@ export default function Profile() {
       const currentUser = await base44.auth.me();
       return base44.entities.Profile.filter({ created_by: currentUser.email }, "-created_date");
     },
+  });
+
+  const { data: seasons = [] } = useQuery({
+    queryKey: ["seasons", activeProfile?.id],
+    queryFn: () =>
+      activeProfile
+        ? base44.entities.Season.filter({ profile_id: activeProfile.id }, "-created_date")
+        : [],
+    enabled: !!activeProfile,
   });
 
   const { data: sessions = [], isLoading } = useQuery({
@@ -41,13 +51,37 @@ export default function Profile() {
   const handleProfileSwitch = (profile) => {
     setActiveProfile(profile);
     localStorage.setItem("activeProfileId", profile.id);
+    setSelectedSeasonId(null);
   };
 
-  const filteredSessions = filter === "all"
-    ? sessions
-    : sessions.filter((s) => s.type === filter);
+  const activeSeason = seasons.find((s) => s.is_active);
+  const currentSeasonSessions = activeSeason
+    ? sessions.filter((s) => {
+        const sessionDate = new Date(s.date);
+        return sessionDate >= new Date(activeSeason.created_date);
+      })
+    : sessions;
 
-  const games = sessions.filter((s) => s.type === "game");
+  const selectedSeason = selectedSeasonId
+    ? seasons.find((s) => s.id === selectedSeasonId)
+    : null;
+
+  const selectedSeasonSessions = selectedSeason
+    ? sessions.filter((s) => {
+        const sessionDate = new Date(s.date);
+        const seasonStart = new Date(selectedSeason.created_date);
+        const seasonIndex = seasons.findIndex((se) => se.id === selectedSeason.id);
+        const nextSeason = seasons[seasonIndex - 1];
+        const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
+        return sessionDate >= seasonStart && sessionDate < seasonEnd;
+      })
+    : [];
+
+  const filteredSessions = filter === "all"
+    ? currentSeasonSessions
+    : currentSeasonSessions.filter((s) => s.type === filter);
+
+  const games = currentSeasonSessions.filter((s) => s.type === "game");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
   const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
   const totalPoints = totalGoals + totalAssists;
@@ -95,26 +129,79 @@ export default function Profile() {
           />
         )}
 
-        {/* Season Totals */}
-        <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-700/50">
-          <div className="text-center">
-            <span className="text-lg font-bold text-white">{games.length}</span>
-            <span className="text-[10px] text-slate-400 block">GP</span>
+        {/* Current Season Totals */}
+        {activeSeason && (
+          <div className="mt-4 pt-4 border-t border-slate-700/50">
+            <p className="text-xs text-slate-400 mb-2">Current Season</p>
+            <div className="grid grid-cols-4 gap-3">
+              <div className="text-center">
+                <span className="text-lg font-bold text-white">{games.length}</span>
+                <span className="text-[10px] text-slate-400 block">GP</span>
+              </div>
+              <div className="text-center">
+                <span className="text-lg font-bold text-sky-400">{totalGoals}</span>
+                <span className="text-[10px] text-slate-400 block">G</span>
+              </div>
+              <div className="text-center">
+                <span className="text-lg font-bold text-emerald-400">{totalAssists}</span>
+                <span className="text-[10px] text-slate-400 block">A</span>
+              </div>
+              <div className="text-center">
+                <span className="text-lg font-bold text-white">{totalPoints}</span>
+                <span className="text-[10px] text-slate-400 block">PTS</span>
+              </div>
+            </div>
           </div>
-          <div className="text-center">
-            <span className="text-lg font-bold text-sky-400">{totalGoals}</span>
-            <span className="text-[10px] text-slate-400 block">G</span>
-          </div>
-          <div className="text-center">
-            <span className="text-lg font-bold text-emerald-400">{totalAssists}</span>
-            <span className="text-[10px] text-slate-400 block">A</span>
-          </div>
-          <div className="text-center">
-            <span className="text-lg font-bold text-white">{totalPoints}</span>
-            <span className="text-[10px] text-slate-400 block">PTS</span>
+        )}
+      </div>
+
+      {/* Seasons List */}
+      {seasons.length > 0 && (
+        <div className="mb-5">
+          <h3 className="text-white font-semibold text-sm mb-3">Seasons</h3>
+          <div className="space-y-2">
+            {seasons.map((season) => {
+              const seasonSessions = sessions.filter((s) => {
+                const sessionDate = new Date(s.date);
+                const seasonStart = new Date(season.created_date);
+                const seasonIndex = seasons.findIndex((se) => se.id === season.id);
+                const nextSeason = seasons[seasonIndex - 1];
+                const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
+                return sessionDate >= seasonStart && sessionDate < seasonEnd;
+              });
+              const seasonGames = seasonSessions.filter((s) => s.type === "game");
+              const seasonPractices = seasonSessions.filter((s) => s.type === "practice");
+              const seasonTraining = seasonSessions.filter((s) => s.type === "training");
+
+              return (
+                <button
+                  key={season.id}
+                  onClick={() => setSelectedSeasonId(selectedSeasonId === season.id ? null : season.id)}
+                  className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 hover:bg-slate-700/60 transition-colors text-left"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h4 className="text-white font-medium text-sm">{season.season_year}</h4>
+                      {season.team_name && <p className="text-slate-400 text-xs">{season.team_name}</p>}
+                    </div>
+                    {season.is_active && (
+                      <span className="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full">Active</span>
+                    )}
+                  </div>
+                  <div className="flex gap-4 text-xs">
+                    <span className="text-slate-400">{seasonGames.length} Games</span>
+                    <span className="text-slate-400">{seasonPractices.length} Practices</span>
+                    <span className="text-slate-400">{seasonTraining.length} Training</span>
+                  </div>
+                  {selectedSeasonId === season.id && (
+                    <SeasonStats sessions={seasonSessions} selectedStats={season.selected_stats} />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Session Filters */}
       <Tabs value={filter} onValueChange={setFilter} className="mb-4">
