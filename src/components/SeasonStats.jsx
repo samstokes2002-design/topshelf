@@ -33,14 +33,16 @@ export default function SeasonStats({ sessions, selectedStats = [] }) {
     return games.reduce((sum, g) => sum + (g[stat] || 0), 0);
   };
 
-  const statsToShow = selectedStats.length > 0
-    ? selectedStats
-    : ["goals", "assists", "shots", "plus_minus", "rating"];
+  const validStats = selectedStats.filter((stat) => statLabels[stat]);
+
+  if (validStats.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-3 pt-3 border-t border-slate-700/50">
       <div className="grid grid-cols-3 gap-2">
-        {statsToShow.map((stat) => (
+        {validStats.map((stat) => (
           <div key={stat} className="text-center">
             <span className="text-sm font-semibold text-white">{calculateStat(stat)}</span>
             <span className="text-[10px] text-slate-400 block">{statLabels[stat]}</span>
