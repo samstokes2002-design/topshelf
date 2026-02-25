@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
-import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Star } from "lucide-react";
+import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Star, Clock } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from "date-fns";
@@ -125,6 +125,14 @@ export default function Stats() {
             <StatCard label="Assists" value={totalAssists} icon={Target} color="text-emerald-400" />
             <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
             <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
+            <StatCard 
+              label="Avg TOI" 
+              value={sessions.filter(s => s.time_on_ice > 0).length > 0 
+                ? `${Math.round(sessions.reduce((sum, s) => sum + (s.time_on_ice || 0), 0) / sessions.filter(s => s.time_on_ice > 0).length)} min`
+                : "0 min"} 
+              icon={Clock} 
+              color="text-amber-400" 
+            />
           </div>
 
           {/* Advanced Stats */}
