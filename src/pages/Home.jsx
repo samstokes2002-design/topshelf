@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Plus, Activity, Flame } from "lucide-react";
+import { Plus, Activity, Flame, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SessionCard from "@/components/SessionCard";
 import EmptyState from "@/components/EmptyState";
