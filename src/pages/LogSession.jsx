@@ -95,10 +95,10 @@ export default function LogSession() {
   }, [activeSeason]);
 
   const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
-  const defaultShiftStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
+  const defaultStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
   const rawSelectedStats = selectedSeason?.selected_stats || [];
-  const selectedStats = form.type === "shift_by_shift" && rawSelectedStats.length === 0
-    ? defaultShiftStats
+  const selectedStats = (form.type === "shift_by_shift" || form.type === "game") && rawSelectedStats.length === 0
+    ? defaultStats
     : rawSelectedStats;
 
   // Load session for editing
