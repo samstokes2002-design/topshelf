@@ -162,6 +162,24 @@ export default function Profile() {
         )}
       </div>
 
+      {/* No Season CTA */}
+      {seasons.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="w-16 h-16 rounded-3xl bg-amber-500/20 flex items-center justify-center mb-4">
+            <Trophy className="w-8 h-8 text-amber-400" />
+          </div>
+          <h3 className="text-white font-bold text-lg mb-2">No Season Yet</h3>
+          <p className="text-slate-400 text-sm mb-6 max-w-xs">Create a season to start tracking your stats and progress throughout the year.</p>
+          <Button
+            onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id || ""}`}
+            className="bg-amber-500 hover:bg-amber-600 text-white rounded-2xl px-6 py-3 font-semibold gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Create Season
+          </Button>
+        </div>
+      )}
+
       {/* Seasons List */}
       {seasons.length > 0 && (
         <div className="mb-5">
