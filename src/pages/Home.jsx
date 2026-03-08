@@ -160,12 +160,23 @@ export default function Home() {
           onSwitch={handleProfileSwitch}
           onAdd={() => window.location.href = createPageUrl("CreateProfile")}
         />
-        <Link to={createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`}>
-          <Button size="sm" className="bg-sky-500 hover:bg-sky-600 rounded-xl gap-1.5">
-            <Plus className="w-4 h-4" />
-            Log
+        {activeSeason ? (
+          <Link to={createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`}>
+            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 rounded-xl gap-1.5">
+              <Plus className="w-4 h-4" />
+              Log
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            size="sm"
+            onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id || ""}`}
+            className="bg-amber-500 hover:bg-amber-600 rounded-xl gap-1.5 text-white"
+          >
+            <Trophy className="w-4 h-4" />
+            Create Season
           </Button>
-        </Link>
+        )}
       </div>
 
       {/* Quick Stats */}
