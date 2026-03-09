@@ -26,7 +26,7 @@ export default function StatControl({ label, value, onChange, color = "text-whit
         >
           <Minus className="w-3 h-3" />
         </Button>
-        <span className={cn("text-2xl font-bold w-12 text-center", color)}>{value || 0}</span>
+        <span className="text-2xl font-bold w-12 text-center text-white">{value || 0}</span>
         <Button
           type="button"
           size="icon"

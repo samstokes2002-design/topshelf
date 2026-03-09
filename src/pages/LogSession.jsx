@@ -441,17 +441,17 @@ export default function LogSession() {
                 <h3 className="text-white font-semibold text-sm mb-3">Scoring</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("goals") && (
-                    <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
+                    <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} />
                   )}
                   {selectedStats.includes("assists") && (
-                    <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} color="text-emerald-400" />
+                    <StatControl label="Assists" value={form.assists} onChange={(v) => update("assists", v)} />
                   )}
                   {selectedStats.includes("shots") && (
                     <StatControl label="Shots" value={form.shots} onChange={(v) => update("shots", v)} />
                   )}
                   {selectedStats.includes("plus_minus") && (
                     <StatControl label="+/-" value={form.plus_minus} onChange={(v) => update("plus_minus", v)} 
-                      color={form.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
+                      allowNegative={true} />
                   )}
                 </div>
               </div>
@@ -469,7 +469,7 @@ export default function LogSession() {
                     <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
                   )}
                   {selectedStats.includes("takeaways") && (
-                    <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
+                    <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} />
                   )}
                 </div>
               </div>
@@ -481,10 +481,10 @@ export default function LogSession() {
                 <h3 className="text-white font-semibold text-sm mb-3">Discipline</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("penalty_minutes") && (
-                    <StatControl label="Penalty Min" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
+                    <StatControl label="Penalty Min" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} />
                   )}
                   {selectedStats.includes("giveaways") && (
-                    <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} color="text-red-400" />
+                    <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} />
                   )}
                 </div>
               </div>
@@ -497,21 +497,21 @@ export default function LogSession() {
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("faceoff_percentage") && (
                     <>
-                      <StatControl label="FO Won" value={form.faceoff_wins} onChange={(v) => update("faceoff_wins", v)} color="text-emerald-400" />
-                      <StatControl label="FO Lost" value={form.faceoff_losses} onChange={(v) => update("faceoff_losses", v)} color="text-red-400" />
+                      <StatControl label="FO Won" value={form.faceoff_wins} onChange={(v) => update("faceoff_wins", v)} />
+                      <StatControl label="FO Lost" value={form.faceoff_losses} onChange={(v) => update("faceoff_losses", v)} />
                     </>
                   )}
                   {selectedStats.includes("power_play_goals") && (
-                    <StatControl label="PPG" value={form.power_play_goals} onChange={(v) => update("power_play_goals", v)} color="text-sky-400" />
+                    <StatControl label="PPG" value={form.power_play_goals} onChange={(v) => update("power_play_goals", v)} />
                   )}
                   {selectedStats.includes("power_play_points") && (
-                    <StatControl label="PPP" value={form.power_play_points} onChange={(v) => update("power_play_points", v)} color="text-sky-400" />
+                    <StatControl label="PPP" value={form.power_play_points} onChange={(v) => update("power_play_points", v)} />
                   )}
                   {selectedStats.includes("shorthanded_goals") && (
-                    <StatControl label="SHG" value={form.shorthanded_goals} onChange={(v) => update("shorthanded_goals", v)} color="text-emerald-400" />
+                    <StatControl label="SHG" value={form.shorthanded_goals} onChange={(v) => update("shorthanded_goals", v)} />
                   )}
                   {selectedStats.includes("shorthanded_points") && (
-                    <StatControl label="SHP" value={form.shorthanded_points} onChange={(v) => update("shorthanded_points", v)} color="text-emerald-400" />
+                    <StatControl label="SHP" value={form.shorthanded_points} onChange={(v) => update("shorthanded_points", v)} />
                   )}
                 </div>
               </div>
