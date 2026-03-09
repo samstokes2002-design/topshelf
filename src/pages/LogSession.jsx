@@ -362,7 +362,7 @@ export default function LogSession() {
            <div>
              <Label className="text-slate-400 text-xs mb-1.5 block">Date</Label>
              <div className="bg-slate-800/60 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm">
-               {format(new Date(form.date), "MMM d, yyyy")}
+               {form.date ? format(new Date(form.date), "MMM d, yyyy") : "—"}
              </div>
            </div>
            <div>
