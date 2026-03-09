@@ -240,7 +240,7 @@ export default function Home() {
               <div key={i} className="bg-slate-800/40 rounded-2xl h-24 animate-pulse" />
             ))}
           </div>
-        ) : sessions.length === 0 ? (
+        ) : sessions.length === 0 && friendSessions.length === 0 ? (
           <EmptyState
             icon={Activity}
             title="No sessions yet"
@@ -253,13 +253,30 @@ export default function Home() {
           />
         ) : (
           <div className="space-y-3">
-            {sessions.slice(0, 10).map((session) => (
-              <SessionCard
-                key={session.id}
-                session={session}
-                onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
-              />
-            ))}
+            {/* Combine user's sessions and friends' sessions, sorted by date */}
+            {[...sessions, ...friendSessions]
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .slice(0, 10)
+              .map((session) => {
+                const sessionProfile = [...(activeProfile ? [activeProfile] : []), ...friendProfiles].find(p => p.id === session.profile_id);
+                return (
+                  <div key={session.id} className="space-y-1">
+                    {sessionProfile && (
+                      <p className="text-slate-500 text-xs px-1 flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-sky-500/20 flex items-center justify-center text-xs font-bold text-sky-400">
+                          {sessionProfile.name?.[0]?.toUpperCase()}
+                        </div>
+                        {sessionProfile.name}
+                      </p>
+                    )}
+                    <SessionCard
+                      key={session.id}
+                      session={session}
+                      onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
+                    />
+                  </div>
+                );
+              })}
           </div>
         )}
       </div>
