@@ -179,23 +179,18 @@ export default function Home() {
         )}
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-3 text-center">
-          <div className="flex items-center justify-center gap-1 mb-1">
-            <Flame className="w-3.5 h-3.5 text-orange-400" />
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider">Streak</span>
+      {/* Streak Highlight */}
+      <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 rounded-3xl p-8 mb-8">
+        <div className="flex items-center justify-center gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-orange-500/30 rounded-full blur-2xl animate-pulse" />
+            <Flame className="w-16 h-16 text-orange-400 relative" />
           </div>
-          <span className="text-2xl font-bold text-white">{streak}</span>
-          <span className="text-[10px] text-slate-500 block">days</span>
-        </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-3 text-center">
-          <span className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Games</span>
-          <span className="text-2xl font-bold text-white">{totalGames}</span>
-        </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-3 text-center">
-          <span className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Goals</span>
-          <span className="text-2xl font-bold text-sky-400">{totalGoals}</span>
+          <div className="text-center">
+            <span className="text-7xl font-black text-white">{streak}</span>
+            <p className="text-xl text-orange-300 font-semibold mt-2">Day Streak! 🔥</p>
+            <p className="text-sm text-slate-400 mt-1">Keep it going!</p>
+          </div>
         </div>
       </div>
 
