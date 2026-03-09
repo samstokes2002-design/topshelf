@@ -58,22 +58,21 @@ export default function Profile() {
 
   const activeSeason = seasons.find((s) => s.is_active);
   
-  const toLocalMidnight = (utcDateStr) => {
+  const toLocalDateStr = (utcDateStr) => {
     const d = new Date(utcDateStr);
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
   };
 
   const currentSeasonSessions = activeSeason
     ? sessions.filter((s) => {
-        const [y, m, d] = s.date.split("-").map(Number);
-        const sessionDate = new Date(y, m - 1, d);
-        const seasonStart = toLocalMidnight(activeSeason.created_date);
+        const seasonStartStr = toLocalDateStr(activeSeason.created_date);
         const seasonIndex = seasons.findIndex((se) => se.id === activeSeason.id);
         const nextSeason = seasons[seasonIndex - 1];
-        const seasonEnd = nextSeason
-          ? new Date(toLocalMidnight(nextSeason.created_date).getTime() - 1)
-          : new Date(9999, 11, 31);
-        return sessionDate >= seasonStart && sessionDate <= seasonEnd;
+        const seasonEndStr = nextSeason ? toLocalDateStr(nextSeason.created_date) : null;
+        return s.date >= seasonStartStr && (seasonEndStr ? s.date < seasonEndStr : true);
       })
     : sessions;
 
