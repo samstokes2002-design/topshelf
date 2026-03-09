@@ -178,16 +178,17 @@ export default function Home() {
       </div>
 
       {/* Streak Highlight */}
-      <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 rounded-3xl p-8 mb-8">
-        <div className="flex items-center justify-center gap-4">
+      <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 rounded-2xl p-4 mb-6">
+        <div className="flex items-center justify-center gap-3">
           <div className="relative">
-            <div className="absolute inset-0 bg-orange-500/30 rounded-full blur-2xl animate-pulse" />
-            <Flame className="w-16 h-16 text-orange-400 relative" />
+            <div className="absolute inset-0 bg-orange-500/30 rounded-full blur-lg animate-pulse" />
+            <Flame className="w-8 h-8 text-orange-400 relative" />
           </div>
-          <div className="text-center">
-            <span className="text-7xl font-black text-white">{streak}</span>
-            <p className="text-xl text-orange-300 font-semibold mt-2">Day Streak! 🔥</p>
-            <p className="text-sm text-slate-400 mt-1">Keep it going!</p>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-black text-white">{streak}</span>
+              <p className="text-sm text-orange-300 font-semibold">Day Streak</p>
+            </div>
           </div>
         </div>
       </div>
