@@ -136,7 +136,7 @@ export default function Stats() {
             <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
             <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
             <StatCard 
-              label="Avg TOI" 
+              label="TOI" 
               value={avgToiDisplay} 
               icon={Clock} 
               color="text-amber-400" 
