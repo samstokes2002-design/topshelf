@@ -13,6 +13,8 @@ const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 export default function CreateProfile() {
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
+  const [checkingUsername, setCheckingUsername] = useState(false);
   const [form, setForm] = useState({
     name: "",
     age: "",
@@ -32,6 +34,35 @@ export default function CreateProfile() {
     },
   });
 
+  const checkUsernameUniqueness = async (username) => {
+    if (!username.trim()) {
+      setUsernameError("");
+      return true;
+    }
+
+    setCheckingUsername(true);
+    try {
+      const existingProfiles = await base44.entities.Profile.filter({ username: username.toLowerCase().trim() });
+      if (existingProfiles.length > 0) {
+        setUsernameError("Username already taken");
+        setCheckingUsername(false);
+        return false;
+      }
+      setUsernameError("");
+      setCheckingUsername(false);
+      return true;
+    } catch {
+      setUsernameError("");
+      setCheckingUsername(false);
+      return true;
+    }
+  };
+
+  const handleUsernameChange = (value) => {
+    setForm((f) => ({ ...f, username: value }));
+    setUsernameError("");
+  };
+
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -39,10 +70,20 @@ export default function CreateProfile() {
     setForm((f) => ({ ...f, photo_url: file_url }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!form.username.trim()) {
+      setUsernameError("Username is required");
+      return;
+    }
+
+    const isUnique = await checkUsernameUniqueness(form.username);
+    if (!isUnique) return;
+
     mutation.mutate({
       ...form,
+      username: form.username.toLowerCase().trim(),
       age: form.age ? parseInt(form.age) : undefined,
     });
   };
@@ -95,13 +136,20 @@ export default function CreateProfile() {
         </div>
 
         <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Username</Label>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Username *</Label>
           <Input
             placeholder="@username"
             value={form.username}
-            onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
-            className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+            onChange={(e) => handleUsernameChange(e.target.value)}
+            onBlur={() => form.username && checkUsernameUniqueness(form.username)}
+            className={`bg-slate-800/60 border-slate-700/50 text-white rounded-xl ${usernameError ? "border-red-500/50" : ""}`}
           />
+          {usernameError && (
+            <p className="text-red-400 text-xs mt-1.5">{usernameError}</p>
+          )}
+          {checkingUsername && (
+            <p className="text-slate-400 text-xs mt-1.5">Checking availability...</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -132,7 +180,7 @@ export default function CreateProfile() {
 
         <Button
           type="submit"
-          disabled={!form.name || !form.position || mutation.isPending}
+          disabled={!form.name || !form.position || !form.username || usernameError || mutation.isPending || checkingUsername}
           className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 text-base"
         >
           {mutation.isPending ? (
