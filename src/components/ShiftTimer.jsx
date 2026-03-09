@@ -147,7 +147,7 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
               <StatControl label="Hits" value={currentStats.hits || 0} onChange={(v) => updateStat("hits", v)} />
             )}
             {selectedStats.includes("blocked_shots") && (
-              <StatControl label="Blocks" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
+              <StatControl label="BLK" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
             )}
             {selectedStats.includes("takeaways") && (
               <StatControl label="TK" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
