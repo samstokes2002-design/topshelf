@@ -12,6 +12,7 @@ import ProfileSwitcher from "@/components/ProfileSwitcher";
 
 export default function Settings() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
   const [activeProfile, setActiveProfile] = useState(null);
