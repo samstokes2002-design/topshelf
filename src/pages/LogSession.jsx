@@ -27,6 +27,7 @@ export default function LogSession() {
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [saved, setSaved] = useState(false);
   const [form, setForm] = useState({

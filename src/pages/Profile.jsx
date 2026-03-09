@@ -15,6 +15,7 @@ export default function Profile() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [filter, setFilter] = useState("all");
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
+  const queryClient = useQueryClient();
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
