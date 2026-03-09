@@ -270,7 +270,7 @@ export default function SeasonSetup() {
                 <div key={category} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-white font-semibold text-xs uppercase tracking-wider">
-                      {category}
+                      {category === "advanced" ? "Advanced Stats" : category}
                     </h3>
                     <button
                       type="button"
