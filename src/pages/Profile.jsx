@@ -186,13 +186,7 @@ export default function Profile() {
           <h3 className="text-white font-semibold text-sm mb-3">Seasons</h3>
           <div className="space-y-2">
             {seasons.map((season) => {
-              const seasonSessions = sessions.filter((s) => {
-                const seasonStartStr = toLocalDateStr(season.created_date);
-                const seasonIndex = seasons.findIndex((se) => se.id === season.id);
-                const nextSeason = seasons[seasonIndex - 1];
-                const seasonEndStr = nextSeason ? toLocalDateStr(nextSeason.created_date) : null;
-                return s.date >= seasonStartStr && (seasonEndStr ? s.date < seasonEndStr : true);
-              });
+              const seasonSessions = getSessionsForSeason(season);
               const seasonGames = seasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
               const seasonPractices = seasonSessions.filter((s) => s.type === "practice");
               const seasonTraining = seasonSessions.filter((s) => s.type === "training");
