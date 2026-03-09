@@ -151,7 +151,7 @@ export default function Stats() {
   });
 
   const monthlyData = last6Months.map((month) => {
-    const monthSessions = sessions.filter((s) => {
+    const monthSessions = filteredSessions.filter((s) => {
       if (!s.date) return false;
       const d = new Date(s.date);
       return d >= startOfMonth(month) && d <= endOfMonth(month);
