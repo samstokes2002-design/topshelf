@@ -57,10 +57,24 @@ export default function Friends() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 
-  const handleAddFriend = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    if (searchUsername.trim()) {
-      sendFriendRequestMutation.mutate(searchUsername.trim());
+    const trimmed = searchUsername.trim().toLowerCase();
+    if (trimmed) {
+      const found = allProfiles.find(p => p.username.toLowerCase() === trimmed && p.created_by !== user?.email);
+      if (found) {
+        setFoundUser(found);
+        setErrorMessage("");
+      } else {
+        setFoundUser(null);
+        setErrorMessage("No user found.");
+      }
+    }
+  };
+
+  const handleAddFriend = () => {
+    if (foundUser) {
+      sendFriendRequestMutation.mutate(foundUser.username);
     }
   };
 
