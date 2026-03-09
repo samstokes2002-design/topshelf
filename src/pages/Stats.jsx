@@ -93,8 +93,14 @@ export default function Stats() {
   const avgRating = ratedSessions.length > 0
     ? (ratedSessions.reduce((s, g) => s + (g.rating || 0), 0) / ratedSessions.length).toFixed(1)
     : "0";
+  const totalPoints = totalGoals + totalAssists;
+  const totalPenaltyMinutes = games.reduce((s, g) => s + (g.penalty_minutes || 0), 0);
   const shootingPct = totalShots > 0 ? ((totalGoals / totalShots) * 100).toFixed(1) : "0";
-  const ppg = games.length > 0 ? ((totalGoals + totalAssists) / games.length).toFixed(2) : "0";
+  const ppg = games.length > 0 ? (totalPoints / games.length).toFixed(2) : "0";
+  const totalPPG = games.reduce((s, g) => s + (g.power_play_goals || 0), 0);
+  const totalPPP = games.reduce((s, g) => s + (g.power_play_points || 0), 0);
+  const totalSHG = games.reduce((s, g) => s + (g.shorthanded_goals || 0), 0);
+  const totalSHP = games.reduce((s, g) => s + (g.shorthanded_points || 0), 0);
   
   const totalFaceoffWins = games.reduce((s, g) => s + (g.faceoff_wins || 0), 0);
   const totalFaceoffLosses = games.reduce((s, g) => s + (g.faceoff_losses || 0), 0);
