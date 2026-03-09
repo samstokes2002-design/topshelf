@@ -218,9 +218,12 @@ export default function Home() {
           <EmptyState
             icon={Activity}
             title="No sessions yet"
-            description="Log your first game, practice, or training session."
-            actionLabel="Log Session"
-            onAction={() => window.location.href = createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`}
+            description={activeSeason ? "Log your first game, practice, or training session." : "Create a season first before logging sessions."}
+            actionLabel={activeSeason ? "Log Session" : "Create Season"}
+            onAction={() => activeSeason
+              ? window.location.href = createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`
+              : window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id || ""}`
+            }
           />
         ) : (
           <div className="space-y-3">
