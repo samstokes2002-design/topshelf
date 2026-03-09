@@ -202,29 +202,6 @@ export default function Stats() {
         </div>
       ) : (
         <>
-          {/* Record */}
-          {games.length > 0 && (
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {recordData.map((r) => (
-                    <div key={r.name} className="text-center">
-                      <span className="text-2xl font-bold" style={{ color: r.color }}>{r.value}</span>
-                      <span className="text-[10px] text-slate-400 block uppercase">{r.name}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                  </div>
-                  <span className="text-2xl font-bold text-white">{avgRating}</span>
-                  <span className="text-[10px] text-slate-400 block">Avg Rating</span>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Scoring */}
           <SectionCard title="Scoring" icon={Trophy} iconColor="text-sky-400">
             <div className="grid grid-cols-2 gap-3">
