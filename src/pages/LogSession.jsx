@@ -569,6 +569,19 @@ export default function LogSession() {
           />
         </div>
 
+        {/* Save Draft (shift_by_shift only) */}
+        {form.type === "shift_by_shift" && !editId && (
+          <Button
+            type="button"
+            onClick={saveDraft}
+            variant="outline"
+            className="w-full border-slate-600 text-slate-300 hover:bg-slate-800 rounded-xl h-12 text-base font-semibold gap-2"
+          >
+            <Save className="w-4 h-4" />
+            {savedDraft ? "Draft Saved!" : "Save Progress"}
+          </Button>
+        )}
+
         {/* Submit */}
         <Button
           type="submit"
