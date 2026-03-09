@@ -163,7 +163,7 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <Button type="submit" disabled={updateMutation.isPending} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12">
+        <Button type="submit" disabled={updateMutation.isPending || !!usernameError} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed">
           {updateMutation.isPending ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Save Changes"}
         </Button>
 
