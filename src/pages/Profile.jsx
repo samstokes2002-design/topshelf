@@ -193,15 +193,11 @@ export default function Profile() {
           <div className="space-y-2">
             {seasons.map((season) => {
               const seasonSessions = sessions.filter((s) => {
-                const [y, m, d] = s.date.split("-").map(Number);
-                const sessionDate = new Date(y, m - 1, d);
-                const seasonStart = toLocalMidnight(season.created_date);
+                const seasonStartStr = toLocalDateStr(season.created_date);
                 const seasonIndex = seasons.findIndex((se) => se.id === season.id);
                 const nextSeason = seasons[seasonIndex - 1];
-                const seasonEnd = nextSeason
-                  ? new Date(toLocalMidnight(nextSeason.created_date).getTime() - 1)
-                  : new Date(9999, 11, 31);
-                return sessionDate >= seasonStart && sessionDate <= seasonEnd;
+                const seasonEndStr = nextSeason ? toLocalDateStr(nextSeason.created_date) : null;
+                return s.date >= seasonStartStr && (seasonEndStr ? s.date < seasonEndStr : true);
               });
               const seasonGames = seasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
               const seasonPractices = seasonSessions.filter((s) => s.type === "practice");
