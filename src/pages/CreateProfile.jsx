@@ -24,13 +24,20 @@ export default function CreateProfile() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data) => base44.entities.Profile.create(data),
-    onSuccess: (newProfile) => {
+    mutationFn: (data) => base44.functions.invoke('createProfile', data),
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("SeasonSetup") + `?profileId=${newProfile.id}`;
+        window.location.href = createPageUrl("SeasonSetup") + `?profileId=${response.data.id}`;
       }, 800);
+    },
+    onError: (error) => {
+      if (error.response?.status === 409) {
+        setUsernameError("That username is already taken.");
+      } else {
+        setUsernameError("Error creating profile. Please try again.");
+      }
     },
   });
 
