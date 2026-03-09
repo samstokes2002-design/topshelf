@@ -70,38 +70,19 @@ export default function Profile() {
   };
 
   const activeSeason = seasons.find((s) => s.is_active);
-  
-  const toLocalDateStr = (utcDateStr) => {
-    const d = new Date(utcDateStr);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
+
+  // Filter sessions by season_id (set when logged). Fall back to profile-wide for legacy sessions without season_id.
+  const getSessionsForSeason = (season) => {
+    const byId = sessions.filter((s) => s.season_id === season.id);
+    if (byId.length > 0) return byId;
+    // Legacy fallback: sessions that don't have any season_id at all
+    return sessions.filter((s) => !s.season_id);
   };
 
-  const currentSeasonSessions = activeSeason
-    ? sessions.filter((s) => {
-        const seasonStartStr = toLocalDateStr(activeSeason.created_date);
-        const seasonIndex = seasons.findIndex((se) => se.id === activeSeason.id);
-        const nextSeason = seasons[seasonIndex - 1];
-        const seasonEndStr = nextSeason ? toLocalDateStr(nextSeason.created_date) : null;
-        return s.date >= seasonStartStr && (seasonEndStr ? s.date < seasonEndStr : true);
-      })
-    : sessions;
+  const currentSeasonSessions = activeSeason ? getSessionsForSeason(activeSeason) : sessions;
 
-  const selectedSeason = selectedSeasonId
-    ? seasons.find((s) => s.id === selectedSeasonId)
-    : null;
-
-  const selectedSeasonSessions = selectedSeason
-    ? sessions.filter((s) => {
-        const seasonStartStr = toLocalDateStr(selectedSeason.created_date);
-        const seasonIndex = seasons.findIndex((se) => se.id === selectedSeason.id);
-        const nextSeason = seasons[seasonIndex - 1];
-        const seasonEndStr = nextSeason ? toLocalDateStr(nextSeason.created_date) : null;
-        return s.date >= seasonStartStr && (seasonEndStr ? s.date < seasonEndStr : true);
-      })
-    : [];
+  const selectedSeason = selectedSeasonId ? seasons.find((s) => s.id === selectedSeasonId) : null;
+  const selectedSeasonSessions = selectedSeason ? getSessionsForSeason(selectedSeason) : [];
 
   const filteredSessions = filter === "all"
     ? sessions
