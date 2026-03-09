@@ -69,6 +69,18 @@ export default function EditProfile() {
     setForm((f) => ({ ...f, photo_url: file_url }));
   };
 
+  const handleUsernameChange = async (value) => {
+    setForm((f) => ({ ...f, username: value }));
+    setUsernameError("");
+    
+    if (!value.trim()) return;
+    
+    const response = await base44.functions.invoke('checkUsername', { username: value });
+    if (!response.data.available) {
+      setUsernameError("That username is already taken");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     updateMutation.mutate({ 
