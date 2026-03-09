@@ -4,7 +4,7 @@ import { Play, Pause, Flag, RotateCcw, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import StatControl from "@/components/StatControl";
 
-export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats = [] }) {
+export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats = [], currentPeriod = 1 }) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentSeconds, setCurrentSeconds] = useState(0);
   const [currentStats, setCurrentStats] = useState({});
