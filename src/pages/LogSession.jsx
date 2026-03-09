@@ -40,7 +40,7 @@ export default function LogSession() {
       try {
         const draft = localStorage.getItem(DRAFT_KEY);
         if (draft) return JSON.parse(draft);
-      } catch {}
+      } catch (e) {}
     }
     return {
     profile_id: profileId || "",
