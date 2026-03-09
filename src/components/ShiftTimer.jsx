@@ -124,7 +124,7 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
       </div>
 
       {/* Current Shift Stats */}
-      {selectedStats.length > 0 && currentSeconds > 0 && (
+      {selectedStats.length > 0 && (
         <div className="mb-4 pb-4 border-b border-slate-700/50">
           <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Current Shift Stats</h4>
           <div className="grid grid-cols-2 gap-3">
