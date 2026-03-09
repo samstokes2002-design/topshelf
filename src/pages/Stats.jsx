@@ -271,18 +271,29 @@ export default function Stats() {
                       <span className="text-sky-400 font-bold text-sm">{p.label}</span>
                     </div>
                     <div className="space-y-1 text-xs">
-                      <div className="flex justify-between pb-1 border-b border-slate-600/50 mb-1">
-                        <span className="text-slate-400">PTS</span>
-                        <span className="text-sky-400 font-bold">{(p.stats.goals || 0) + (p.stats.assists || 0)}</span>
-                      </div>
-                      {allShiftStatKeys.map(key => (
-                         <div key={key} className="flex justify-between">
-                           <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
-                           <span className={`font-medium ${key === "plus_minus" ? (p.stats[key] > 0 ? "text-emerald-400" : p.stats[key] < 0 ? "text-red-400" : "text-white") : key === "giveaways" ? "text-red-400" : key === "takeaways" ? "text-emerald-400" : "text-white"}`}>
-                             {key === "plus_minus" && p.stats[key] > 0 ? `+${p.stats[key]}` : p.stats[key]}
-                           </span>
-                         </div>
-                       ))}
+                      {(() => {
+                        const ordered = [
+                          "goals", "assists",
+                          "plus_minus", "shots",
+                          ...allShiftStatKeys.filter(k => !["goals","assists","plus_minus","shots"].includes(k))
+                        ].filter(k => allShiftStatKeys.includes(k));
+                        return ordered.map(key => (
+                          <React.Fragment key={key}>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
+                              <span className={`font-medium ${key === "plus_minus" ? (p.stats[key] > 0 ? "text-emerald-400" : p.stats[key] < 0 ? "text-red-400" : "text-white") : key === "giveaways" ? "text-red-400" : key === "takeaways" ? "text-emerald-400" : "text-white"}`}>
+                                {key === "plus_minus" && p.stats[key] > 0 ? `+${p.stats[key]}` : p.stats[key]}
+                              </span>
+                            </div>
+                            {key === "assists" && (
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">PTS</span>
+                                <span className="text-sky-400 font-bold">{(p.stats.goals || 0) + (p.stats.assists || 0)}</span>
+                              </div>
+                            )}
+                          </React.Fragment>
+                        ));
+                      })()}
                        <div className="flex justify-between pt-1 border-t border-slate-600/50">
                          <span className="text-slate-500">Shifts</span>
                          <span className="text-slate-300 font-medium">{p.shifts}</span>
