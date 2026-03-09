@@ -491,13 +491,62 @@ export default function LogSession() {
           </>
         )}
 
-        {/* Shift Timer - Only for Shift by Shift */}
+        {/* Shift by Shift - Opponent / Result / Period */}
         {form.type === "shift_by_shift" && (
-          <ShiftTimer 
-            shifts={form.shifts} 
-            onShiftsChange={(s) => update("shifts", s)} 
-            selectedStats={selectedStats}
-          />
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-slate-400 text-xs mb-1.5 block">Opponent</Label>
+                <Input
+                  placeholder="Team name"
+                  value={form.opponent}
+                  onChange={(e) => update("opponent", e.target.value)}
+                  className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-400 text-xs mb-1.5 block">Result</Label>
+                <Select value={form.result} onValueChange={(v) => update("result", v)}>
+                  <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
+                    <SelectValue placeholder="Result" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectItem value="win" className="text-white focus:bg-slate-700">Win</SelectItem>
+                    <SelectItem value="loss" className="text-white focus:bg-slate-700">Loss</SelectItem>
+                    <SelectItem value="tie" className="text-white focus:bg-slate-700">Tie</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-slate-400 text-xs mb-1.5 block">Period</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setCurrentPeriod(p)}
+                    className={cn(
+                      "py-2 rounded-xl border text-sm font-semibold transition-all",
+                      currentPeriod === p
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/50"
+                        : "bg-slate-800/40 border-slate-700/50 text-slate-400"
+                    )}
+                  >
+                    {p === 1 ? "1st" : p === 2 ? "2nd" : "3rd"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <ShiftTimer
+              shifts={form.shifts}
+              onShiftsChange={(s) => update("shifts", s)}
+              selectedStats={selectedStats}
+              currentPeriod={currentPeriod}
+            />
+          </>
         )}
 
         {/* Rating */}
