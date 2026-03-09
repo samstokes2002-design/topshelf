@@ -301,7 +301,7 @@ export default function SeasonSetup() {
         <div className="flex gap-3">
           {editId && (
             <Button
-              onClick={() => { window.location.href = createPageUrl(from); }}
+              onClick={() => navigate(createPageUrl(from))}
               variant="outline"
               className="flex-1 bg-slate-800/60 border-slate-700/50 text-white hover:bg-slate-800 rounded-xl h-12"
             >
