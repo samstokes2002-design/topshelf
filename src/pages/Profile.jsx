@@ -62,10 +62,12 @@ export default function Profile() {
     ? sessions.filter((s) => {
         const sessionDate = new Date(s.date);
         const seasonStart = new Date(activeSeason.created_date);
+        seasonStart.setHours(0, 0, 0, 0);
         const seasonIndex = seasons.findIndex((se) => se.id === activeSeason.id);
         const nextSeason = seasons[seasonIndex - 1];
         const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
-        return sessionDate >= seasonStart && sessionDate < seasonEnd;
+        seasonEnd.setHours(23, 59, 59, 999);
+        return sessionDate >= seasonStart && sessionDate <= seasonEnd;
       })
     : sessions;
 
