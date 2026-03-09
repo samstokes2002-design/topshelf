@@ -271,11 +271,7 @@ export default function Stats() {
                       <span className="text-sky-400 font-bold text-sm">{p.label}</span>
                     </div>
                     <div className="space-y-1 text-xs">
-                       <div className="flex justify-between">
-                         <span className="text-slate-400">TOI</span>
-                         <span className="text-white font-medium">{p.toi}</span>
-                       </div>
-                       {allShiftStatKeys.map(key => (
+                      {allShiftStatKeys.map(key => (
                          <div key={key} className="flex justify-between">
                            <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
                            <span className={`font-medium ${key === "plus_minus" ? (p.stats[key] > 0 ? "text-emerald-400" : p.stats[key] < 0 ? "text-red-400" : "text-white") : key === "giveaways" ? "text-red-400" : key === "takeaways" ? "text-emerald-400" : "text-white"}`}>
