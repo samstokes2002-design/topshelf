@@ -271,6 +271,10 @@ export default function Stats() {
                       <span className="text-sky-400 font-bold text-sm">{p.label}</span>
                     </div>
                     <div className="space-y-1 text-xs">
+                      <div className="flex justify-between pb-1 border-b border-slate-600/50 mb-1">
+                        <span className="text-slate-400">PTS</span>
+                        <span className="text-sky-400 font-bold">{(p.stats.goals || 0) + (p.stats.assists || 0)}</span>
+                      </div>
                       {allShiftStatKeys.map(key => (
                          <div key={key} className="flex justify-between">
                            <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
