@@ -262,7 +262,7 @@ export default function SeasonSetup() {
             <p className="text-slate-400 text-xs">
               Select the stats you want to track this season. You can change these later.
             </p>
-            {["scoring", "overall", "physical", "defense", "discipline", "special"].map((category) => {
+            {["scoring", "defensive", "discipline", "advanced"].map((category) => {
               const categoryStats = AVAILABLE_STATS.filter((s) => s.category === category);
               if (categoryStats.length === 0) return null;
               const allSelected = categoryStats.every((s) => selectedStats.includes(s.id));
