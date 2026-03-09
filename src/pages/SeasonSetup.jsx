@@ -38,6 +38,7 @@ export default function SeasonSetup() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
+  const from = urlParams.get("from") || "Profile";
 
   const [step, setStep] = useState(1);
   const [seasonType, setSeasonType] = useState("winter");

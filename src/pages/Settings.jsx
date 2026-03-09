@@ -207,7 +207,7 @@ export default function Settings() {
                     )}
                     <Button
                       size="sm"
-                      onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
+                      onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}&from=Settings`}
                       className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 text-xs rounded-lg h-7 px-3"
                     >
                       Edit
