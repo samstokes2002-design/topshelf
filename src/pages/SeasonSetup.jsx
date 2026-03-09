@@ -106,7 +106,7 @@ export default function SeasonSetup() {
       queryClient.invalidateQueries({ queryKey: ["activeSeason"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("Profile");
+        navigate(createPageUrl(from));
       }, 1000);
     },
   });
