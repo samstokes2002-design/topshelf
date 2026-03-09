@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 export default function Friends() {
   const [searchUsername, setSearchUsername] = useState("");
+  const [foundUser, setFoundUser] = useState(null);
   const [addMessage, setAddMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const queryClient = useQueryClient();
@@ -23,12 +24,18 @@ export default function Friends() {
     queryFn: () => base44.entities.Friend.list("-created_date"),
   });
 
+  const { data: allProfiles = [] } = useQuery({
+    queryKey: ["allProfiles"],
+    queryFn: () => base44.asServiceRole.entities.Profile.list(null, 1000),
+  });
+
   const sendFriendRequestMutation = useMutation({
     mutationFn: (username) =>
       base44.functions.invoke('sendFriendRequest', { username }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
       setSearchUsername("");
+      setFoundUser(null);
       setAddMessage("Friend request sent!");
       setErrorMessage("");
       setTimeout(() => setAddMessage(""), 3000);
