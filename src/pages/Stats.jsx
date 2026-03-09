@@ -373,7 +373,7 @@ export default function Stats() {
           )}
 
           <div className="text-center text-xs text-slate-500 mt-4">
-            {sessions.length} total sessions logged
+            {filteredSessions.length} sessions in view
           </div>
         </>
       )}
