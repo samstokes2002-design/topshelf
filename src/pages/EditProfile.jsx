@@ -46,11 +46,22 @@ export default function EditProfile() {
   }, [profiles]);
 
   const updateMutation = useMutation({
-    mutationFn: (data) => base44.entities.Profile.update(profileId, data),
+    mutationFn: async (data) => {
+      const response = await base44.functions.invoke('updateProfile', { profileId, ...data });
+      if (response.status === 409) {
+        throw new Error(response.data.error);
+      }
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
       setSaved(true);
       setTimeout(() => window.location.href = createPageUrl("Profile"), 800);
+    },
+    onError: (error) => {
+      if (error.message.includes("already taken")) {
+        setUsernameError(error.message);
+      }
     },
   });
 
