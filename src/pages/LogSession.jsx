@@ -357,38 +357,35 @@ export default function LogSession() {
           </div>
         )}
 
-        {/* Date + Duration */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Date</Label>
-            <Input
-              type="date"
-              value={form.date}
-              onChange={(e) => update("date", e.target.value)}
-              className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
-            />
-          </div>
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Duration (min)</Label>
-            <Input
-              type="number"
-              placeholder="60"
-              value={form.duration}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                if (isNaN(val)) {
-                  update("duration", "");
-                } else if (val < 0) {
-                  update("duration", "0");
-                } else {
-                  update("duration", val.toString());
-                }
-              }}
-              min="0"
-              className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
-            />
-          </div>
-        </div>
+        {/* Date Display + Duration */}
+         <div className="grid grid-cols-2 gap-3">
+           <div>
+             <Label className="text-slate-400 text-xs mb-1.5 block">Date</Label>
+             <div className="bg-slate-800/60 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm">
+               {format(new Date(form.date), "MMM d, yyyy")}
+             </div>
+           </div>
+           <div>
+             <Label className="text-slate-400 text-xs mb-1.5 block">Duration (min)</Label>
+             <Input
+               type="number"
+               placeholder="60"
+               value={form.duration}
+               onChange={(e) => {
+                 const val = parseInt(e.target.value);
+                 if (isNaN(val)) {
+                   update("duration", "");
+                 } else if (val < 0) {
+                   update("duration", "0");
+                 } else {
+                   update("duration", val.toString());
+                 }
+               }}
+               min="0"
+               className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+             />
+           </div>
+         </div>
 
         {/* Game-specific fields */}
         {form.type === "game" && (
