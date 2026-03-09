@@ -50,7 +50,39 @@ export default function Home() {
 
   const { data: friends = [] } = useQuery({
     queryKey: ["friends"],
-    queryFn: () => base44.entities.Friend.filter({ status: "accepted" }),
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      // Get all accepted friendships where current user is the recipient
+      return base44.entities.Friend.filter({ 
+        friend_email: currentUser.email,
+        status: "accepted" 
+      });
+    },
+  });
+
+  const { data: friendProfiles = [] } = useQuery({
+    queryKey: ["friendProfiles", friends],
+    queryFn: async () => {
+      if (friends.length === 0) return [];
+      // Get all profiles created by friends (by their email/created_by)
+      const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
+      return allProfiles.filter(p => 
+        friends.some(f => f.created_by === p.created_by)
+      );
+    },
+    enabled: friends.length > 0,
+  });
+
+  const { data: friendSessions = [] } = useQuery({
+    queryKey: ["friendSessions", friendProfiles],
+    queryFn: async () => {
+      if (friendProfiles.length === 0) return [];
+      const allSessions = await base44.asServiceRole.entities.Session.list(null, 10000);
+      return allSessions.filter(s => 
+        friendProfiles.some(p => p.id === s.profile_id)
+      ).sort((a, b) => new Date(b.date) - new Date(a.date));
+    },
+    enabled: friendProfiles.length > 0,
   });
 
   useEffect(() => {
