@@ -163,6 +163,7 @@ export default function LogSession() {
     mutationFn: (data) => base44.entities.Session.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
       setSaved(true);
       setTimeout(() => {
         window.location.href = createPageUrl("Home");
