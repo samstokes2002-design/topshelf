@@ -87,8 +87,8 @@ export default function Stats() {
   const wins = games.filter((g) => g.result === "win").length;
   const losses = games.filter((g) => g.result === "loss").length;
   const ties = games.filter((g) => g.result === "tie").length;
-  const avgRating = sessions.length > 0
-    ? (sessions.reduce((s, g) => s + (g.rating || 0), 0) / sessions.filter((s) => s.rating).length).toFixed(1)
+  const avgRating = filteredSessions.length > 0
+    ? (filteredSessions.reduce((s, g) => s + (g.rating || 0), 0) / filteredSessions.filter((s) => s.rating).length).toFixed(1)
     : "—";
   const shootingPct = totalShots > 0 ? ((totalGoals / totalShots) * 100).toFixed(1) : "0";
   const ppg = games.length > 0 ? ((totalGoals + totalAssists) / games.length).toFixed(2) : "0";
