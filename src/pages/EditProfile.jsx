@@ -131,7 +131,12 @@ export default function EditProfile() {
         </div>
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Username</Label>
-          <Input value={form.username} onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          <Input 
+            value={form.username} 
+            onChange={(e) => handleUsernameChange(e.target.value)} 
+            className={`bg-slate-800/60 text-white rounded-xl ${usernameError ? 'border-red-500/50' : 'border-slate-700/50'}`}
+          />
+          {usernameError && <p className="text-red-400 text-xs mt-1.5">{usernameError}</p>}
         </div>
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Position</Label>
