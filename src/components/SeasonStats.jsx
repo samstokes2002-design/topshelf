@@ -30,6 +30,14 @@ export default function SeasonStats({ sessions, selectedStats = [] }) {
       const total = rated.reduce((sum, g) => sum + g.rating, 0);
       return (total / rated.length).toFixed(1);
     }
+    if (stat === "time_on_ice") {
+      const shiftSessions = games.filter((s) => s.type === "shift_by_shift" && s.shifts && s.shifts.length > 0);
+      if (shiftSessions.length === 0) return "—";
+      const totalSeconds = shiftSessions.reduce((sum, s) =>
+        sum + s.shifts.reduce((ss, shift) => ss + (shift.duration_seconds || 0), 0), 0);
+      const avgSeconds = Math.round(totalSeconds / shiftSessions.length);
+      return `${Math.floor(avgSeconds / 60)}:${String(avgSeconds % 60).padStart(2, "0")}`;
+    }
     return games.reduce((sum, g) => sum + (g[stat] || 0), 0);
   };
 
