@@ -90,7 +90,7 @@ export default function Friends() {
         <h1 className="text-white font-bold text-xl mb-4">Friends</h1>
 
         {/* Add Friend */}
-        <form onSubmit={handleAddFriend} className="flex gap-2 mb-6">
+        <form onSubmit={handleSearch} className="flex gap-2 mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <Input
@@ -99,18 +99,43 @@ export default function Friends() {
               onChange={(e) => {
                 setSearchUsername(e.target.value);
                 setErrorMessage("");
+                setFoundUser(null);
               }}
               className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pl-9"
             />
           </div>
           <Button
             type="submit"
-            disabled={!searchUsername.trim() || sendFriendRequestMutation.isPending}
+            disabled={!searchUsername.trim()}
             className="bg-sky-500 hover:bg-sky-600 rounded-xl"
           >
-            <UserPlus className="w-4 h-4" />
+            <Search className="w-4 h-4" />
           </Button>
         </form>
+
+        {/* Found User Result */}
+        {foundUser && (
+          <div className="mb-6 bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
+                  <span className="text-sky-400 font-bold">{foundUser.name?.[0]?.toUpperCase()}</span>
+                </div>
+                <div>
+                  <p className="text-white text-sm font-medium">{foundUser.name}</p>
+                  <p className="text-slate-400 text-xs">@{foundUser.username}</p>
+                </div>
+              </div>
+              <Button
+                onClick={handleAddFriend}
+                disabled={sendFriendRequestMutation.isPending}
+                className="bg-sky-500 hover:bg-sky-600 rounded-lg"
+              >
+                <UserPlus className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
 
         {addMessage && (
           <div className="bg-emerald-500/20 text-emerald-400 text-sm rounded-xl px-4 py-2 mb-4 text-center">
