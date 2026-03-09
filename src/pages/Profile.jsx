@@ -88,7 +88,7 @@ export default function Profile() {
     ? currentSeasonSessions
     : currentSeasonSessions.filter((s) => s.type === filter);
 
-  const games = currentSeasonSessions.filter((s) => s.type === "game");
+  const games = currentSeasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
   const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
   const totalPoints = totalGoals + totalAssists;
@@ -194,7 +194,7 @@ export default function Profile() {
                 const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
                 return sessionDate >= seasonStart && sessionDate < seasonEnd;
               });
-              const seasonGames = seasonSessions.filter((s) => s.type === "game");
+              const seasonGames = seasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
               const seasonPractices = seasonSessions.filter((s) => s.type === "practice");
               const seasonTraining = seasonSessions.filter((s) => s.type === "training");
 

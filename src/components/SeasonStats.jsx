@@ -21,7 +21,7 @@ const statLabels = {
 };
 
 export default function SeasonStats({ sessions, selectedStats = [] }) {
-  const games = sessions.filter((s) => s.type === "game");
+  const games = sessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
 
   const calculateStat = (stat) => {
     if (stat === "rating") {
