@@ -380,14 +380,26 @@ export default function Stats() {
   );
 }
 
+function SectionCard({ title, icon: Icon, iconColor, children }) {
+  return (
+    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <Icon className={`w-4 h-4 ${iconColor}`} />
+        <h3 className="text-white font-semibold text-sm">{title}</h3>
+      </div>
+      {children}
+    </div>
+  );
+}
+
 function StatCard({ label, value, icon: Icon, color }) {
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+    <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl p-3">
       <div className="flex items-center gap-1.5 mb-1">
-        <Icon className={`w-3.5 h-3.5 ${color}`} />
+        <Icon className={`w-3 h-3 ${color}`} />
         <span className="text-[10px] text-slate-400 uppercase tracking-wider">{label}</span>
       </div>
-      <span className="text-2xl font-bold text-white">{value}</span>
+      <span className="text-xl font-bold text-white">{value}</span>
     </div>
   );
 }
