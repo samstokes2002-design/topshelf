@@ -70,15 +70,18 @@ export default function Friends() {
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <Input
-              placeholder="Add by email..."
-              value={searchEmail}
-              onChange={(e) => setSearchEmail(e.target.value)}
+              placeholder="Search by username..."
+              value={searchUsername}
+              onChange={(e) => {
+                setSearchUsername(e.target.value);
+                setErrorMessage("");
+              }}
               className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pl-9"
             />
           </div>
           <Button
             type="submit"
-            disabled={!searchEmail.trim() || addFriendMutation.isPending}
+            disabled={!searchUsername.trim() || sendFriendRequestMutation.isPending}
             className="bg-sky-500 hover:bg-sky-600 rounded-xl"
           >
             <UserPlus className="w-4 h-4" />
@@ -88,6 +91,13 @@ export default function Friends() {
         {addMessage && (
           <div className="bg-emerald-500/20 text-emerald-400 text-sm rounded-xl px-4 py-2 mb-4 text-center">
             {addMessage}
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="bg-red-500/20 text-red-400 text-sm rounded-xl px-4 py-2 mb-4 text-center flex items-center justify-center gap-2">
+            <AlertCircle className="w-4 h-4" />
+            {errorMessage}
           </div>
         )}
 
