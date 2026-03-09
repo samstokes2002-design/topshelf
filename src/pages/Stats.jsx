@@ -85,10 +85,10 @@ export default function Stats() {
     ? `${Math.floor(avgToiSeconds / 60)}:${String(avgToiSeconds % 60).padStart(2, "0")}`
     : "—";
 
-  // Collect all stat keys present across all shifts
-  const allShiftStatKeys = [...new Set(
-    shiftSessions.flatMap(s => (s.shifts || []).flatMap(sh => Object.keys(sh.stats || {})))
-  )];
+  // Use season's selected_stats for period breakdown columns
+  const defaultStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
+  const allShiftStatKeys = (activeSeason?.selected_stats?.length > 0 ? activeSeason.selected_stats : defaultStats)
+    .filter(k => k !== "rating" && k !== "faceoff_percentage" && k !== "time_on_ice");
 
   // Period breakdown from shift_by_shift sessions
   // Shifts without a period field default to period 1
