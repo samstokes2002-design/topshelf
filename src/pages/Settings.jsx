@@ -110,7 +110,7 @@ export default function Settings() {
     <div className="px-4 pb-24">
       <div className="flex items-center justify-between py-4">
         <div className="flex items-center gap-3">
-          <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={() => navigate(createPageUrl("Profile"), { replace: true })} className="text-slate-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <h1 className="text-white font-bold text-xl">Settings</h1>
