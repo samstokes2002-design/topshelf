@@ -16,6 +16,7 @@ export default function EditProfile() {
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
   const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "" });
+  const [usernameError, setUsernameError] = useState("");
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profile-edit", profileId],
