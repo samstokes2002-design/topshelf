@@ -174,9 +174,20 @@ export default function LogSession() {
     }
   }, [profileId, profiles]);
 
+  const saveDraft = () => {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(form));
+    setSavedDraft(true);
+    setTimeout(() => setSavedDraft(false), 2000);
+  };
+
+  const clearDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+  };
+
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Session.create(data),
     onSuccess: () => {
+      clearDraft();
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
