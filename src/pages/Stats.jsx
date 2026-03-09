@@ -137,9 +137,7 @@ export default function Stats() {
             <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
             <StatCard 
               label="Avg TOI" 
-              value={sessions.filter(s => s.time_on_ice > 0).length > 0 
-                ? `${Math.round(sessions.reduce((sum, s) => sum + (s.time_on_ice || 0), 0) / sessions.filter(s => s.time_on_ice > 0).length)} min`
-                : "0 min"} 
+              value={avgToiDisplay} 
               icon={Clock} 
               color="text-amber-400" 
             />
