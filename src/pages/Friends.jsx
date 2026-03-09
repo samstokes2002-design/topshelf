@@ -158,30 +158,38 @@ export default function Friends() {
               Friend Requests
             </h3>
             <div className="space-y-2">
-              {pendingIncoming.map((friend) => (
-                <div key={friend.id} className="flex items-center justify-between bg-slate-800/60 border border-slate-700/50 rounded-xl p-3">
-                  <div>
-                    <p className="text-white text-sm font-medium">{friend.friend_name}</p>
-                    <p className="text-slate-500 text-xs">{friend.created_by}</p>
+              {pendingIncoming.map((friend) => {
+                const senderProfile = allProfiles.find(p => p.created_by === friend.created_by);
+                return (
+                  <div key={friend.id} className="flex items-center justify-between bg-slate-800/60 border border-slate-700/50 rounded-xl p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center">
+                        <span className="text-sky-400 text-xs font-bold">{senderProfile?.name?.[0]?.toUpperCase() || "?"}</span>
+                      </div>
+                      <div>
+                        <p className="text-white text-sm font-medium">{senderProfile?.name || "Unknown"}</p>
+                        <p className="text-slate-500 text-xs">@{senderProfile?.username || "unknown"}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "accepted" })}
+                        disabled={respondToRequestMutation.isPending}
+                        className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors disabled:opacity-50"
+                      >
+                        <Check className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "declined" })}
+                        disabled={respondToRequestMutation.isPending}
+                        className="p-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors disabled:opacity-50"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "accepted" })}
-                      disabled={respondToRequestMutation.isPending}
-                      className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors disabled:opacity-50"
-                    >
-                      <Check className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "declined" })}
-                      disabled={respondToRequestMutation.isPending}
-                      className="p-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors disabled:opacity-50"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
