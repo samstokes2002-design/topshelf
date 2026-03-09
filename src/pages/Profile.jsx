@@ -91,8 +91,8 @@ export default function Profile() {
     : sessions.filter((s) => s.type === filter);
 
   const games = currentSeasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
-  const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
-  const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
+  const totalGoals = games.reduce((sum, g) => sum + (g.goals || 0), 0);
+  const totalAssists = games.reduce((sum, g) => sum + (g.assists || 0), 0);
   const totalPoints = totalGoals + totalAssists;
 
   if (!activeProfile) return null;
