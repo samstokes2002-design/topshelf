@@ -3,33 +3,45 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, UserPlus, Users, Check, X, Clock } from "lucide-react";
+import { Search, UserPlus, Users, Check, X, Clock, AlertCircle } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 import { cn } from "@/lib/utils";
 
 export default function Friends() {
-  const [searchEmail, setSearchEmail] = useState("");
+  const [searchUsername, setSearchUsername] = useState("");
   const [addMessage, setAddMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const queryClient = useQueryClient();
+
+  const { data: user } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => base44.auth.me(),
+  });
 
   const { data: myFriends = [], isLoading } = useQuery({
     queryKey: ["friends"],
     queryFn: () => base44.entities.Friend.list("-created_date"),
   });
 
-  const addFriendMutation = useMutation({
-    mutationFn: (email) =>
-      base44.entities.Friend.create({ friend_email: email, friend_name: email, status: "pending" }),
+  const sendFriendRequestMutation = useMutation({
+    mutationFn: (username) =>
+      base44.functions.invoke('sendFriendRequest', { username }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
-      setSearchEmail("");
+      setSearchUsername("");
       setAddMessage("Friend request sent!");
+      setErrorMessage("");
       setTimeout(() => setAddMessage(""), 3000);
+    },
+    onError: (error) => {
+      setErrorMessage(error.response?.data?.error || error.message);
+      setAddMessage("");
     },
   });
 
-  const updateFriendMutation = useMutation({
-    mutationFn: ({ id, status }) => base44.entities.Friend.update(id, { status }),
+  const respondToRequestMutation = useMutation({
+    mutationFn: ({ id, status }) =>
+      base44.functions.invoke('respondToFriendRequest', { friendRequestId: id, status }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 
@@ -40,8 +52,8 @@ export default function Friends() {
 
   const handleAddFriend = (e) => {
     e.preventDefault();
-    if (searchEmail.trim()) {
-      addFriendMutation.mutate(searchEmail.trim());
+    if (searchUsername.trim()) {
+      sendFriendRequestMutation.mutate(searchUsername.trim());
     }
   };
 
