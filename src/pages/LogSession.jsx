@@ -175,6 +175,7 @@ export default function LogSession() {
     mutationFn: ({ id, data }) => base44.entities.Session.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
       setSaved(true);
       setTimeout(() => {
         window.location.href = createPageUrl("SessionDetail") + `?id=${editId}`;
