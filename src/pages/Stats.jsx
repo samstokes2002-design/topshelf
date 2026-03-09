@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pi
 import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Star, Clock } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
-import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths, startOfWeek, endOfWeek } from "date-fns";
 
 const COLORS = ["#0ea5e9", "#10b981", "#8b5cf6", "#f59e0b"];
 
