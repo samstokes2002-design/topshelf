@@ -153,28 +153,6 @@ export default function Stats() {
     shorthanded_goals: "SHG", shorthanded_points: "SHP",
   };
 
-  // Monthly chart data
-  const last6Months = eachMonthOfInterval({
-    start: subMonths(new Date(), 5),
-    end: new Date(),
-  });
-
-  const monthlyData = last6Months.map((month) => {
-    const monthSessions = filteredSessions.filter((s) => {
-      if (!s.date) return false;
-      const [y, m, day] = s.date.split("-").map(Number);
-      const d = new Date(y, m - 1, day);
-      return d >= startOfMonth(month) && d <= endOfMonth(month);
-    });
-    const monthGames = monthSessions.filter((s) => s.type === "game");
-    return {
-      month: format(month, "MMM"),
-      sessions: monthSessions.length,
-      goals: monthGames.reduce((sum, g) => sum + (g.goals || 0), 0),
-      assists: monthGames.reduce((sum, g) => sum + (g.assists || 0), 0),
-    };
-  });
-
   const typeBreakdown = [
     { name: "Games", value: games.length },
     { name: "Practice", value: filteredSessions.filter((s) => s.type === "practice").length },
