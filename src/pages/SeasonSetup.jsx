@@ -118,7 +118,7 @@ export default function SeasonSetup() {
       queryClient.invalidateQueries({ queryKey: ["activeSeason"] });
       setSaved(true);
       setTimeout(() => {
-        navigate(createPageUrl(from));
+        navigate(createPageUrl(from), { replace: true });
       }, 1000);
     },
   });
