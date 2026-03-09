@@ -36,6 +36,7 @@ const SEASON_TYPES = [
 
 export default function SeasonSetup() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
