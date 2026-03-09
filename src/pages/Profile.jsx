@@ -85,8 +85,8 @@ export default function Profile() {
     : [];
 
   const filteredSessions = filter === "all"
-    ? currentSeasonSessions
-    : currentSeasonSessions.filter((s) => s.type === filter);
+    ? sessions
+    : sessions.filter((s) => s.type === filter);
 
   const games = currentSeasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
