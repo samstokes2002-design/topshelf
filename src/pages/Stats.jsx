@@ -285,24 +285,7 @@ export default function Stats() {
             </div>
           )}
 
-          {/* Monthly Chart */}
-          {monthlyData.some((m) => m.sessions > 0) && (
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-              <h3 className="text-white font-semibold text-sm mb-3">Monthly Points</h3>
-              <ResponsiveContainer width="100%" height={180}>
-                <BarChart data={monthlyData}>
-                  <XAxis dataKey="month" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} width={25} />
-                  <Tooltip
-                    contentStyle={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 12, fontSize: 12 }}
-                    labelStyle={{ color: "#fff" }}
-                  />
-                  <Bar dataKey="goals" fill="#0ea5e9" radius={[6, 6, 0, 0]} name="Goals" />
-                  <Bar dataKey="assists" fill="#10b981" radius={[6, 6, 0, 0]} name="Assists" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
+
 
           {/* Period Breakdown */}
           {hasPeriodData && (
