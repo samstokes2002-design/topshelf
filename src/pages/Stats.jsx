@@ -29,6 +29,15 @@ export default function Stats() {
     enabled: !!activeProfile,
   });
 
+  const { data: activeSeason } = useQuery({
+    queryKey: ["activeSeason-stats", activeProfile?.id],
+    queryFn: async () => {
+      const seasons = await base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true });
+      return seasons[0] || null;
+    },
+    enabled: !!activeProfile,
+  });
+
   useEffect(() => {
     if (profiles.length > 0 && !activeProfile) {
       const savedProfileId = localStorage.getItem("activeProfileId");
