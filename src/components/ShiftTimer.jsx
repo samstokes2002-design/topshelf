@@ -37,11 +37,13 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
 
   const endShift = () => {
     if (currentSeconds > 0) {
+      const periodLabel = currentPeriod === 1 ? "1st" : currentPeriod === 2 ? "2nd" : "3rd";
       const newShifts = [
         ...shifts,
         { 
           duration_seconds: currentSeconds, 
-          label: `Shift ${shifts.length + 1}`,
+          label: `Shift ${shifts.length + 1} (${periodLabel})`,
+          period: currentPeriod,
           stats: { ...currentStats }
         },
       ];
