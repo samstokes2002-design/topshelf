@@ -9,8 +9,16 @@ import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths, start
 
 const COLORS = ["#0ea5e9", "#10b981", "#8b5cf6", "#f59e0b"];
 
+const TABS = [
+  { id: "season", label: "Season" },
+  { id: "weekly", label: "Weekly" },
+  { id: "monthly", label: "Monthly" },
+  { id: "career", label: "Career" },
+];
+
 export default function Stats() {
   const [activeProfile, setActiveProfile] = useState(null);
+  const [activeTab, setActiveTab] = useState("season");
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
