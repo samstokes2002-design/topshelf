@@ -166,9 +166,10 @@ export default function LogSession() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["seasons"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("Home");
+        navigate(createPageUrl("Home"));
       }, 800);
     },
   });
@@ -178,9 +179,10 @@ export default function LogSession() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["seasons"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("SessionDetail") + `?id=${editId}`;
+        navigate(createPageUrl("SessionDetail") + `?id=${editId}`);
       }, 800);
     },
   });

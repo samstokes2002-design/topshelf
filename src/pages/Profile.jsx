@@ -51,6 +51,18 @@ export default function Profile() {
     }
   }, [profiles, activeProfile]);
 
+  // Real-time subscription: refetch sessions immediately when any session is created/updated
+  useEffect(() => {
+    if (!activeProfile) return;
+    const unsubscribe = base44.entities.Session.subscribe((event) => {
+      if (event.type === "create" || event.type === "update") {
+        queryClient.invalidateQueries({ queryKey: ["sessions-profile", activeProfile.id] });
+        queryClient.invalidateQueries({ queryKey: ["seasons", activeProfile.id] });
+      }
+    });
+    return unsubscribe;
+  }, [activeProfile, queryClient]);
+
   const handleProfileSwitch = (profile) => {
     setActiveProfile(profile);
     localStorage.setItem("activeProfileId", profile.id);
