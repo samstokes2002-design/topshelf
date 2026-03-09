@@ -238,6 +238,56 @@ export default function Stats() {
             </div>
           )}
 
+          {/* Period Breakdown */}
+          {hasPeriodData && (
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+              <h3 className="text-white font-semibold text-sm mb-3">Period Breakdown</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {periodStats.map((p) => (
+                  <div key={p.period} className={`rounded-xl p-3 border ${p.shifts > 0 ? "bg-slate-700/60 border-slate-600/50" : "bg-slate-800/30 border-slate-700/30 opacity-40"}`}>
+                    <div className="text-center mb-2">
+                      <span className="text-sky-400 font-bold text-sm">{p.label}</span>
+                    </div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">TOI</span>
+                        <span className="text-white font-medium">{p.toi}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">G</span>
+                        <span className="text-white font-medium">{p.goals}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">A</span>
+                        <span className="text-white font-medium">{p.assists}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">SOG</span>
+                        <span className="text-white font-medium">{p.shots}</span>
+                      </div>
+                      {p.hits > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Hits</span>
+                          <span className="text-white font-medium">{p.hits}</span>
+                        </div>
+                      )}
+                      {p.blocks > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Blk</span>
+                          <span className="text-white font-medium">{p.blocks}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between pt-1 border-t border-slate-600/50">
+                        <span className="text-slate-500">Shifts</span>
+                        <span className="text-slate-300 font-medium">{p.shifts}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Type Breakdown */}
           {typeBreakdown.length > 0 && (
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
