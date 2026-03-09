@@ -159,11 +159,7 @@ export default function Stats() {
     { name: "Training", value: filteredSessions.filter((s) => s.type === "training").length },
   ].filter((t) => t.value > 0);
 
-  const recordData = [
-    { name: "W", value: wins, color: "#10b981" },
-    { name: "L", value: losses, color: "#ef4444" },
-    { name: "T", value: ties, color: "#f59e0b" },
-  ];
+
 
   return (
     <div className="px-4 pb-24">
