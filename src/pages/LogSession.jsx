@@ -479,7 +479,7 @@ export default function LogSession() {
 
             {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Special Stats</h3>
+                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Discipline & Advanced</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("penalty_minutes") && (
                     <StatControl label="PIM" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
