@@ -59,8 +59,23 @@ export default function Stats() {
     localStorage.setItem("activeProfileId", profile.id);
   };
 
+  // Filter sessions based on active tab
+  const now = new Date();
+  const filteredSessions = sessions.filter((s) => {
+    if (!s.date) return activeTab === "career";
+    const d = new Date(s.date);
+    if (activeTab === "season") return activeSeason ? s.season_id === activeSeason.id : false;
+    if (activeTab === "weekly") {
+      const weekStart = startOfWeek(now, { weekStartsOn: 1 });
+      const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+      return d >= weekStart && d <= weekEnd;
+    }
+    if (activeTab === "monthly") return d >= startOfMonth(now) && d <= endOfMonth(now);
+    return true; // career
+  });
+
   // Games = both "game" and "shift_by_shift" types count toward game stats
-  const games = sessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
+  const games = filteredSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
   const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
   const totalShots = games.reduce((s, g) => s + (g.shots || 0), 0);
