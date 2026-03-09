@@ -83,6 +83,7 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (usernameError) return;
     updateMutation.mutate({ 
       ...form, 
       age: form.age ? parseInt(form.age) : undefined,
