@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { User, LogOut, Save, ArrowLeft, Trophy, Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
+import { useNavigate } from "react-router-dom";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 
 export default function Settings() {
