@@ -60,7 +60,19 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
   };
 
   const updateStat = (stat, value) => {
-    setCurrentStats(prev => ({ ...prev, [stat]: value }));
+    let updatedStats = { ...currentStats, [stat]: value };
+    
+    // Auto-update PPP if PPG is logged without PPP
+    if (stat === "power_play_goals" && value > 0 && updatedStats.power_play_points === 0) {
+      updatedStats.power_play_points = value;
+    }
+    
+    // Auto-update SHP if SHG is logged without SHP
+    if (stat === "shorthanded_goals" && value > 0 && updatedStats.shorthanded_points === 0) {
+      updatedStats.shorthanded_points = value;
+    }
+    
+    setCurrentStats(updatedStats);
   };
 
   const resetAll = () => {
