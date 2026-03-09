@@ -192,8 +192,18 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
                   {shift.stats.goals > 0 && <span>G: {shift.stats.goals}</span>}
                   {shift.stats.assists > 0 && <span>A: {shift.stats.assists}</span>}
                   {shift.stats.shots > 0 && <span>S: {shift.stats.shots}</span>}
-                  {shift.stats.plus_minus !== 0 && <span>+/-: {shift.stats.plus_minus}</span>}
+                  {shift.stats.plus_minus !== 0 && <span>+/-: {shift.stats.plus_minus > 0 ? `+${shift.stats.plus_minus}` : shift.stats.plus_minus}</span>}
                   {shift.stats.hits > 0 && <span>H: {shift.stats.hits}</span>}
+                  {shift.stats.blocked_shots > 0 && <span>BLK: {shift.stats.blocked_shots}</span>}
+                  {shift.stats.takeaways > 0 && <span>TA: {shift.stats.takeaways}</span>}
+                  {shift.stats.giveaways > 0 && <span>GA: {shift.stats.giveaways}</span>}
+                  {shift.stats.penalty_minutes > 0 && <span>PIM: {shift.stats.penalty_minutes}</span>}
+                  {shift.stats.faceoff_wins > 0 && <span>FOW: {shift.stats.faceoff_wins}</span>}
+                  {shift.stats.faceoff_losses > 0 && <span>FOL: {shift.stats.faceoff_losses}</span>}
+                  {shift.stats.power_play_goals > 0 && <span>PPG: {shift.stats.power_play_goals}</span>}
+                  {shift.stats.power_play_points > 0 && <span>PPP: {shift.stats.power_play_points}</span>}
+                  {shift.stats.shorthanded_goals > 0 && <span>SHG: {shift.stats.shorthanded_goals}</span>}
+                  {shift.stats.shorthanded_points > 0 && <span>SHP: {shift.stats.shorthanded_points}</span>}
                 </div>
               )}
             </div>
