@@ -63,7 +63,9 @@ export default function Stats() {
   const now = new Date();
   const filteredSessions = sessions.filter((s) => {
     if (!s.date) return activeTab === "career";
-    const d = new Date(s.date);
+    // Parse as local midnight to avoid UTC offset issues
+    const [y, m, day] = s.date.split("-").map(Number);
+    const d = new Date(y, m - 1, day);
     if (activeTab === "season") return activeSeason ? s.season_id === activeSeason.id : false;
     if (activeTab === "weekly") {
       const weekStart = startOfWeek(now, { weekStartsOn: 1 });
