@@ -68,7 +68,8 @@ export default function LogSession() {
     notes: "",
     opponent: "",
     result: "",
-    shifts: [],
+      shifts: [],
+    };
   });
 
   const { data: profiles = [] } = useQuery({
