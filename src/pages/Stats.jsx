@@ -76,6 +76,11 @@ export default function Stats() {
     ? `${Math.floor(avgToiSeconds / 60)}:${String(avgToiSeconds % 60).padStart(2, "0")}`
     : "—";
 
+  // Collect all stat keys present across all shifts
+  const allShiftStatKeys = [...new Set(
+    shiftSessions.flatMap(s => (s.shifts || []).flatMap(sh => Object.keys(sh.stats || {})))
+  )];
+
   // Period breakdown from shift_by_shift sessions
   // Shifts without a period field default to period 1
   const periodStats = [1, 2, 3].map((period) => {
@@ -83,22 +88,29 @@ export default function Stats() {
       (s.shifts || []).filter(sh => (sh.period ?? 1) === period)
     );
     const toiSeconds = periodShifts.reduce((sum, sh) => sum + (sh.duration_seconds || 0), 0);
-    const goals = periodShifts.reduce((sum, sh) => sum + (sh.stats?.goals || 0), 0);
-    const assists = periodShifts.reduce((sum, sh) => sum + (sh.stats?.assists || 0), 0);
-    const shots = periodShifts.reduce((sum, sh) => sum + (sh.stats?.shots || 0), 0);
-    const hits = periodShifts.reduce((sum, sh) => sum + (sh.stats?.hits || 0), 0);
-    const blocks = periodShifts.reduce((sum, sh) => sum + (sh.stats?.blocked_shots || 0), 0);
     const toiMin = Math.floor(toiSeconds / 60);
     const toiSec = toiSeconds % 60;
+    const stats = {};
+    allShiftStatKeys.forEach(key => {
+      stats[key] = periodShifts.reduce((sum, sh) => sum + (sh.stats?.[key] || 0), 0);
+    });
     return {
       label: period === 1 ? "1st" : period === 2 ? "2nd" : "3rd",
       period,
       shifts: periodShifts.length,
       toi: toiSeconds > 0 ? `${toiMin}:${String(toiSec).padStart(2, "0")}` : "—",
-      goals, assists, shots, hits, blocks,
+      stats,
     };
   });
   const hasPeriodData = shiftSessions.length > 0;
+
+  const PERIOD_STAT_LABELS = {
+    goals: "G", assists: "A", shots: "SOG", plus_minus: "+/-",
+    hits: "Hits", blocked_shots: "Blk", takeaways: "TA", giveaways: "GA",
+    penalty_minutes: "PIM", faceoff_wins: "FOW", faceoff_losses: "FOL",
+    power_play_goals: "PPG", power_play_points: "PPP",
+    shorthanded_goals: "SHG", shorthanded_points: "SHP",
+  };
 
   // Monthly chart data
   const last6Months = eachMonthOfInterval({
