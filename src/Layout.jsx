@@ -14,7 +14,7 @@ const navItems = [
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
-const hideNavPages = ["CreateProfile", "EditProfile", "SessionDetail", "LogSession"];
+const hideNavPages = ["CreateProfile", "EditProfile", "SessionDetail", "LogSession", "SeasonSetup"];
 
 export default function Layout({ children, currentPageName }) {
   const [hasProfiles, setHasProfiles] = React.useState(true);
