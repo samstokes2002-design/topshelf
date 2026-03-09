@@ -10,21 +10,25 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trophy, Check } from "lucide-react";
 
 const AVAILABLE_STATS = [
+  // Scoring
   { id: "goals", label: "Goals", category: "scoring" },
   { id: "assists", label: "Assists", category: "scoring" },
   { id: "shots", label: "Shots", category: "scoring" },
-  { id: "plus_minus", label: "Plus/Minus (+/-)", category: "overall" },
+  { id: "plus_minus", label: "Plus/Minus (+/-)", category: "scoring" },
+  { id: "rating", label: "Performance Rating (1-5 stars)", category: "scoring" },
+  // Defensive
+  { id: "blocked_shots", label: "Blocked Shots", category: "defensive" },
+  { id: "hits", label: "Hits", category: "defensive" },
+  { id: "takeaways", label: "Takeaways", category: "defensive" },
+  // Discipline
   { id: "penalty_minutes", label: "Penalty Minutes (PIM)", category: "discipline" },
-  { id: "hits", label: "Hits", category: "physical" },
-  { id: "blocked_shots", label: "Blocked Shots", category: "defense" },
-  { id: "takeaways", label: "Takeaways", category: "defense" },
-  { id: "giveaways", label: "Giveaways", category: "defense" },
-  { id: "faceoff_percentage", label: "Faceoff % (FO%)", category: "special" },
-  { id: "power_play_goals", label: "Power Play Goals (PPG)", category: "special" },
-  { id: "power_play_points", label: "Power Play Points (PPP)", category: "special" },
-  { id: "shorthanded_goals", label: "Shorthanded Goals (SHG)", category: "special" },
-  { id: "shorthanded_points", label: "Shorthanded Points (SHP)", category: "special" },
-  { id: "rating", label: "Performance Rating (1-5 stars)", category: "overall" },
+  { id: "giveaways", label: "Giveaways", category: "discipline" },
+  // Advanced Stats
+  { id: "faceoff_percentage", label: "Faceoff % (FO%)", category: "advanced" },
+  { id: "power_play_goals", label: "Power Play Goals (PPG)", category: "advanced" },
+  { id: "power_play_points", label: "Power Play Points (PPP)", category: "advanced" },
+  { id: "shorthanded_goals", label: "Shorthanded Goals (SHG)", category: "advanced" },
+  { id: "shorthanded_points", label: "Shorthanded Points (SHP)", category: "advanced" },
 ];
 
 const SEASON_TYPES = [
