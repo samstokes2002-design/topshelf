@@ -216,6 +216,35 @@ export default function LogSession() {
   const update = (field, value) => setForm((f) => ({ ...f, [field]: value }));
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
+  // Block logging if no season exists
+  const seasonsLoaded = !!(form.profile_id); // seasons query is enabled when profile_id exists
+  if (form.profile_id && seasons.length === 0 && !editId) {
+    return (
+      <div className="px-4">
+        <div className="flex items-center gap-3 py-4">
+          <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-white font-bold text-lg">Log Session</h1>
+        </div>
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="w-16 h-16 rounded-3xl bg-amber-500/20 flex items-center justify-center mb-4">
+            <Trophy className="w-8 h-8 text-amber-400" />
+          </div>
+          <h3 className="text-white font-bold text-xl mb-2">No Season Found</h3>
+          <p className="text-slate-400 text-sm mb-8 max-w-xs">You need to create a season before you can log any sessions.</p>
+          <Button
+            onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${form.profile_id}`}
+            className="bg-amber-500 hover:bg-amber-600 text-white rounded-2xl px-6 py-3 font-semibold gap-2"
+          >
+            <Trophy className="w-4 h-4" />
+            Create Season
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (saved) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
