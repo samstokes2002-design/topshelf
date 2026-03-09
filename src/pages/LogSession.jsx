@@ -30,7 +30,19 @@ export default function LogSession() {
   const navigate = useNavigate();
 
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({
+  const [savedDraft, setSavedDraft] = useState(false);
+  const [currentPeriod, setCurrentPeriod] = useState(1);
+  const DRAFT_KEY = "shift_session_draft";
+
+  const [form, setForm] = useState(() => {
+    // Try to restore draft on mount
+    if (!editId) {
+      try {
+        const draft = localStorage.getItem(DRAFT_KEY);
+        if (draft) return JSON.parse(draft);
+      } catch {}
+    }
+    return {
     profile_id: profileId || "",
     season_id: "",
     date: "",
