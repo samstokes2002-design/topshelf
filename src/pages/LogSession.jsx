@@ -462,11 +462,11 @@ export default function LogSession() {
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                 <h3 className="text-white font-semibold text-sm mb-3">Defensive</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {selectedStats.includes("hits") && (
-                    <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
-                  )}
                   {selectedStats.includes("blocked_shots") && (
                     <StatControl label="Blocks" value={form.blocked_shots} onChange={(v) => update("blocked_shots", v)} />
+                  )}
+                  {selectedStats.includes("hits") && (
+                    <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
                   )}
                   {selectedStats.includes("takeaways") && (
                     <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />

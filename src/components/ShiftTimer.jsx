@@ -167,11 +167,11 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
             <div>
               <h4 className="text-white font-semibold text-sm mb-2">Defensive</h4>
               <div className="grid grid-cols-2 gap-3">
-                {selectedStats.includes("hits") && (
-                  <StatControl label="Hits" value={currentStats.hits || 0} onChange={(v) => updateStat("hits", v)} />
-                )}
                 {selectedStats.includes("blocked_shots") && (
                   <StatControl label="Blocks" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
+                )}
+                {selectedStats.includes("hits") && (
+                  <StatControl label="Hits" value={currentStats.hits || 0} onChange={(v) => updateStat("hits", v)} />
                 )}
                 {selectedStats.includes("takeaways") && (
                   <StatControl label="Takeaways" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
