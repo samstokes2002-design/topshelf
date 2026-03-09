@@ -189,6 +189,23 @@ export default function Stats() {
         />
       </div>
 
+      {/* Tab Selector */}
+      <div className="flex bg-slate-800/60 border border-slate-700/50 rounded-2xl p-1 mb-5">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all ${
+              activeTab === tab.id
+                ? "bg-sky-500 text-white shadow"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
