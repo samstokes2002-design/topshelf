@@ -200,12 +200,12 @@ export default function Profile() {
               const seasonSessions = sessions.filter((s) => {
                 const [y, m, d] = s.date.split("-").map(Number);
                 const sessionDate = new Date(y, m - 1, d);
-                const seasonStart = new Date(season.created_date);
-                seasonStart.setHours(0, 0, 0, 0);
+                const seasonStart = toLocalMidnight(season.created_date);
                 const seasonIndex = seasons.findIndex((se) => se.id === season.id);
                 const nextSeason = seasons[seasonIndex - 1];
-                const seasonEnd = nextSeason ? new Date(nextSeason.created_date) : new Date();
-                seasonEnd.setHours(23, 59, 59, 999);
+                const seasonEnd = nextSeason
+                  ? new Date(toLocalMidnight(nextSeason.created_date).getTime() - 1)
+                  : new Date(9999, 11, 31);
                 return sessionDate >= seasonStart && sessionDate <= seasonEnd;
               });
               const seasonGames = seasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
