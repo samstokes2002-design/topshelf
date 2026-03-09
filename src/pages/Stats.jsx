@@ -115,7 +115,7 @@ export default function Stats() {
 
   const PERIOD_STAT_LABELS = {
     goals: "G", assists: "A", shots: "SOG", plus_minus: "+/-",
-    hits: "Hits", blocked_shots: "Blk", takeaways: "TA", giveaways: "GA",
+    hits: "Hits", blocked_shots: "BLK", takeaways: "TK", giveaways: "GV",
     penalty_minutes: "PIM", faceoff_wins: "FOW", faceoff_losses: "FOL",
     power_play_goals: "PPG", power_play_points: "PPP",
     shorthanded_goals: "SHG", shorthanded_points: "SHP",
