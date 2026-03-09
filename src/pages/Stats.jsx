@@ -42,7 +42,8 @@ export default function Stats() {
     localStorage.setItem("activeProfileId", profile.id);
   };
 
-  const games = sessions.filter((s) => s.type === "game");
+  // Games = both "game" and "shift_by_shift" types count toward game stats
+  const games = sessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
   const totalGoals = games.reduce((s, g) => s + (g.goals || 0), 0);
   const totalAssists = games.reduce((s, g) => s + (g.assists || 0), 0);
   const totalShots = games.reduce((s, g) => s + (g.shots || 0), 0);
@@ -65,6 +66,15 @@ export default function Stats() {
   const faceoffPct = (totalFaceoffWins + totalFaceoffLosses) > 0 
     ? ((totalFaceoffWins / (totalFaceoffWins + totalFaceoffLosses)) * 100).toFixed(1) 
     : "0";
+
+  // AVG TOI — calculated only from shift_by_shift sessions using exact seconds from shifts array
+  const shiftSessions = sessions.filter(s => s.type === "shift_by_shift" && s.shifts && s.shifts.length > 0);
+  const totalToiSeconds = shiftSessions.reduce((sum, s) => 
+    sum + s.shifts.reduce((ss, shift) => ss + (shift.duration_seconds || 0), 0), 0);
+  const avgToiSeconds = shiftSessions.length > 0 ? Math.round(totalToiSeconds / shiftSessions.length) : 0;
+  const avgToiDisplay = shiftSessions.length > 0
+    ? `${Math.floor(avgToiSeconds / 60)}:${String(avgToiSeconds % 60).padStart(2, "0")}`
+    : "—";
 
   // Monthly chart data
   const last6Months = eachMonthOfInterval({
