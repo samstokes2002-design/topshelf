@@ -262,39 +262,23 @@ export default function Stats() {
                       <span className="text-sky-400 font-bold text-sm">{p.label}</span>
                     </div>
                     <div className="space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">TOI</span>
-                        <span className="text-white font-medium">{p.toi}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">G</span>
-                        <span className="text-white font-medium">{p.goals}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">A</span>
-                        <span className="text-white font-medium">{p.assists}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">SOG</span>
-                        <span className="text-white font-medium">{p.shots}</span>
-                      </div>
-                      {p.hits > 0 && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Hits</span>
-                          <span className="text-white font-medium">{p.hits}</span>
-                        </div>
-                      )}
-                      {p.blocks > 0 && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Blk</span>
-                          <span className="text-white font-medium">{p.blocks}</span>
-                        </div>
-                      )}
-                      <div className="flex justify-between pt-1 border-t border-slate-600/50">
-                        <span className="text-slate-500">Shifts</span>
-                        <span className="text-slate-300 font-medium">{p.shifts}</span>
-                      </div>
-                    </div>
+                       <div className="flex justify-between">
+                         <span className="text-slate-400">TOI</span>
+                         <span className="text-white font-medium">{p.toi}</span>
+                       </div>
+                       {allShiftStatKeys.map(key => (
+                         <div key={key} className="flex justify-between">
+                           <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
+                           <span className={`font-medium ${key === "plus_minus" ? (p.stats[key] > 0 ? "text-emerald-400" : p.stats[key] < 0 ? "text-red-400" : "text-white") : key === "giveaways" ? "text-red-400" : key === "takeaways" ? "text-emerald-400" : "text-white"}`}>
+                             {key === "plus_minus" && p.stats[key] > 0 ? `+${p.stats[key]}` : p.stats[key]}
+                           </span>
+                         </div>
+                       ))}
+                       <div className="flex justify-between pt-1 border-t border-slate-600/50">
+                         <span className="text-slate-500">Shifts</span>
+                         <span className="text-slate-300 font-medium">{p.shifts}</span>
+                       </div>
+                     </div>
                   </div>
                 ))}
               </div>
