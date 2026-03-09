@@ -435,10 +435,10 @@ export default function LogSession() {
               </div>
             </div>
 
-            {/* Dynamic Stats Based on Season Selection */}
-            {selectedStats.includes("goals") && selectedStats.includes("assists") && selectedStats.includes("shots") && selectedStats.includes("plus_minus") && (
+            {/* Scoring */}
+            {(selectedStats.includes("goals") || selectedStats.includes("assists") || selectedStats.includes("shots") || selectedStats.includes("plus_minus")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Scoring</h3>
+                <h3 className="text-white font-semibold text-sm mb-3">Scoring</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("goals") && (
                     <StatControl label="Goals" value={form.goals} onChange={(v) => update("goals", v)} color="text-sky-400" />
@@ -457,9 +457,10 @@ export default function LogSession() {
               </div>
             )}
 
-            {(selectedStats.includes("hits") || selectedStats.includes("blocked_shots") || selectedStats.includes("takeaways") || selectedStats.includes("giveaways")) && (
+            {/* Defensive */}
+            {(selectedStats.includes("hits") || selectedStats.includes("blocked_shots") || selectedStats.includes("takeaways")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Defense & Possession</h3>
+                <h3 className="text-white font-semibold text-sm mb-3">Defensive</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedStats.includes("hits") && (
                     <StatControl label="Hits" value={form.hits} onChange={(v) => update("hits", v)} />
@@ -470,6 +471,18 @@ export default function LogSession() {
                   {selectedStats.includes("takeaways") && (
                     <StatControl label="Takeaways" value={form.takeaways} onChange={(v) => update("takeaways", v)} color="text-emerald-400" />
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Discipline */}
+            {(selectedStats.includes("penalty_minutes") || selectedStats.includes("giveaways")) && (
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+                <h3 className="text-white font-semibold text-sm mb-3">Discipline</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {selectedStats.includes("penalty_minutes") && (
+                    <StatControl label="Penalty Min" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
+                  )}
                   {selectedStats.includes("giveaways") && (
                     <StatControl label="Giveaways" value={form.giveaways} onChange={(v) => update("giveaways", v)} color="text-red-400" />
                   )}
@@ -477,13 +490,11 @@ export default function LogSession() {
               </div>
             )}
 
-            {(selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
+            {/* Advanced Stats */}
+            {(selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
-                <h3 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Discipline & Advanced</h3>
+                <h3 className="text-white font-semibold text-sm mb-3">Advanced Stats</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {selectedStats.includes("penalty_minutes") && (
-                    <StatControl label="PIM" value={form.penalty_minutes} onChange={(v) => update("penalty_minutes", v)} color="text-red-400" />
-                  )}
                   {selectedStats.includes("faceoff_percentage") && (
                     <>
                       <StatControl label="FO Won" value={form.faceoff_wins} onChange={(v) => update("faceoff_wins", v)} color="text-emerald-400" />
