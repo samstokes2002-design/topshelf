@@ -100,7 +100,7 @@ export default function Stats() {
     : "0";
 
   // AVG TOI — calculated only from shift_by_shift sessions using exact seconds from shifts array
-  const shiftSessions = sessions.filter(s => s.type === "shift_by_shift" && s.shifts && s.shifts.length > 0);
+  const shiftSessions = filteredSessions.filter(s => s.type === "shift_by_shift" && s.shifts && s.shifts.length > 0);
   const totalToiSeconds = shiftSessions.reduce((sum, s) => 
     sum + s.shifts.reduce((ss, shift) => ss + (shift.duration_seconds || 0), 0), 0);
   const avgToiSeconds = shiftSessions.length > 0 ? Math.round(totalToiSeconds / shiftSessions.length) : 0;
