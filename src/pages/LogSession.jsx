@@ -109,6 +109,26 @@ export default function LogSession() {
     }
   }, [activeSeason]);
 
+  // Auto-update PPP if PPG is logged without PPP
+  useEffect(() => {
+    setForm((f) => {
+      if (f.power_play_goals > 0 && f.power_play_points === 0) {
+        return { ...f, power_play_points: f.power_play_goals };
+      }
+      return f;
+    });
+  }, [form.power_play_goals]);
+
+  // Auto-update SHP if SHG is logged without SHP
+  useEffect(() => {
+    setForm((f) => {
+      if (f.shorthanded_goals > 0 && f.shorthanded_points === 0) {
+        return { ...f, shorthanded_points: f.shorthanded_goals };
+      }
+      return f;
+    });
+  }, [form.shorthanded_goals]);
+
   const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
   const defaultStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
   const rawSelectedStats = selectedSeason?.selected_stats || [];
