@@ -76,6 +76,29 @@ export default function Stats() {
     ? `${Math.floor(avgToiSeconds / 60)}:${String(avgToiSeconds % 60).padStart(2, "0")}`
     : "—";
 
+  // Period breakdown from shift_by_shift sessions
+  const periodStats = [1, 2, 3].map((period) => {
+    const periodShifts = shiftSessions.flatMap(s => 
+      (s.shifts || []).filter(sh => sh.period === period)
+    );
+    const toiSeconds = periodShifts.reduce((sum, sh) => sum + (sh.duration_seconds || 0), 0);
+    const goals = periodShifts.reduce((sum, sh) => sum + (sh.stats?.goals || 0), 0);
+    const assists = periodShifts.reduce((sum, sh) => sum + (sh.stats?.assists || 0), 0);
+    const shots = periodShifts.reduce((sum, sh) => sum + (sh.stats?.shots || 0), 0);
+    const hits = periodShifts.reduce((sum, sh) => sum + (sh.stats?.hits || 0), 0);
+    const blocks = periodShifts.reduce((sum, sh) => sum + (sh.stats?.blocked_shots || 0), 0);
+    const toiMin = Math.floor(toiSeconds / 60);
+    const toiSec = toiSeconds % 60;
+    return {
+      label: period === 1 ? "1st" : period === 2 ? "2nd" : "3rd",
+      period,
+      shifts: periodShifts.length,
+      toi: toiSeconds > 0 ? `${toiMin}:${String(toiSec).padStart(2, "0")}` : "—",
+      goals, assists, shots, hits, blocks,
+    };
+  });
+  const hasPeriodData = periodStats.some(p => p.shifts > 0);
+
   // Monthly chart data
   const last6Months = eachMonthOfInterval({
     start: subMonths(new Date(), 5),
