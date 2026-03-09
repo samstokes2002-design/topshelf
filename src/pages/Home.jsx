@@ -111,8 +111,6 @@ export default function Home() {
   };
 
   const streak = getStreak();
-  const totalGames = sessions.filter((s) => s.type === "game").length;
-  const totalGoals = sessions.reduce((sum, s) => sum + (s.goals || 0), 0);
 
   const isLoading = profilesLoading || sessionsLoading;
 
