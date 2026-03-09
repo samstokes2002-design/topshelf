@@ -167,8 +167,8 @@ export default function Stats() {
 
   const typeBreakdown = [
     { name: "Games", value: games.length },
-    { name: "Practice", value: sessions.filter((s) => s.type === "practice").length },
-    { name: "Training", value: sessions.filter((s) => s.type === "training").length },
+    { name: "Practice", value: filteredSessions.filter((s) => s.type === "practice").length },
+    { name: "Training", value: filteredSessions.filter((s) => s.type === "training").length },
   ].filter((t) => t.value > 0);
 
   const recordData = [
