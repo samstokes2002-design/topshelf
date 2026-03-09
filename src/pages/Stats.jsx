@@ -155,7 +155,8 @@ export default function Stats() {
   const monthlyData = last6Months.map((month) => {
     const monthSessions = filteredSessions.filter((s) => {
       if (!s.date) return false;
-      const d = new Date(s.date);
+      const [y, m, day] = s.date.split("-").map(Number);
+      const d = new Date(y, m - 1, day);
       return d >= startOfMonth(month) && d <= endOfMonth(month);
     });
     const monthGames = monthSessions.filter((s) => s.type === "game");
