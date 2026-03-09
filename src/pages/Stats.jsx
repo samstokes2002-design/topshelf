@@ -77,9 +77,10 @@ export default function Stats() {
     : "—";
 
   // Period breakdown from shift_by_shift sessions
+  // Shifts without a period field default to period 1
   const periodStats = [1, 2, 3].map((period) => {
     const periodShifts = shiftSessions.flatMap(s => 
-      (s.shifts || []).filter(sh => sh.period === period)
+      (s.shifts || []).filter(sh => (sh.period ?? 1) === period)
     );
     const toiSeconds = periodShifts.reduce((sum, sh) => sum + (sh.duration_seconds || 0), 0);
     const goals = periodShifts.reduce((sum, sh) => sum + (sh.stats?.goals || 0), 0);
@@ -97,7 +98,7 @@ export default function Stats() {
       goals, assists, shots, hits, blocks,
     };
   });
-  const hasPeriodData = periodStats.some(p => p.shifts > 0);
+  const hasPeriodData = shiftSessions.length > 0;
 
   // Monthly chart data
   const last6Months = eachMonthOfInterval({
