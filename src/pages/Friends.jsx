@@ -104,30 +104,32 @@ export default function Friends() {
           </div>
         )}
 
-        {/* Pending */}
-        {pending.length > 0 && (
+        {/* Pending Incoming Requests */}
+        {pendingIncoming.length > 0 && (
           <div className="mb-6">
             <h3 className="text-slate-400 text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <Clock className="w-3 h-3" />
-              Pending
+              Friend Requests
             </h3>
             <div className="space-y-2">
-              {pending.map((friend) => (
+              {pendingIncoming.map((friend) => (
                 <div key={friend.id} className="flex items-center justify-between bg-slate-800/60 border border-slate-700/50 rounded-xl p-3">
                   <div>
-                    <p className="text-white text-sm font-medium">{friend.friend_name || friend.friend_email}</p>
-                    <p className="text-slate-500 text-xs">{friend.friend_email}</p>
+                    <p className="text-white text-sm font-medium">{friend.friend_name}</p>
+                    <p className="text-slate-500 text-xs">{friend.created_by}</p>
                   </div>
                   <div className="flex gap-1">
                     <button
-                      onClick={() => updateFriendMutation.mutate({ id: friend.id, status: "accepted" })}
-                      className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
+                      onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "accepted" })}
+                      disabled={respondToRequestMutation.isPending}
+                      className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors disabled:opacity-50"
                     >
                       <Check className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => deleteFriendMutation.mutate(friend.id)}
-                      className="p-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+                      onClick={() => respondToRequestMutation.mutate({ id: friend.id, status: "declined" })}
+                      disabled={respondToRequestMutation.isPending}
+                      className="p-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors disabled:opacity-50"
                     >
                       <X className="w-4 h-4" />
                     </button>
