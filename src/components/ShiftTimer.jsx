@@ -139,56 +139,79 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
 
       {/* Current Shift Stats */}
       {selectedStats.length > 0 && (
-        <div className="mb-4 pb-4 border-b border-slate-700/50">
-          <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Current Shift Stats</h4>
-          <div className="grid grid-cols-2 gap-3">
-            {selectedStats.includes("goals") && (
-              <StatControl label="Goals" value={currentStats.goals || 0} onChange={(v) => updateStat("goals", v)} color="text-sky-400" />
-            )}
-            {selectedStats.includes("assists") && (
-              <StatControl label="Assists" value={currentStats.assists || 0} onChange={(v) => updateStat("assists", v)} color="text-emerald-400" />
-            )}
-            {selectedStats.includes("shots") && (
-              <StatControl label="Shots" value={currentStats.shots || 0} onChange={(v) => updateStat("shots", v)} />
-            )}
-            {selectedStats.includes("plus_minus") && (
-              <StatControl label="+/-" value={currentStats.plus_minus || 0} onChange={(v) => updateStat("plus_minus", v)} 
-                color={currentStats.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
-            )}
-            {selectedStats.includes("hits") && (
-              <StatControl label="Hits" value={currentStats.hits || 0} onChange={(v) => updateStat("hits", v)} />
-            )}
-            {selectedStats.includes("blocked_shots") && (
-              <StatControl label="BLK" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
-            )}
-            {selectedStats.includes("takeaways") && (
-              <StatControl label="TK" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
-            )}
-            {selectedStats.includes("giveaways") && (
-              <StatControl label="GV" value={currentStats.giveaways || 0} onChange={(v) => updateStat("giveaways", v)} color="text-red-400" />
-            )}
-            {selectedStats.includes("penalty_minutes") && (
-              <StatControl label="PIM" value={currentStats.penalty_minutes || 0} onChange={(v) => updateStat("penalty_minutes", v)} color="text-red-400" />
-            )}
-            {selectedStats.includes("faceoff_percentage") && (
-              <>
-                <StatControl label="FO Won" value={currentStats.faceoff_wins || 0} onChange={(v) => updateStat("faceoff_wins", v)} color="text-emerald-400" />
-                <StatControl label="FO Lost" value={currentStats.faceoff_losses || 0} onChange={(v) => updateStat("faceoff_losses", v)} color="text-red-400" />
-              </>
-            )}
-            {selectedStats.includes("power_play_goals") && (
-              <StatControl label="PPG" value={currentStats.power_play_goals || 0} onChange={(v) => updateStat("power_play_goals", v)} color="text-sky-400" />
-            )}
-            {selectedStats.includes("power_play_points") && (
-              <StatControl label="PPP" value={currentStats.power_play_points || 0} onChange={(v) => updateStat("power_play_points", v)} color="text-sky-400" />
-            )}
-            {selectedStats.includes("shorthanded_goals") && (
-              <StatControl label="SHG" value={currentStats.shorthanded_goals || 0} onChange={(v) => updateStat("shorthanded_goals", v)} color="text-emerald-400" />
-            )}
-            {selectedStats.includes("shorthanded_points") && (
-              <StatControl label="SHP" value={currentStats.shorthanded_points || 0} onChange={(v) => updateStat("shorthanded_points", v)} color="text-emerald-400" />
-            )}
-          </div>
+        <div className="mb-4 pb-4 border-b border-slate-700/50 space-y-3">
+          {/* Scoring */}
+          {selectedStats.includes("goals") || selectedStats.includes("assists") || selectedStats.includes("shots") || selectedStats.includes("plus_minus") ? (
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-2 uppercase tracking-wider">Scoring</h4>
+              <div className="grid grid-cols-2 gap-3">
+                {selectedStats.includes("goals") && (
+                  <StatControl label="Goals" value={currentStats.goals || 0} onChange={(v) => updateStat("goals", v)} color="text-sky-400" />
+                )}
+                {selectedStats.includes("assists") && (
+                  <StatControl label="Assists" value={currentStats.assists || 0} onChange={(v) => updateStat("assists", v)} color="text-emerald-400" />
+                )}
+                {selectedStats.includes("shots") && (
+                  <StatControl label="Shots" value={currentStats.shots || 0} onChange={(v) => updateStat("shots", v)} />
+                )}
+                {selectedStats.includes("plus_minus") && (
+                  <StatControl label="+/-" value={currentStats.plus_minus || 0} onChange={(v) => updateStat("plus_minus", v)} 
+                    color={currentStats.plus_minus >= 0 ? "text-emerald-400" : "text-red-400"} allowNegative={true} />
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Defense & Possession */}
+          {selectedStats.includes("hits") || selectedStats.includes("blocked_shots") || selectedStats.includes("takeaways") || selectedStats.includes("giveaways") ? (
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-2 uppercase tracking-wider">Defense & Possession</h4>
+              <div className="grid grid-cols-2 gap-3">
+                {selectedStats.includes("hits") && (
+                  <StatControl label="Hits" value={currentStats.hits || 0} onChange={(v) => updateStat("hits", v)} />
+                )}
+                {selectedStats.includes("blocked_shots") && (
+                  <StatControl label="Blocks" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
+                )}
+                {selectedStats.includes("takeaways") && (
+                  <StatControl label="Takeaways" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
+                )}
+                {selectedStats.includes("giveaways") && (
+                  <StatControl label="Giveaways" value={currentStats.giveaways || 0} onChange={(v) => updateStat("giveaways", v)} color="text-red-400" />
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Discipline & Advanced */}
+          {selectedStats.includes("penalty_minutes") || selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points") ? (
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-2 uppercase tracking-wider">Discipline & Advanced</h4>
+              <div className="grid grid-cols-2 gap-3">
+                {selectedStats.includes("penalty_minutes") && (
+                  <StatControl label="PIM" value={currentStats.penalty_minutes || 0} onChange={(v) => updateStat("penalty_minutes", v)} color="text-red-400" />
+                )}
+                {selectedStats.includes("faceoff_percentage") && (
+                  <>
+                    <StatControl label="FO Won" value={currentStats.faceoff_wins || 0} onChange={(v) => updateStat("faceoff_wins", v)} color="text-emerald-400" />
+                    <StatControl label="FO Lost" value={currentStats.faceoff_losses || 0} onChange={(v) => updateStat("faceoff_losses", v)} color="text-red-400" />
+                  </>
+                )}
+                {selectedStats.includes("power_play_goals") && (
+                  <StatControl label="PPG" value={currentStats.power_play_goals || 0} onChange={(v) => updateStat("power_play_goals", v)} color="text-sky-400" />
+                )}
+                {selectedStats.includes("power_play_points") && (
+                  <StatControl label="PPP" value={currentStats.power_play_points || 0} onChange={(v) => updateStat("power_play_points", v)} color="text-sky-400" />
+                )}
+                {selectedStats.includes("shorthanded_goals") && (
+                  <StatControl label="SHG" value={currentStats.shorthanded_goals || 0} onChange={(v) => updateStat("shorthanded_goals", v)} color="text-emerald-400" />
+                )}
+                {selectedStats.includes("shorthanded_points") && (
+                  <StatControl label="SHP" value={currentStats.shorthanded_points || 0} onChange={(v) => updateStat("shorthanded_points", v)} color="text-emerald-400" />
+                )}
+              </div>
+            </div>
+          ) : null}
         </div>
       )}
 
