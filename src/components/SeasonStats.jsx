@@ -16,7 +16,7 @@ const statLabels = {
   power_play_points: "PPP",
   shorthanded_goals: "SHG",
   shorthanded_points: "SHP",
-  time_on_ice: "TOI (min)",
+  time_on_ice: "Avg TOI",
   rating: "Avg Rating",
 };
 
