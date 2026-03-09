@@ -150,10 +150,10 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
               <StatControl label="Blocks" value={currentStats.blocked_shots || 0} onChange={(v) => updateStat("blocked_shots", v)} />
             )}
             {selectedStats.includes("takeaways") && (
-              <StatControl label="Takeaways" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
+              <StatControl label="TK" value={currentStats.takeaways || 0} onChange={(v) => updateStat("takeaways", v)} color="text-emerald-400" />
             )}
             {selectedStats.includes("giveaways") && (
-              <StatControl label="Giveaways" value={currentStats.giveaways || 0} onChange={(v) => updateStat("giveaways", v)} color="text-red-400" />
+              <StatControl label="GV" value={currentStats.giveaways || 0} onChange={(v) => updateStat("giveaways", v)} color="text-red-400" />
             )}
             {selectedStats.includes("penalty_minutes") && (
               <StatControl label="PIM" value={currentStats.penalty_minutes || 0} onChange={(v) => updateStat("penalty_minutes", v)} color="text-red-400" />
