@@ -16,37 +16,39 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Username is required' }, { status: 400 });
     }
 
-    // Prevent self-friending
-    const myProfile = await base44.asServiceRole.entities.Profile.filter({ created_by: user.email });
-    const myUsername = myProfile[0]?.username;
+    const normalizedUsername = username.toLowerCase().trim();
+
+    // Get current user's profile
+    const myProfiles = await base44.asServiceRole.entities.Profile.list(null, 1000);
+    const myProfile = myProfiles.find(p => p.created_by === user.email);
     
-    if (myUsername && myUsername.toLowerCase() === username.toLowerCase()) {
+    if (myProfile && myProfile.username.toLowerCase() === normalizedUsername) {
       return Response.json(
         { error: 'You cannot send a friend request to yourself' },
         { status: 400 }
       );
     }
 
-    // Find the profile with that username
-    const targetProfiles = await base44.asServiceRole.entities.Profile.filter({ username: username.toLowerCase().trim() });
+    // Find the target profile by username
+    const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 1000);
+    const targetProfile = allProfiles.find(p => p.username.toLowerCase() === normalizedUsername);
     
-    if (!targetProfiles || targetProfiles.length === 0) {
+    if (!targetProfile) {
       return Response.json(
         { error: 'User not found' },
         { status: 404 }
       );
     }
 
-    const targetProfile = targetProfiles[0];
     const targetEmail = targetProfile.created_by;
 
-    // Check if friend request already exists
-    const existingRequests = await base44.asServiceRole.entities.Friend.filter({
-      created_by: user.email,
-      friend_email: targetEmail
-    });
+    // Check if request already exists
+    const existingRequests = await base44.asServiceRole.entities.Friend.list(null, 1000);
+    const duplicate = existingRequests.find(
+      f => f.created_by === user.email && f.friend_email === targetEmail
+    );
 
-    if (existingRequests && existingRequests.length > 0) {
+    if (duplicate) {
       return Response.json(
         { error: 'Friend request already sent' },
         { status: 409 }
