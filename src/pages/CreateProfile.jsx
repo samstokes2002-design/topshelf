@@ -42,7 +42,8 @@ export default function CreateProfile() {
 
     setCheckingUsername(true);
     try {
-      const existingProfiles = await base44.entities.Profile.filter({ username: username.toLowerCase().trim() });
+      const allProfiles = await base44.entities.Profile.list(null, 1000);
+      const existingProfiles = allProfiles.filter(p => p.username && p.username.toLowerCase().trim() === username.toLowerCase().trim());
       if (existingProfiles.length > 0) {
         setUsernameError("Username already taken");
         setCheckingUsername(false);
