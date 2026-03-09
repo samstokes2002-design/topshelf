@@ -60,7 +60,8 @@ export default function Profile() {
   
   const currentSeasonSessions = activeSeason
     ? sessions.filter((s) => {
-        const sessionDate = new Date(s.date);
+        const [y, m, d] = s.date.split("-").map(Number);
+        const sessionDate = new Date(y, m - 1, d);
         const seasonStart = new Date(activeSeason.created_date);
         seasonStart.setHours(0, 0, 0, 0);
         const seasonIndex = seasons.findIndex((se) => se.id === activeSeason.id);
