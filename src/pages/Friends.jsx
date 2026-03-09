@@ -58,7 +58,10 @@ export default function Friends() {
   };
 
   const accepted = myFriends.filter((f) => f.status === "accepted");
-  const pending = myFriends.filter((f) => f.status === "pending");
+  // Only show pending requests sent TO the current user (where friend_email matches current user)
+  const pendingIncoming = myFriends.filter((f) => f.status === "pending" && f.friend_email === user?.email);
+  // Requests we sent (not shown in this view, but tracked)
+  const pendingOutgoing = myFriends.filter((f) => f.status === "pending" && f.created_by === user?.email);
 
   return (
     <div className="px-4 pb-24">
