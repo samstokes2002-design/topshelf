@@ -224,64 +224,20 @@ export default function Stats() {
         </div>
       ) : (
         <>
-          {/* Key Stats Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <StatCard label="Goals" value={totalGoals} icon={Trophy} color="text-sky-400" />
-            <StatCard label="Assists" value={totalAssists} icon={Target} color="text-emerald-400" />
-            <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
-            <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
-            <StatCard 
-              label="TOI" 
-              value={avgToiDisplay} 
-              icon={Clock} 
-              color="text-amber-400" 
-            />
-          </div>
-
-          {/* Advanced Stats */}
-          {games.length > 0 && (
-            <>
-              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-                <h3 className="text-white font-semibold text-sm mb-3">Game Stats</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <StatCard label="Shots" value={totalShots} icon={Target} color="text-white" />
-                  <StatCard 
-                    label="+/-" 
-                    value={totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus} 
-                    icon={totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle} 
-                    color={totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400"} 
-                  />
-                </div>
-              </div>
-
-              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-                <h3 className="text-white font-semibold text-sm mb-3">Defense & Possession</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
-                  <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-white" />
-                  <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
-                  <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
-                  {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
-                    <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-
           {/* Record */}
           {games.length > 0 && (
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-              <h3 className="text-white font-semibold text-sm mb-3">Record</h3>
-              <div className="flex items-center gap-6">
-                {recordData.map((r) => (
-                  <div key={r.name} className="text-center">
-                    <span className="text-2xl font-bold" style={{ color: r.color }}>{r.value}</span>
-                    <span className="text-[10px] text-slate-400 block uppercase">{r.name}</span>
-                  </div>
-                ))}
-                <div className="text-center ml-auto">
-                  <div className="flex items-center justify-center gap-1 mb-1">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {recordData.map((r) => (
+                    <div key={r.name} className="text-center">
+                      <span className="text-2xl font-bold" style={{ color: r.color }}>{r.value}</span>
+                      <span className="text-[10px] text-slate-400 block uppercase">{r.name}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1">
                     <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                   </div>
                   <span className="text-2xl font-bold text-white">{avgRating}</span>
@@ -290,6 +246,56 @@ export default function Stats() {
               </div>
             </div>
           )}
+
+          {/* Scoring */}
+          <SectionCard title="Scoring" icon={Trophy} iconColor="text-sky-400">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard label="Games Played" value={games.length} icon={Trophy} color="text-slate-400" />
+              <StatCard label="Goals" value={totalGoals} icon={Trophy} color="text-sky-400" />
+              <StatCard label="Assists" value={totalAssists} icon={Target} color="text-emerald-400" />
+              <StatCard label="Points" value={totalPoints} icon={TrendingUp} color="text-violet-400" />
+              <StatCard
+                label="+/-"
+                value={totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus}
+                icon={totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle}
+                color={totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400"}
+              />
+              <StatCard label="Shots" value={totalShots} icon={Target} color="text-white" />
+              <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
+            </div>
+          </SectionCard>
+
+          {/* Defensive */}
+          <SectionCard title="Defensive" icon={Shield} iconColor="text-blue-400">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-blue-400" />
+              <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
+              <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
+            </div>
+          </SectionCard>
+
+          {/* Discipline */}
+          <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard label="Penalty Min" value={totalPenaltyMinutes} icon={Flame} color="text-orange-400" />
+              <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
+            </div>
+          </SectionCard>
+
+          {/* Advanced Stats */}
+          <SectionCard title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400">
+            <div className="grid grid-cols-2 gap-3">
+              {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
+                <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
+              )}
+              <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
+              <StatCard label="PPG" value={totalPPG} icon={TrendingUp} color="text-violet-400" />
+              <StatCard label="PPP" value={totalPPP} icon={TrendingUp} color="text-violet-400" />
+              <StatCard label="SHG" value={totalSHG} icon={TrendingUp} color="text-emerald-400" />
+              <StatCard label="SHP" value={totalSHP} icon={TrendingUp} color="text-emerald-400" />
+              <StatCard label="Avg TOI" value={avgToiDisplay} icon={Clock} color="text-amber-400" />
+            </div>
+          </SectionCard>
 
 
 
