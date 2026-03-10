@@ -123,6 +123,37 @@ export default function Settings() {
         </div>
       </div>
 
+      {/* Blocked Users */}
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <UserX className="w-4 h-4 text-red-400" />
+          <h3 className="text-white font-semibold text-sm">Blocked Users</h3>
+        </div>
+        {blockedUsers.length === 0 ? (
+          <p className="text-slate-500 text-xs">No blocked users.</p>
+        ) : (
+          <div className="space-y-2">
+            {blockedUsers.map((block) => (
+              <div key={block.id} className="flex items-center justify-between py-2">
+                <div>
+                  <p className="text-white text-sm font-medium">{block.blocked_name || "Unknown"}</p>
+                  {block.blocked_username && (
+                    <p className="text-slate-400 text-xs">@{block.blocked_username}</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => unblockMutation.mutate(block.id)}
+                  disabled={unblockMutation.isPending}
+                  className="text-sky-400 hover:text-sky-300 text-xs font-medium transition-colors disabled:opacity-50"
+                >
+                  Unblock
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Legal */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
         <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Legal</h3>
