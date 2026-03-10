@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import SessionCard from "@/components/SessionCard";
 import EmptyState from "@/components/EmptyState";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
-import NotificationCenter from "@/components/NotificationCenter";
 import { differenceInCalendarDays, parseISO, parse } from "date-fns";
 
 export default function Home() {
@@ -186,11 +185,6 @@ export default function Home() {
             Create Season
           </Button>
         )}
-      </div>
-
-      {/* Notifications */}
-      <div className="mb-6">
-        <NotificationCenter />
       </div>
 
       {/* Streak Highlight */}
