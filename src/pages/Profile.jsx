@@ -165,15 +165,13 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Detailed Info — only when show_on_profile is on */}
-        {activeProfile.show_on_profile && (
+        {/* Detailed Info — only when show_on_profile is on and has content */}
+        {activeProfile.show_on_profile && activeProfile.favorite_team && activeProfile.favorite_team !== "none" && (
           <div className="border-t border-slate-700/50 pt-4 space-y-3">
-            {activeProfile.favorite_team && activeProfile.favorite_team !== "none" && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
-                <p className="text-white text-sm">{activeProfile.favorite_team}</p>
-              </div>
-            )}
+            <div>
+              <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
+              <p className="text-white text-sm">{activeProfile.favorite_team}</p>
+            </div>
           </div>
         )}
 
