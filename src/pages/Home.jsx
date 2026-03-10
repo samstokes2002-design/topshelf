@@ -48,41 +48,38 @@ export default function Home() {
     enabled: profiles.length > 0,
   });
 
-  const { data: friends = [] } = useQuery({
-    queryKey: ["friends"],
+  // Fetch all accepted friends (both directions) with enriched profile info
+  const { data: friendData = { sent: [], received: [] } } = useQuery({
+    queryKey: ["friendRequests"],
     queryFn: async () => {
-      const currentUser = await base44.auth.me();
-      // Get all accepted friendships where current user is the recipient
-      return base44.entities.Friend.filter({ 
-        friend_email: currentUser.email,
-        status: "accepted" 
-      });
+      const res = await base44.functions.invoke('getFriendRequests', {});
+      return res.data;
     },
   });
 
-  const { data: friendProfiles = [] } = useQuery({
-    queryKey: ["friendProfiles", friends],
-    queryFn: async () => {
-      if (friends.length === 0) return [];
-      // Get all profiles created by friends (by their email/created_by)
-      const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
-      return allProfiles.filter(p => 
-        friends.some(f => f.created_by === p.created_by)
-      );
-    },
-    enabled: friends.length > 0,
-  });
+  const acceptedFriendProfiles = [
+    ...friendData.sent.filter(f => f.status === "accepted").map(f => ({
+      profileId: f.other_profile_id,
+      username: f.other_username,
+      name: f.other_name,
+    })),
+    ...friendData.received.filter(f => f.status === "accepted").map(f => ({
+      profileId: f.other_profile_id,
+      username: f.other_username,
+      name: f.other_name,
+    })),
+  ];
 
   const { data: friendSessions = [] } = useQuery({
-    queryKey: ["friendSessions", friendProfiles],
+    queryKey: ["friendSessions", acceptedFriendProfiles.map(f => f.profileId)],
     queryFn: async () => {
-      if (friendProfiles.length === 0) return [];
-      const allSessions = await base44.asServiceRole.entities.Session.list(null, 10000);
-      return allSessions.filter(s => 
-        friendProfiles.some(p => p.id === s.profile_id)
-      ).sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (acceptedFriendProfiles.length === 0) return [];
+      const allSessions = await base44.asServiceRole.entities.Session.list("-date", 200);
+      return allSessions.filter(s =>
+        acceptedFriendProfiles.some(p => p.profileId === s.profile_id)
+      );
     },
-    enabled: friendProfiles.length > 0,
+    enabled: acceptedFriendProfiles.length > 0,
   });
 
   useEffect(() => {
