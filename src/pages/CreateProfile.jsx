@@ -72,10 +72,16 @@ export default function CreateProfile() {
     setUsernameError("");
   };
 
-  const handlePhotoUpload = async (e) => {
+  const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    setCropFile(file);
+    e.target.value = "";
+  };
+
+  const handleCropDone = async (croppedFile) => {
+    setCropFile(null);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file: croppedFile });
     setForm((f) => ({ ...f, photo_url: file_url }));
   };
 
