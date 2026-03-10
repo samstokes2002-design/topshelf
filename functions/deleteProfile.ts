@@ -15,13 +15,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Profile not found or unauthorized' }, { status: 403 });
     }
 
-    // Fetch all related data
-    const [sessions, seasons, allFriends, allBlocks, allReports] = await Promise.all([
+    // Fetch profile-scoped data
+    const [sessions, seasons, allFriends] = await Promise.all([
       base44.asServiceRole.entities.Session.filter({ profile_id: profileId }, null, 10000),
       base44.asServiceRole.entities.Season.filter({ profile_id: profileId }, null, 10000),
       base44.asServiceRole.entities.Friend.list(null, 10000),
-      base44.asServiceRole.entities.Block.list(null, 10000),
-      base44.asServiceRole.entities.Report.list(null, 10000),
     ]);
 
     // Delete sessions
@@ -34,34 +32,15 @@ Deno.serve(async (req) => {
       await base44.asServiceRole.entities.Season.delete(s.id);
     }
 
-    // Delete friend records involving this profile or this user's email
+    // Delete friend records scoped to this profile only
     const friendsToDelete = allFriends.filter(f =>
-      f.sender_profile_id === profileId ||
-      f.friend_profile_id === profileId ||
-      (f.sender_email || f.created_by) === user.email ||
-      f.friend_email === user.email
+      f.sender_profile_id === profileId || f.friend_profile_id === profileId
     );
     for (const f of friendsToDelete) {
       await base44.asServiceRole.entities.Friend.delete(f.id);
     }
 
-    // Delete blocks involving this user's email
-    const blocksToDelete = allBlocks.filter(b =>
-      b.blocker_email === user.email || b.blocked_email === user.email
-    );
-    for (const b of blocksToDelete) {
-      await base44.asServiceRole.entities.Block.delete(b.id);
-    }
-
-    // Delete reports involving this user's email
-    const reportsToDelete = allReports.filter(r =>
-      r.reporter_email === user.email || r.reported_email === user.email
-    );
-    for (const r of reportsToDelete) {
-      await base44.asServiceRole.entities.Report.delete(r.id);
-    }
-
-    // Finally delete the profile itself
+    // Delete the profile itself
     await base44.asServiceRole.entities.Profile.delete(profileId);
 
     return Response.json({ success: true });
