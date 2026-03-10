@@ -273,12 +273,28 @@ export default function Settings() {
             : <ChevronRight className="w-4 h-4 text-slate-500" />}
         </button>
         <button
-          onClick={() => { setShowDeleteConfirm(true); setDeleteConfirmText(""); }}
+          onClick={() => { setShowDeleteProfileConfirm(true); setDeleteProfileText(""); }}
           className="w-full flex items-center justify-between px-4 py-3 hover:bg-red-500/10 transition-colors border-t border-slate-700/50"
         >
           <div className="flex items-center gap-3">
             <Trash2 className="w-4 h-4 text-red-400" />
-            <span className="text-sm text-red-400">Delete Profile</span>
+            <div className="text-left">
+              <span className="text-sm text-red-400 block">Delete Profile</span>
+              <span className="text-xs text-slate-500">Remove active profile only</span>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-500" />
+        </button>
+        <button
+          onClick={() => { setShowDeleteAccountConfirm(true); setDeleteAccountText(""); }}
+          className="w-full flex items-center justify-between px-4 py-3 hover:bg-red-500/10 transition-colors border-t border-slate-700/50"
+        >
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="w-4 h-4 text-red-500" />
+            <div className="text-left">
+              <span className="text-sm text-red-500 block font-semibold">Delete Account</span>
+              <span className="text-xs text-slate-500">Permanently remove everything</span>
+            </div>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-500" />
         </button>
