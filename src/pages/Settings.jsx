@@ -15,10 +15,13 @@ export default function Settings() {
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
   const [confirmUnblock, setConfirmUnblock] = useState(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [showDeleteProfileConfirm, setShowDeleteProfileConfirm] = useState(false);
+  const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
+  const [deleteProfileText, setDeleteProfileText] = useState("");
+  const [deleteAccountText, setDeleteAccountText] = useState("");
   const [isExporting, setIsExporting] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeletingProfile, setIsDeletingProfile] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
