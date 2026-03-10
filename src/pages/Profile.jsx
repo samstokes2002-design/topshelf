@@ -143,34 +143,26 @@ export default function Profile() {
         {/* Detailed Info — only when show_on_profile is on */}
         {activeProfile.show_on_profile && (
           <div className="border-t border-slate-700/50 pt-4 space-y-3">
-            {activeProfile.age && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Age</p>
-                <p className="text-white text-sm">{activeProfile.age}</p>
-              </div>
-            )}
-            {activeProfile.height && activeProfile.weight && (
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-slate-500 text-xs mb-0.5">Height</p>
-                  <p className="text-white text-sm">{activeProfile.height}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 text-xs mb-0.5">Weight (lbs)</p>
-                  <p className="text-white text-sm">{activeProfile.weight}</p>
-                </div>
-              </div>
-            )}
-            {!activeProfile.weight && activeProfile.height && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Height</p>
-                <p className="text-white text-sm">{activeProfile.height}</p>
-              </div>
-            )}
-            {!activeProfile.height && activeProfile.weight && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Weight (lbs)</p>
-                <p className="text-white text-sm">{activeProfile.weight}</p>
+            {(activeProfile.age || activeProfile.height || activeProfile.weight) && (
+              <div className="grid grid-cols-3 gap-3">
+                {activeProfile.age && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Age</p>
+                    <p className="text-white text-sm">{activeProfile.age}</p>
+                  </div>
+                )}
+                {activeProfile.height && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Height</p>
+                    <p className="text-white text-sm">{activeProfile.height}</p>
+                  </div>
+                )}
+                {activeProfile.weight && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Weight</p>
+                    <p className="text-white text-sm">{activeProfile.weight} lbs</p>
+                  </div>
+                )}
               </div>
             )}
             {(activeProfile.city || activeProfile.country) && (
@@ -205,16 +197,20 @@ export default function Profile() {
                 )}
               </div>
             )}
-            {activeProfile.favorite_team && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
-                <p className="text-white text-sm">{activeProfile.favorite_team}</p>
-              </div>
-            )}
-            {activeProfile.favorite_player && (
-              <div>
-                <p className="text-slate-500 text-xs mb-0.5">Favourite Player</p>
-                <p className="text-white text-sm">{activeProfile.favorite_player}</p>
+            {(activeProfile.favorite_team || activeProfile.favorite_player) && (
+              <div className="grid grid-cols-2 gap-3">
+                {activeProfile.favorite_team && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
+                    <p className="text-white text-sm">{activeProfile.favorite_team}</p>
+                  </div>
+                )}
+                {activeProfile.favorite_player && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Favourite Player</p>
+                    <p className="text-white text-sm">{activeProfile.favorite_player}</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
