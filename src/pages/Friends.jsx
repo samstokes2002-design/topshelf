@@ -57,18 +57,23 @@ export default function Friends() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friends"] }),
   });
 
-  const handleSearch = (e) => {
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = async (e) => {
     e.preventDefault();
-    const trimmed = searchUsername.trim().toLowerCase();
-    if (trimmed) {
-      const found = allProfiles.find(p => p.username.toLowerCase() === trimmed && p.created_by !== user?.email);
-      if (found) {
-        setFoundUser(found);
-        setErrorMessage("");
-      } else {
-        setFoundUser(null);
-        setErrorMessage("No user found.");
-      }
+    const trimmed = searchUsername.trim();
+    if (!trimmed) return;
+    setIsSearching(true);
+    setFoundUser(null);
+    setErrorMessage("");
+    try {
+      const res = await base44.functions.invoke('searchUser', { username: trimmed });
+      setFoundUser(res.data.profile);
+    } catch (err) {
+      setFoundUser(null);
+      setErrorMessage(err.response?.data?.error || "No user found.");
+    } finally {
+      setIsSearching(false);
     }
   };
 
