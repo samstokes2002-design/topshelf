@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 export default function NotificationSettings() {
   const [settings, setSettings] = useState({
     notifications_enabled: true,
+    notifications_friend_request_received: true,
     notifications_friend_request_accepted: true,
     notifications_friend_request_declined: true,
     notifications_friend_session_logged: true,
@@ -20,6 +21,7 @@ export default function NotificationSettings() {
         const user = await base44.auth.me();
         setSettings({
           notifications_enabled: user.notifications_enabled ?? true,
+          notifications_friend_request_received: user.notifications_friend_request_received ?? true,
           notifications_friend_request_accepted: user.notifications_friend_request_accepted ?? true,
           notifications_friend_request_declined: user.notifications_friend_request_declined ?? true,
           notifications_friend_session_logged: user.notifications_friend_session_logged ?? true,
@@ -39,6 +41,7 @@ export default function NotificationSettings() {
     onSuccess: (updatedUser) => {
       setSettings({
         notifications_enabled: updatedUser.notifications_enabled ?? true,
+        notifications_friend_request_received: updatedUser.notifications_friend_request_received ?? true,
         notifications_friend_request_accepted: updatedUser.notifications_friend_request_accepted ?? true,
         notifications_friend_request_declined: updatedUser.notifications_friend_request_declined ?? true,
         notifications_friend_session_logged: updatedUser.notifications_friend_session_logged ?? true,
@@ -75,6 +78,20 @@ export default function NotificationSettings() {
       {settings.notifications_enabled && (
         <div className="space-y-2">
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Notification Types</p>
+
+          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <Label className="text-white font-medium text-sm cursor-pointer">Friend Request Received</Label>
+                <p className="text-slate-500 text-xs mt-1">When someone sends you a friend request</p>
+              </div>
+              <Switch
+                checked={settings.notifications_friend_request_received}
+                onCheckedChange={() => handleToggle("notifications_friend_request_received")}
+                disabled={updateMutation.isPending}
+              />
+            </div>
+          </div>
 
           <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
             <div className="flex items-center justify-between">
