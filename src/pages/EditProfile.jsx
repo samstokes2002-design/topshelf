@@ -27,7 +27,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false, favorite_team: "", favorite_player: "" });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false, favorite_team: "", favorite_player: "", player_number: "" });
   const [usernameError, setUsernameError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
@@ -82,6 +82,7 @@ export default function EditProfile() {
         show_on_profile: p.show_on_profile || false,
         favorite_team: p.favorite_team || "",
         favorite_player: p.favorite_player || "",
+        player_number: p.player_number || "",
       });
     }
   }, [profiles]);
@@ -136,7 +137,7 @@ export default function EditProfile() {
     if (usernameError) return;
     const height = form.height_ft || form.height_in ? `${form.height_ft}'${form.height_in}"` : "";
     const { height_ft, height_in, ...rest } = form;
-    updateMutation.mutate({ 
+    updateMutation.mutate({
       ...rest,
       height,
       age: form.age ? parseInt(form.age) : undefined,
@@ -202,6 +203,11 @@ export default function EditProfile() {
               {positions.map((p) => <SelectItem key={p} value={p} className="text-white focus:bg-slate-700">{p}</SelectItem>)}
             </SelectContent>
           </Select>
+        </div>
+
+        <div>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Player Number</Label>
+          <Input value={form.player_number} onChange={(e) => setForm((f) => ({ ...f, player_number: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
         </div>
 
         <div>
