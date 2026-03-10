@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Upload, Check } from "lucide-react";
+import ImageCropper from "@/components/ImageCropper";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
