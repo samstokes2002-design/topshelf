@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Upload, Check, Trophy, Plus, Eye } from "lucide-react";
+
 import ImageCropper from "@/components/ImageCropper";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
@@ -89,14 +90,6 @@ export default function EditProfile() {
       if (error.message.includes("already taken")) {
         setUsernameError(error.message);
       }
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: () => base44.entities.Profile.delete(profileId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profiles"] });
-      window.location.href = createPageUrl("Home");
     },
   });
 
