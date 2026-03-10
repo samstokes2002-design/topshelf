@@ -57,6 +57,7 @@ import SeasonSetup from './pages/SeasonSetup';
 import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
+import FriendProfile from './pages/FriendProfile';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +72,7 @@ export const PAGES = {
     "SessionDetail": SessionDetail,
     "Settings": Settings,
     "Stats": Stats,
+    "FriendProfile": FriendProfile,
 }
 
 export const pagesConfig = {
