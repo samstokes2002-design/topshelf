@@ -9,27 +9,33 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { friendRequestId, status } = await req.json();
+    const payload = await req.json();
+    const { friendRequestId, status } = payload;
 
-    if (!friendRequestId || !['accepted', 'declined'].includes(status)) {
-      return Response.json({ error: 'Invalid parameters' }, { status: 400 });
+    if (!friendRequestId || !status || !['accepted', 'declined'].includes(status)) {
+      return Response.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    // Fetch the friend request using service role
-    const allRequests = await base44.asServiceRole.entities.Friend.list(null, 10000);
-    const request = allRequests.find(r => r.id === friendRequestId);
+    // Get the friend request
+    const allRequests = await base44.asServiceRole.entities.Friend.list(null, 1000);
+    const friendRequest = allRequests.find(f => f.id === friendRequestId);
 
-    if (!request) {
+    if (!friendRequest) {
       return Response.json({ error: 'Friend request not found' }, { status: 404 });
     }
 
-    // Only the recipient can respond
-    if (request.friend_email !== user.email) {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    // Verify the current user is the recipient (friend_email matches)
+    if (friendRequest.friend_email !== user.email) {
+      return Response.json(
+        { error: 'You can only respond to requests sent to you' },
+        { status: 403 }
+      );
     }
 
-    const updated = await base44.asServiceRole.entities.Friend.update(friendRequestId, { status });
-    return Response.json(updated);
+    // Update the friend request
+    const updated = await base44.entities.Friend.update(friendRequestId, { status });
+
+    return Response.json(updated, { status: 200 });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

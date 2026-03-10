@@ -9,7 +9,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { username } = await req.json();
+    const payload = await req.json();
+    const { username } = payload;
 
     if (!username) {
       return Response.json({ error: 'Username is required' }, { status: 400 });
@@ -17,50 +18,45 @@ Deno.serve(async (req) => {
 
     const normalizedUsername = username.toLowerCase().trim();
 
-    // Find the target profile by username
-    const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
-
-    // Find my profile
-    const myProfile = allProfiles.find(p => p.created_by === user.email);
+    // Get current user's profile
+    const myProfiles = await base44.asServiceRole.entities.Profile.list(null, 1000);
+    const myProfile = myProfiles.find(p => p.created_by === user.email);
+    
     if (myProfile && myProfile.username.toLowerCase() === normalizedUsername) {
-      return Response.json({ error: 'You cannot send a friend request to yourself' }, { status: 400 });
+      return Response.json(
+        { error: 'You cannot send a friend request to yourself' },
+        { status: 400 }
+      );
     }
 
-    const targetProfile = allProfiles.find(p => p.username && p.username.toLowerCase() === normalizedUsername);
-
+    // Find the target profile by username
+    const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 1000);
+    const targetProfile = allProfiles.find(p => p.username.toLowerCase() === normalizedUsername);
+    
     if (!targetProfile) {
-      return Response.json({ error: 'User not found' }, { status: 404 });
+      return Response.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
     }
 
     const targetEmail = targetProfile.created_by;
 
-    // Check for existing request in either direction (only pending ones)
-    const allRequests = await base44.asServiceRole.entities.Friend.list(null, 10000);
-    const duplicate = allRequests.find(f =>
-      f.status === 'pending' && (
-        (f.created_by === user.email && f.friend_email === targetEmail) ||
-        (f.created_by === targetEmail && f.friend_email === user.email)
-      )
+    // Check if request already exists
+    const existingRequests = await base44.asServiceRole.entities.Friend.list(null, 1000);
+    const duplicate = existingRequests.find(
+      f => f.created_by === user.email && f.friend_email === targetEmail
     );
 
     if (duplicate) {
-      return Response.json({ error: 'A pending friend request already exists between you two' }, { status: 409 });
+      return Response.json(
+        { error: 'Friend request already sent' },
+        { status: 409 }
+      );
     }
 
-    // Also check if already friends
-    const alreadyFriends = allRequests.find(f =>
-      f.status === 'accepted' && (
-        (f.created_by === user.email && f.friend_email === targetEmail) ||
-        (f.created_by === targetEmail && f.friend_email === user.email)
-      )
-    );
-
-    if (alreadyFriends) {
-      return Response.json({ error: 'You are already friends' }, { status: 409 });
-    }
-
-    const friendRequest = await base44.asServiceRole.entities.Friend.create({
-      created_by: user.email,
+    // Create the friend request
+    const friendRequest = await base44.entities.Friend.create({
       friend_email: targetEmail,
       friend_name: targetProfile.name,
       status: 'pending',
