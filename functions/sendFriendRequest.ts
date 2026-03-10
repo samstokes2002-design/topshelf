@@ -24,6 +24,14 @@ Deno.serve(async (req) => {
 
     const targetEmail = targetProfile.created_by;
 
+    // Check if either user has blocked the other
+    const allBlocks = await base44.asServiceRole.entities.Block.list(null, 10000);
+    const isBlocked = allBlocks.some(b =>
+      (b.blocker_email === user.email && b.blocked_email === targetEmail) ||
+      (b.blocker_email === targetEmail && b.blocked_email === user.email)
+    );
+    if (isBlocked) return Response.json({ error: 'Unable to send friend request to this user' }, { status: 403 });
+
     // Check for existing ACTIVE request in either direction (pending or accepted only)
     const existingRequests = await base44.asServiceRole.entities.Friend.list(null, 10000);
     const duplicate = existingRequests.find(f =>

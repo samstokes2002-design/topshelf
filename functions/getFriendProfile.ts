@@ -9,14 +9,22 @@ Deno.serve(async (req) => {
     const { profileId } = await req.json();
     if (!profileId) return Response.json({ error: 'profileId required' }, { status: 400 });
 
-    const [allFriends, profile] = await Promise.all([
+    const [allFriends, profile, allBlocks] = await Promise.all([
       base44.asServiceRole.entities.Friend.list(null, 10000),
       base44.asServiceRole.entities.Profile.get(profileId),
+      base44.asServiceRole.entities.Block.list(null, 10000),
     ]);
 
     if (!profile) return Response.json({ error: 'Profile not found' }, { status: 404 });
 
     const profileOwnerEmail = profile.created_by;
+
+    // Check if either user has blocked the other
+    const isBlocked = allBlocks.some(b =>
+      (b.blocker_email === user.email && b.blocked_email === profileOwnerEmail) ||
+      (b.blocker_email === profileOwnerEmail && b.blocked_email === user.email)
+    );
+    if (isBlocked) return Response.json({ error: 'Profile not available' }, { status: 403 });
 
     // Check bidirectionally: any accepted record linking user.email and profileOwnerEmail
     const isFriend = allFriends.some(f => {
