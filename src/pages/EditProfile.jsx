@@ -18,6 +18,26 @@ export default function EditProfile() {
   const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "" });
   const [usernameError, setUsernameError] = useState("");
 
+  const { data: seasons = [], refetch: refetchSeasons } = useQuery({
+    queryKey: ["seasons-edit", profileId],
+    queryFn: () => base44.entities.Season.filter({ profile_id: profileId }, "-created_date"),
+    enabled: !!profileId,
+  });
+
+  const activateSeasonMutation = useMutation({
+    mutationFn: async (seasonId) => {
+      const otherActive = seasons.filter(s => s.id !== seasonId && s.is_active);
+      await Promise.all(otherActive.map(s => base44.entities.Season.update(s.id, { is_active: false })));
+      await base44.entities.Season.update(seasonId, { is_active: true });
+    },
+    onSuccess: () => refetchSeasons(),
+  });
+
+  const deleteSeasonMutation = useMutation({
+    mutationFn: (seasonId) => base44.entities.Season.delete(seasonId),
+    onSuccess: () => refetchSeasons(),
+  });
+
   const { data: profiles = [] } = useQuery({
     queryKey: ["profile-edit", profileId],
     queryFn: async () => {
