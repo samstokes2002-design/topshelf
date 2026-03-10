@@ -267,7 +267,7 @@ export default function Friends() {
                     </div>
                   </Link>
                   <button
-                    onClick={() => deleteFriendMutation.mutate(f.id)}
+                    onClick={() => setConfirmRemove({ id: f.id, name: f.name })}
                     className="text-slate-500 hover:text-red-400 transition-colors text-xs ml-3"
                   >
                     Remove
