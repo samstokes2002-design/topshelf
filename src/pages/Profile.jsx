@@ -113,7 +113,7 @@ export default function Profile() {
       {/* Profile Card */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-sky-500/20 flex items-center justify-center overflow-hidden">
+          <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden">
             {activeProfile.photo_url ? (
               <img src={activeProfile.photo_url} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -123,7 +123,16 @@ export default function Profile() {
           <div>
             <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
-            {activeProfile.age && <p className="text-slate-500 text-xs">Age {activeProfile.age}</p>}
+            {activeProfile.show_on_profile && (
+              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
+                {(activeProfile.city || activeProfile.country) && (
+                  <p className="text-slate-500 text-xs">{[activeProfile.city, activeProfile.country].filter(Boolean).join(", ")}</p>
+                )}
+                {activeProfile.level && <p className="text-slate-500 text-xs">{activeProfile.level}</p>}
+                {activeProfile.age_group && <p className="text-slate-500 text-xs">{activeProfile.age_group}</p>}
+                {activeProfile.age && <p className="text-slate-500 text-xs">Age {activeProfile.age}</p>}
+              </div>
+            )}
           </div>
         </div>
 

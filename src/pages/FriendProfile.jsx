@@ -220,7 +220,7 @@ export default function FriendProfile() {
       {/* Profile Card */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-sky-500/20 flex items-center justify-center overflow-hidden">
+          <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden">
             {profile.photo_url ? (
               <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -230,7 +230,16 @@ export default function FriendProfile() {
           <div>
             <h2 className="text-white font-bold text-lg">{profile.name}</h2>
             <p className="text-slate-400 text-sm">@{profile.username} · {profile.position}</p>
-            {profile.age && <p className="text-slate-500 text-xs">Age {profile.age}</p>}
+            {profile.show_on_profile && (
+              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
+                {(profile.city || profile.country) && (
+                  <p className="text-slate-500 text-xs">{[profile.city, profile.country].filter(Boolean).join(", ")}</p>
+                )}
+                {profile.level && <p className="text-slate-500 text-xs">{profile.level}</p>}
+                {profile.age_group && <p className="text-slate-500 text-xs">{profile.age_group}</p>}
+                {profile.age && <p className="text-slate-500 text-xs">Age {profile.age}</p>}
+              </div>
+            )}
           </div>
         </div>
 
