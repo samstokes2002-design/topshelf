@@ -113,22 +113,32 @@ export default function Friends() {
         </form>
 
         {/* Found User */}
-        {foundUser && (
-          <div className="mb-4 bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar name={foundUser.name} />
-                <div>
-                  <p className="text-white text-sm font-medium">{foundUser.name}</p>
-                  <p className="text-slate-400 text-xs">@{foundUser.username}</p>
+        {foundUser && (() => {
+          const alreadyPending = pendingOutgoing.some(f => f.other_username === foundUser.username);
+          const alreadyFriend = accepted.some(f => f.username === foundUser.username);
+          return (
+            <div className="mb-4 bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar name={foundUser.name} />
+                  <div>
+                    <p className="text-white text-sm font-medium">{foundUser.name}</p>
+                    <p className="text-slate-400 text-xs">@{foundUser.username}</p>
+                  </div>
                 </div>
+                {alreadyFriend ? (
+                  <span className="text-emerald-400 text-xs">Already friends</span>
+                ) : alreadyPending ? (
+                  <span className="text-slate-400 text-xs">Invite Pending</span>
+                ) : (
+                  <Button onClick={handleAddFriend} disabled={sendFriendRequestMutation.isPending} className="bg-sky-500 hover:bg-sky-600 rounded-lg">
+                    <UserPlus className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
-              <Button onClick={handleAddFriend} disabled={sendFriendRequestMutation.isPending} className="bg-sky-500 hover:bg-sky-600 rounded-lg">
-                <UserPlus className="w-4 h-4" />
-              </Button>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {addMessage && (
           <div className="bg-emerald-500/20 text-emerald-400 text-sm rounded-xl px-4 py-2 mb-4 text-center">{addMessage}</div>
@@ -193,7 +203,7 @@ export default function Friends() {
                       <p className="text-slate-500 text-xs">@{f.other_username}</p>
                     </div>
                   </div>
-                  <span className="text-slate-500 text-xs">Pending</span>
+                  <span className="text-slate-400 text-xs">Invite Pending</span>
                 </div>
               ))}
             </div>
