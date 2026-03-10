@@ -37,6 +37,12 @@ export default function FriendProfile() {
   const totalAssists = games.reduce((sum, g) => sum + (g.assists || 0), 0);
   const totalPoints = totalGoals + totalAssists;
 
+  const getSessionsForSeason = (season) => {
+    const byId = sessions.filter(s => s.season_id === season.id);
+    if (byId.length > 0) return byId;
+    return sessions.filter(s => !s.season_id);
+  };
+
   const filteredSessions = filter === "all" ? sessions : sessions.filter(s => s.type === filter);
 
   if (isLoading) {
