@@ -133,6 +133,8 @@ export default function Profile() {
                 )}
                 {activeProfile.level && <p className="text-slate-400 text-xs">{activeProfile.level}</p>}
                 {activeProfile.age_group && <p className="text-slate-400 text-xs">{activeProfile.age_group}</p>}
+                {activeProfile.favorite_team && <p className="text-slate-400 text-xs">🏒 {activeProfile.favorite_team}</p>}
+                {activeProfile.favorite_player && <p className="text-slate-400 text-xs">⭐ {activeProfile.favorite_player}</p>}
               </div>
             )}
           </div>
