@@ -58,6 +58,7 @@ import SeasonSetup from './pages/SeasonSetup';
 import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +74,7 @@ export const PAGES = {
     "SessionDetail": SessionDetail,
     "Settings": Settings,
     "Stats": Stats,
+    "PrivacyPolicy": PrivacyPolicy,
 }
 
 export const pagesConfig = {
