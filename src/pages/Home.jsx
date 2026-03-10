@@ -234,8 +234,7 @@ export default function Home() {
               .slice(0, 20)
               .map((session) => {
                 const isOwnSession = session.profile_id === activeProfile?.id;
-                const friendProfile = acceptedFriendProfiles.find(p => p.profileId === session.profile_id);
-                const username = !isOwnSession && friendProfile ? `@${friendProfile.username}` : undefined;
+                const username = !isOwnSession && friendMap[session.profile_id] ? `@${friendMap[session.profile_id]}` : undefined;
 
                 return (
                   <SessionCard
