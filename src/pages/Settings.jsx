@@ -107,7 +107,7 @@ export default function Settings() {
     setIsDeletingAccount(true);
     await base44.functions.invoke('deleteAccount', {});
     localStorage.clear();
-    await base44.auth.logout();
+    base44.auth.logout("/");
   };
 
   return (
