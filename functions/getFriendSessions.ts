@@ -6,36 +6,87 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const { profileId } = await req.json().catch(() => ({}));
+    if (!profileId) return Response.json({ sessions: [], friendMap: {} });
+
+    // Verify profile belongs to user
+    const myProfile = await base44.asServiceRole.entities.Profile.get(profileId);
+    if (!myProfile || myProfile.created_by !== user.email) {
+      return Response.json({ error: 'Invalid profile' }, { status: 403 });
+    }
+
     const [allRecords, allProfiles] = await Promise.all([
       base44.asServiceRole.entities.Friend.list(null, 10000),
       base44.asServiceRole.entities.Profile.list(null, 10000),
     ]);
 
-    const profileByEmail = {};
+    const profileById = {};
+    const profilesByEmail = {};
     for (const p of allProfiles) {
-      if (p.created_by) profileByEmail[p.created_by] = p;
+      profileById[p.id] = p;
+      if (p.created_by) {
+        if (!profilesByEmail[p.created_by]) profilesByEmail[p.created_by] = [];
+        profilesByEmail[p.created_by].push(p);
+      }
     }
 
-    // Get all accepted friendships in both directions
-    const sent = allRecords.filter(f => (f.sender_email || f.created_by) === user.email && f.status === 'accepted');
-    const received = allRecords.filter(f => f.friend_email === user.email && f.status === 'accepted');
+    // Determine primary profile per email (oldest by created_date)
+    const primaryProfileIdByEmail = {};
+    for (const [email, profiles] of Object.entries(profilesByEmail)) {
+      profiles.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
+      primaryProfileIdByEmail[email] = profiles[0].id;
+    }
+
+    const isMyPrimaryProfile = primaryProfileIdByEmail[user.email] === profileId;
 
     const friendProfileIds = new Set();
     const friendMap = {}; // profileId -> username
 
-    for (const f of sent) {
-      const profile = profileByEmail[f.friend_email];
-      if (profile?.id) {
-        friendProfileIds.add(profile.id);
-        friendMap[profile.id] = profile.username || profile.name || f.friend_email;
+    for (const f of allRecords) {
+      if (f.status !== 'accepted') continue;
+
+      // Profile-level records (new system)
+      if (f.sender_profile_id && f.friend_profile_id) {
+        if (f.sender_profile_id === profileId) {
+          const other = profileById[f.friend_profile_id];
+          if (other) {
+            friendProfileIds.add(other.id);
+            friendMap[other.id] = other.username || other.name;
+          }
+        } else if (f.friend_profile_id === profileId) {
+          const other = profileById[f.sender_profile_id];
+          if (other) {
+            friendProfileIds.add(other.id);
+            friendMap[other.id] = other.username || other.name;
+          }
+        }
+        continue;
       }
-    }
-    for (const f of received) {
+
+      // Legacy email-only records — only associate with the primary profile
+      if (!isMyPrimaryProfile) continue;
+
       const senderEmail = f.sender_email || f.created_by;
-      const profile = profileByEmail[senderEmail];
-      if (profile?.id) {
-        friendProfileIds.add(profile.id);
-        friendMap[profile.id] = profile.username || profile.name || senderEmail;
+      if (senderEmail === user.email) {
+        // I sent it — other side is friend_email
+        const friendPrimaryId = primaryProfileIdByEmail[f.friend_email];
+        if (friendPrimaryId) {
+          const other = profileById[friendPrimaryId];
+          if (other) {
+            friendProfileIds.add(other.id);
+            friendMap[other.id] = other.username || other.name;
+          }
+        }
+      } else if (f.friend_email === user.email) {
+        // They sent it — other side is senderEmail
+        const friendPrimaryId = primaryProfileIdByEmail[senderEmail];
+        if (friendPrimaryId) {
+          const other = profileById[friendPrimaryId];
+          if (other) {
+            friendProfileIds.add(other.id);
+            friendMap[other.id] = other.username || other.name;
+          }
+        }
       }
     }
 
