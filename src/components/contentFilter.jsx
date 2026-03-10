@@ -3,15 +3,16 @@
 const BLOCKED_TERMS = [
   // Hate speech / historical figures used hatefully
   "nazi", "nazis", "hitler", "heil", "kkk", "ku klux",
-  // Racial slurs
+  // Racial slurs (including common misspellings)
   "nigger", "nigga", "niggas", "chink", "spic", "wetback", "kike", "gook",
   "raghead", "towelhead", "redskin", "beaner", "coon", "sandnigger", "hymie",
   "wop", "dago", "greaseball", "cracker", "jigaboo", "porch monkey", "jungle bunny",
-  // Common swear words
-  "fuck", "fucker", "fucking", "fucked",
-  "shit", "shitting", "shitty",
+  "niga", "niga", "nigg", "chink",
+  // Common swear words (include common misspellings)
+  "fuck", "fucker", "fucking", "fucked", "fck", "fuk", "f u c k",
+  "shit", "shitting", "shitty", "sht", "sh1t",
   "bitch", "bitches", "bitching",
-  "asshole", "assholes",
+  "asshole", "assholes", "ass hole",
   "cunt", "cunts",
   "cock", "cocks",
   "dick", "dicks",
@@ -21,7 +22,7 @@ const BLOCKED_TERMS = [
   "slut", "sluts",
   "piss", "pissing",
   "motherfucker", "motherfucking",
-  "faggot", "faggots", "dyke",
+  "faggot", "faggots", "fag", "dyke",
   "retard", "retarded",
   "prick", "pricks",
   "twat", "twats",
@@ -30,9 +31,10 @@ const BLOCKED_TERMS = [
   "arse", "arsehole",
   // Threatening
   "kill yourself", "kys", "go die", "i will kill", "gonna kill",
-  // Sexual
-  "dildo", "masturbate", "masturbation", "ejaculate",
+  // Sexual / explicit
+  "dildo", "masturbate", "masturbation", "ejaculate", "sex",
   "cumshot", "blowjob", "handjob", "anal sex", "rape", "raping", "rapist",
+  "homo", "gay",
 ];
 
 const BLOCKED_REGEX = new RegExp(
@@ -41,6 +43,15 @@ const BLOCKED_REGEX = new RegExp(
     .join("|"),
   "i"
 );
+
+/**
+ * Strips all non-alphanumeric characters (except spaces).
+ * Used for real-time input filtering.
+ */
+export function sanitizeInput(text) {
+  if (!text || typeof text !== "string") return "";
+  return text.replace(/[^a-zA-Z0-9\s]/g, "");
+}
 
 /**
  * Returns true if the text contains prohibited content.
