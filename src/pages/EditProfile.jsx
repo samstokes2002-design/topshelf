@@ -16,7 +16,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false });
   const [usernameError, setUsernameError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
@@ -61,7 +61,8 @@ export default function EditProfile() {
         position: p.position || "",
         username: p.username || "",
         photo_url: p.photo_url || "",
-        height: p.height || "",
+        height_ft: p.height ? p.height.split("'")[0] : "",
+        height_in: p.height ? (p.height.split("'")[1] || "").replace('"', "") : "",
         weight: p.weight?.toString() || "",
         city: p.city || "",
         country: p.country || "",
@@ -120,8 +121,11 @@ export default function EditProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (usernameError) return;
+    const height = form.height_ft || form.height_in ? `${form.height_ft}'${form.height_in}"` : "";
+    const { height_ft, height_in, ...rest } = form;
     updateMutation.mutate({ 
-      ...form, 
+      ...rest,
+      height,
       age: form.age ? parseInt(form.age) : undefined,
       weight: form.weight ? parseInt(form.weight) : undefined
     });
@@ -194,7 +198,16 @@ export default function EditProfile() {
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
-            <Input placeholder='6&#39;2"' value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <div className="flex gap-1">
+              <div className="relative flex-1">
+                <Input type="number" min="4" max="7" value={form.height_ft} onChange={(e) => setForm((f) => ({ ...f, height_ft: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">ft</span>
+              </div>
+              <div className="relative flex-1">
+                <Input type="number" min="0" max="11" value={form.height_in} onChange={(e) => setForm((f) => ({ ...f, height_in: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">in</span>
+              </div>
+            </div>
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
@@ -205,22 +218,22 @@ export default function EditProfile() {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">City</Label>
-            <Input value={form.city} onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))} placeholder="Calgary" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input value={form.city} onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Country</Label>
-            <Input value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} placeholder="Canada" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Level</Label>
-            <Input value={form.level} onChange={(e) => setForm((f) => ({ ...f, level: e.target.value }))} placeholder="e.g. AAA, Junior, Rec" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input value={form.level} onChange={(e) => setForm((f) => ({ ...f, level: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Age Group</Label>
-            <Input value={form.age_group} onChange={(e) => setForm((f) => ({ ...f, age_group: e.target.value }))} placeholder="e.g. U18, Adult" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input value={form.age_group} onChange={(e) => setForm((f) => ({ ...f, age_group: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
         </div>
 
