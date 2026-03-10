@@ -63,6 +63,9 @@ Deno.serve(async (req) => {
       await base44.asServiceRole.entities.Profile.delete(p.id);
     }
 
+    // Delete the user account itself from the auth system
+    await base44.asServiceRole.entities.User.delete(user.id);
+
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
