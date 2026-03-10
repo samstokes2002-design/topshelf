@@ -4,10 +4,7 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
-
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const payload = await req.json();
     const { friendRequestId, status } = payload;
@@ -16,7 +13,6 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    // Get the friend request
     const allRequests = await base44.asServiceRole.entities.Friend.list(null, 1000);
     const friendRequest = allRequests.find(f => f.id === friendRequestId);
 
@@ -24,36 +20,35 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Friend request not found' }, { status: 404 });
     }
 
-    // Verify the current user is the recipient (friend_email matches)
+    // Verify the current user is the recipient
     if (friendRequest.friend_email !== user.email) {
-      return Response.json(
-        { error: 'You can only respond to requests sent to you' },
-        { status: 403 }
-      );
+      return Response.json({ error: 'You can only respond to requests sent to you' }, { status: 403 });
     }
 
-    // Update the original friend request status
     const updated = await base44.asServiceRole.entities.Friend.update(friendRequestId, { status });
 
-    // If accepted, create a reciprocal accepted entry so both users see each other as friends
+    // If accepted, create a reciprocal accepted entry
     if (status === 'accepted') {
       const senderEmail = friendRequest.sender_email || friendRequest.created_by;
+      const senderProfileId = friendRequest.sender_profile_id;
+      const recipientProfileId = friendRequest.friend_profile_id;
 
-      // Check if a reciprocal record already exists to avoid duplicates
+      // Check if a reciprocal record already exists between these profiles
       const reciprocalExists = allRequests.find(f =>
-        (f.sender_email || f.created_by) === user.email &&
-        f.friend_email === senderEmail &&
+        f.sender_profile_id === recipientProfileId &&
+        f.friend_profile_id === senderProfileId &&
         f.status === 'accepted'
       );
 
       if (!reciprocalExists) {
-        // Get the sender's profile to fetch their name
         const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
         const senderProfile = allProfiles.find(p => p.created_by === senderEmail);
 
         await base44.asServiceRole.entities.Friend.create({
           sender_email: user.email,
           friend_email: senderEmail,
+          sender_profile_id: recipientProfileId,
+          friend_profile_id: senderProfileId,
           friend_name: senderProfile?.name || '',
           status: 'accepted',
         });
