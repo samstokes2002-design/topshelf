@@ -124,7 +124,7 @@ export default function Friends() {
     <div className="px-4 pb-24">
       {/* Remove Friend Confirmation */}
       {confirmRemove && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
               <UserMinus className="w-6 h-6 text-red-400" />
