@@ -62,6 +62,12 @@ export default function ShiftTimer({ shifts = [], onShiftsChange, selectedStats 
   const updateStat = (stat, value) => {
     let updatedStats = { ...currentStats, [stat]: value };
     
+    // Auto-update goals based on PPG and SHG
+    const totalPPGandSHG = (updatedStats.power_play_goals || 0) + (updatedStats.shorthanded_goals || 0);
+    if (totalPPGandSHG > (updatedStats.goals || 0)) {
+      updatedStats.goals = totalPPGandSHG;
+    }
+    
     // Auto-update PPP if PPG is logged without PPP
     if (stat === "power_play_goals" && value > 0 && updatedStats.power_play_points === 0) {
       updatedStats.power_play_points = value;
