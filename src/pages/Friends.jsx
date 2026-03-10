@@ -26,11 +26,7 @@ export default function Friends() {
 
   const { data: allProfiles = [] } = useQuery({
     queryKey: ["allProfiles"],
-    queryFn: async () => {
-      const res = await base44.functions.invoke('searchUser', { username: '__list_all__' }).catch(() => ({ data: { profiles: [] } }));
-      // Fallback: fetch via service role for incoming request display
-      return base44.asServiceRole?.entities?.Profile?.list(null, 1000).catch(() => []) || [];
-    },
+    queryFn: () => base44.asServiceRole.entities.Profile.list(null, 1000),
   });
 
   const sendFriendRequestMutation = useMutation({
