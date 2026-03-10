@@ -68,6 +68,38 @@ export default function Settings() {
     await base44.auth.logout();
   };
 
+  const getActiveProfileId = async () => {
+    const currentUser = await base44.auth.me();
+    const savedId = localStorage.getItem("activeProfileId");
+    const profiles = await base44.entities.Profile.filter({ created_by: currentUser.email });
+    if (savedId && profiles.find(p => p.id === savedId)) return savedId;
+    return profiles[0]?.id || null;
+  };
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    const profileId = await getActiveProfileId();
+    if (!profileId) { setIsExporting(false); return; }
+    const res = await base44.functions.invoke('exportProfileData', { profileId });
+    const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `topshelf-data-${res.data.profile?.username || 'export'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setIsExporting(false);
+  };
+
+  const handleDeleteProfile = async () => {
+    setIsDeleting(true);
+    const profileId = await getActiveProfileId();
+    if (!profileId) { setIsDeleting(false); return; }
+    await base44.functions.invoke('deleteProfile', { profileId });
+    localStorage.removeItem("activeProfileId");
+    window.location.href = createPageUrl("Home");
+  };
+
   return (
     <div className="px-4 pb-24">
       {/* Unblock Confirmation */}
