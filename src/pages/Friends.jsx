@@ -89,10 +89,12 @@ export default function Friends() {
     if (foundUser) sendFriendRequestMutation.mutate(foundUser.username);
   };
 
-  const Avatar = ({ name, size = "w-10 h-10" }) => (
-    <div className={`${size} rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0`}>
-      <span className="text-sky-400 font-bold">{name?.[0]?.toUpperCase() || "?"}</span>
-    </div>
+  const Avatar = ({ name, photo, size = "w-10 h-10" }) => (
+    photo
+      ? <img src={photo} alt={name} className={`${size} rounded-full object-cover flex-shrink-0`} />
+      : <div className={`${size} rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0`}>
+          <span className="text-sky-400 font-bold">{name?.[0]?.toUpperCase() || "?"}</span>
+        </div>
   );
 
   return (
