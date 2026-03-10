@@ -17,13 +17,26 @@ export default function Friends() {
   const [confirmRemove, setConfirmRemove] = useState(null); // { id, name }
   const queryClient = useQueryClient();
 
-  // Fetch all friend data via backend function (handles both sent and received)
-  const { data: friendData = { sent: [], received: [] }, isLoading } = useQuery({
-    queryKey: ["friendRequests"],
+  // Get the active profile ID
+  const { data: activeProfileId } = useQuery({
+    queryKey: ["activeProfileId"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('getFriendRequests', {});
+      const currentUser = await base44.auth.me();
+      const savedId = localStorage.getItem("activeProfileId");
+      const profiles = await base44.entities.Profile.filter({ created_by: currentUser.email });
+      if (savedId && profiles.find(p => p.id === savedId)) return savedId;
+      return profiles[0]?.id || null;
+    },
+  });
+
+  // Fetch all friend data via backend function (profile-level)
+  const { data: friendData = { sent: [], received: [] }, isLoading } = useQuery({
+    queryKey: ["friendRequests", activeProfileId],
+    queryFn: async () => {
+      const res = await base44.functions.invoke('getFriendRequests', { profileId: activeProfileId });
       return res.data;
     },
+    enabled: !!activeProfileId,
   });
 
   const pendingIncoming = friendData.received.filter(f => f.status === "pending");
