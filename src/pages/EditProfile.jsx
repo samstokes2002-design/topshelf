@@ -143,6 +143,9 @@ export default function EditProfile() {
 
   return (
     <div className="px-4 pb-24">
+      {cropFile && (
+        <ImageCropper file={cropFile} onCrop={handleCropDone} onCancel={() => setCropFile(null)} />
+      )}
       <div className="flex items-center gap-3 py-4">
         <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white">
           <ArrowLeft className="w-5 h-5" />
