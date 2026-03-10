@@ -14,7 +14,11 @@ export default function Settings() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
-  const [confirmUnblock, setConfirmUnblock] = useState(null); // block record
+  const [confirmUnblock, setConfirmUnblock] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [isExporting, setIsExporting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
