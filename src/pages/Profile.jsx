@@ -110,10 +110,23 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Profile Switcher — centered at top */}
+      {profiles.length > 1 && (
+        <div className="flex justify-center mb-4">
+          <ProfileSwitcher
+            profiles={profiles}
+            activeProfile={activeProfile}
+            onSwitch={handleProfileSwitch}
+            onAdd={() => window.location.href = createPageUrl("CreateProfile")}
+          />
+        </div>
+      )}
+
       {/* Profile Card */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
+        {/* Photo + Name + Position */}
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden">
+          <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden flex-shrink-0">
             {activeProfile.photo_url ? (
               <img src={activeProfile.photo_url} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -122,31 +135,89 @@ export default function Profile() {
           </div>
           <div>
             <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
+            {activeProfile.username && <p className="text-slate-500 text-xs">@{activeProfile.username}</p>}
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
-            {activeProfile.show_on_profile && (
-              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
-                {activeProfile.age && <p className="text-slate-400 text-xs">Age {activeProfile.age}</p>}
-                {activeProfile.height && <p className="text-slate-400 text-xs">{activeProfile.height}</p>}
-                {activeProfile.weight && <p className="text-slate-400 text-xs">{activeProfile.weight} lbs</p>}
-                {(activeProfile.city || activeProfile.country) && (
-                  <p className="text-slate-400 text-xs">{[activeProfile.city, activeProfile.country].filter(Boolean).join(", ")}</p>
-                )}
-                {activeProfile.level && <p className="text-slate-400 text-xs">{activeProfile.level}</p>}
-                {activeProfile.age_group && <p className="text-slate-400 text-xs">{activeProfile.age_group}</p>}
-                {activeProfile.favorite_team && <p className="text-slate-400 text-xs">🏒 {activeProfile.favorite_team}</p>}
-                {activeProfile.favorite_player && <p className="text-slate-400 text-xs">⭐ {activeProfile.favorite_player}</p>}
-              </div>
-            )}
           </div>
         </div>
 
-        {profiles.length > 1 && (
-          <ProfileSwitcher
-            profiles={profiles}
-            activeProfile={activeProfile}
-            onSwitch={handleProfileSwitch}
-            onAdd={() => window.location.href = createPageUrl("CreateProfile")}
-          />
+        {/* Detailed Info — only when show_on_profile is on */}
+        {activeProfile.show_on_profile && (
+          <div className="border-t border-slate-700/50 pt-4 space-y-3">
+            {activeProfile.age && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Age</p>
+                <p className="text-white text-sm">{activeProfile.age}</p>
+              </div>
+            )}
+            {activeProfile.height && activeProfile.weight && (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-slate-500 text-xs mb-0.5">Height</p>
+                  <p className="text-white text-sm">{activeProfile.height}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500 text-xs mb-0.5">Weight (lbs)</p>
+                  <p className="text-white text-sm">{activeProfile.weight}</p>
+                </div>
+              </div>
+            )}
+            {!activeProfile.weight && activeProfile.height && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Height</p>
+                <p className="text-white text-sm">{activeProfile.height}</p>
+              </div>
+            )}
+            {!activeProfile.height && activeProfile.weight && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Weight (lbs)</p>
+                <p className="text-white text-sm">{activeProfile.weight}</p>
+              </div>
+            )}
+            {(activeProfile.city || activeProfile.country) && (
+              <div className="grid grid-cols-2 gap-3">
+                {activeProfile.city && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">City</p>
+                    <p className="text-white text-sm">{activeProfile.city}</p>
+                  </div>
+                )}
+                {activeProfile.country && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Country</p>
+                    <p className="text-white text-sm">{activeProfile.country}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            {(activeProfile.level || activeProfile.age_group) && (
+              <div className="grid grid-cols-2 gap-3">
+                {activeProfile.level && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Level</p>
+                    <p className="text-white text-sm">{activeProfile.level}</p>
+                  </div>
+                )}
+                {activeProfile.age_group && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Age Group</p>
+                    <p className="text-white text-sm">{activeProfile.age_group}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            {activeProfile.favorite_team && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
+                <p className="text-white text-sm">{activeProfile.favorite_team}</p>
+              </div>
+            )}
+            {activeProfile.favorite_player && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Favourite Player</p>
+                <p className="text-white text-sm">{activeProfile.favorite_player}</p>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Current Season Totals */}
