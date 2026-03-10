@@ -173,9 +173,8 @@ export default function Settings() {
                   )}
                 </div>
                 <button
-                  onClick={() => unblockMutation.mutate(block.id)}
-                  disabled={unblockMutation.isPending}
-                  className="text-sky-400 hover:text-sky-300 text-xs font-medium transition-colors disabled:opacity-50"
+                  onClick={() => setConfirmUnblock(block)}
+                  className="text-sky-400 hover:text-sky-300 text-xs font-medium transition-colors"
                 >
                   Unblock
                 </button>
