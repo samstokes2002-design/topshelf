@@ -32,8 +32,8 @@ export default function Friends() {
   const acceptedSent = friendData.sent.filter(f => f.status === "accepted");
   const acceptedReceived = friendData.received.filter(f => f.status === "accepted");
   const accepted = [
-    ...acceptedSent.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, side: 'sent' })),
-    ...acceptedReceived.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, side: 'received' })),
+    ...acceptedSent.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, profileId: f.other_profile_id, side: 'sent' })),
+    ...acceptedReceived.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, profileId: f.other_profile_id, side: 'received' })),
   ];
 
   const sendFriendRequestMutation = useMutation({
