@@ -129,77 +129,7 @@ export default function Settings() {
           </div>
         </div>
 
-        {/* Seasons */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white font-semibold text-sm">Seasons</h3>
-            <button
-              onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id || ""}`}
-              className="text-sky-400 hover:text-sky-300 transition-colors"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-          </div>
-          {seasons.length === 0 ? (
-            <p className="text-slate-500 text-xs">No seasons yet</p>
-          ) : (
-            <div className="space-y-2">
-              {seasons.map((season) => (
-                <div
-                  key={season.id}
-                  className="w-full flex items-center justify-between p-3 bg-slate-900/50 rounded-xl"
-                >
-                  <div className="flex items-center gap-3">
-                    <Trophy className="w-4 h-4 text-sky-400" />
-                    <div>
-                      <p className="text-white text-sm font-medium">{season.season_year}</p>
-                      {season.team_name && (
-                        <p className="text-slate-400 text-xs">{season.team_name}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {season.is_active ? (
-                      <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-md bg-sky-500/20 text-sky-400">
-                        Active
-                      </span>
-                    ) : (
-                      <Button
-                        size="sm"
-                        onClick={() => activateSeasonMutation.mutate(season.id)}
-                        disabled={activateSeasonMutation.isPending}
-                        className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-xs rounded-lg h-7 px-3"
-                      >
-                        Activate
-                      </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}&from=Settings`}
-                      className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 text-xs rounded-lg h-7 px-3"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        if (confirm("Delete this season? This action cannot be undone.")) {
-                          deleteSeasonMutation.mutate(season.id);
-                        }
-                      }}
-                      disabled={deleteSeasonMutation.isPending}
-                      className="bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs rounded-lg h-7 px-3"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* App Info */}
+        {/* About */}
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
           <h3 className="text-white font-semibold text-sm mb-3">About</h3>
           <div className="space-y-2 text-xs text-slate-400">
@@ -212,6 +142,32 @@ export default function Settings() {
               <span className="text-white capitalize">{user?.role || "User"}</span>
             </div>
           </div>
+        </div>
+
+        {/* Legal */}
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
+          <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Legal</h3>
+          <Link to={createPageUrl("PrivacyPolicy")} className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
+            <div className="flex items-center gap-3">
+              <Shield className="w-4 h-4 text-sky-400" />
+              <span className="text-sm text-slate-200">Privacy Policy</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-500" />
+          </Link>
+          <Link to={createPageUrl("TermsOfService")} className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
+            <div className="flex items-center gap-3">
+              <FileText className="w-4 h-4 text-sky-400" />
+              <span className="text-sm text-slate-200">Terms of Service</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-500" />
+          </Link>
+          <a href="mailto:support@topshelf.app" className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
+            <div className="flex items-center gap-3">
+              <Mail className="w-4 h-4 text-sky-400" />
+              <span className="text-sm text-slate-200">Contact Support</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-500" />
+          </a>
         </div>
 
       {/* Logout */}
