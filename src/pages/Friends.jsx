@@ -82,7 +82,7 @@ export default function Friends() {
   const deleteFriendMutation = useMutation({
     mutationFn: (id) => base44.functions.invoke('removeFriend', { friendRecordId: id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["friendRequests", activeProfileId] });
       setConfirmRemove(null);
     },
   });
