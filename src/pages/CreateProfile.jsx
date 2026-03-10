@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Upload, Check } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
+import FilteredInput from "@/components/FilteredInput";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
@@ -153,7 +154,7 @@ export default function CreateProfile() {
 
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Player Name *</Label>
-          <Input
+          <FilteredInput
             placeholder="Name"
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
@@ -164,7 +165,7 @@ export default function CreateProfile() {
 
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Username *</Label>
-          <Input
+          <FilteredInput
             placeholder="@username"
             value={form.username}
             onChange={(e) => handleUsernameChange(e.target.value)}
