@@ -262,7 +262,7 @@ export default function Friends() {
                     to={f.profileId ? createPageUrl("FriendProfile") + `?id=${f.profileId}` : "#"}
                     className="flex items-center gap-3 flex-1 min-w-0"
                   >
-                    <Avatar name={f.name} size="w-9 h-9" />
+                    <Avatar name={f.name} photo={f.photo} size="w-9 h-9" />
                     <div>
                       <p className="text-white text-sm font-medium">{f.name}</p>
                       <p className="text-slate-500 text-xs">@{f.username}</p>
