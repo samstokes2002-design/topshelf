@@ -157,7 +157,7 @@ export default function Friends() {
             <div className="mb-4 bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Avatar name={foundUser.name} />
+                  <Avatar name={foundUser.name} photo={foundUser.photo_url} />
                   <div>
                     <p className="text-white text-sm font-medium">{foundUser.name}</p>
                     <p className="text-slate-400 text-xs">@{foundUser.username}</p>
