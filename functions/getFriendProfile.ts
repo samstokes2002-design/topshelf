@@ -9,26 +9,25 @@ Deno.serve(async (req) => {
     const { profileId } = await req.json();
     if (!profileId) return Response.json({ error: 'profileId required' }, { status: 400 });
 
-    // Verify this is actually a friend before exposing data
-    const allFriends = await base44.asServiceRole.entities.Friend.list(null, 10000);
-    const userFriends = allFriends.filter(f =>
-      ((f.sender_email || f.created_by) === user.email || f.friend_email === user.email) &&
-      f.status === 'accepted'
-    );
-
-    const [profile, allProfiles] = await Promise.all([
+    const [allFriends, profile] = await Promise.all([
+      base44.asServiceRole.entities.Friend.list(null, 10000),
       base44.asServiceRole.entities.Profile.get(profileId),
-      base44.asServiceRole.entities.Profile.list(null, 10000),
     ]);
 
     if (!profile) return Response.json({ error: 'Profile not found' }, { status: 404 });
 
-    // Check that the profile owner is actually a friend
     const profileOwnerEmail = profile.created_by;
-    const isFriend = userFriends.some(f =>
-      (f.sender_email || f.created_by) === profileOwnerEmail ||
-      f.friend_email === profileOwnerEmail
-    );
+
+    // Check bidirectionally: any accepted record linking user.email and profileOwnerEmail
+    const isFriend = allFriends.some(f => {
+      if (f.status !== 'accepted') return false;
+      const senderEmail = f.sender_email || f.created_by;
+      const recipientEmail = f.friend_email;
+      return (
+        (senderEmail === user.email && recipientEmail === profileOwnerEmail) ||
+        (senderEmail === profileOwnerEmail && recipientEmail === user.email)
+      );
+    });
 
     if (!isFriend) return Response.json({ error: 'Not a friend' }, { status: 403 });
 
