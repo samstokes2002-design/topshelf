@@ -109,13 +109,17 @@ export default function LogSession() {
     }
   }, [activeSeason]);
 
-  // Auto-update PPP if PPG is logged without PPP
+  // Auto-update PPP and goals if PPG is logged
   useEffect(() => {
     setForm((f) => {
+      let updated = { ...f };
       if (f.power_play_goals > 0 && f.power_play_points === 0) {
-        return { ...f, power_play_points: f.power_play_goals };
+        updated.power_play_points = f.power_play_goals;
       }
-      return f;
+      if (f.power_play_goals > f.goals) {
+        updated.goals = f.power_play_goals;
+      }
+      return updated;
     });
   }, [form.power_play_goals]);
 
