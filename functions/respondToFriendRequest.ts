@@ -32,8 +32,8 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Update the friend request
-    const updated = await base44.entities.Friend.update(friendRequestId, { status });
+    // Update the friend request using service role (since recipient didn't create the record)
+    const updated = await base44.asServiceRole.entities.Friend.update(friendRequestId, { status });
 
     return Response.json(updated, { status: 200 });
   } catch (error) {
