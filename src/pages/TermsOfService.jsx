@@ -67,7 +67,34 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">6. Reporting and Blocking</h2>
+          <h2 className="text-base font-semibold text-white mb-2">6. Zero-Tolerance Policy for Inappropriate Language</h2>
+          <p>
+            TopShelf maintains a strict zero-tolerance policy for inappropriate language or content. This policy applies to all areas of the app without exception.
+          </p>
+          <p className="mt-2">
+            <strong>Prohibited Content:</strong> Users are strictly prohibited from entering, displaying, or sharing any offensive, abusive, hateful, sexual, or inappropriate language anywhere on the platform. This includes:
+          </p>
+          <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
+            <li>Swear words and profanity</li>
+            <li>Hate speech, slurs, and discriminatory terms</li>
+            <li>Sexual or explicit language</li>
+            <li>Harassment or abusive language</li>
+            <li>References to extremist ideologies or figures</li>
+            <li>Any other language intended to demean, insult, or harm others</li>
+          </ul>
+          <p className="mt-2">
+            <strong>Filter Evasion Prohibited:</strong> Attempting to bypass our content filters through misspellings, altered spellings, spacing tricks, character substitutions (such as F*ck, sh!t, or niga), or any other workaround is strictly prohibited and will be treated as a violation of this policy.
+          </p>
+          <p className="mt-2">
+            <strong>Scope:</strong> This rule applies to all user input fields throughout the app, including but not limited to usernames, profile information, season names, player notes, session details, team names, and any other text you submit.
+          </p>
+          <p className="mt-2">
+            <strong>Enforcement:</strong> Any violation of this policy may result in immediate content removal, temporary account suspension, or permanent account termination at our discretion. We do not provide warnings or appeals for violations of this zero-tolerance policy.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="text-base font-semibold text-white mb-2">7. Reporting and Blocking</h2>
           <p>
             If you encounter a user who violates these Terms, you can block or report them through the app.
             We take reports seriously and will investigate all complaints. We reserve the right to suspend or
@@ -76,7 +103,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">7. Account Termination</h2>
+          <h2 className="text-base font-semibold text-white mb-2">8. Account Termination</h2>
           <p>
             You may request deletion of your account at any time by contacting our support team.
             We reserve the right to suspend or terminate accounts that violate these Terms of Service
@@ -85,7 +112,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">8. Disclaimer</h2>
+          <h2 className="text-base font-semibold text-white mb-2">9. Disclaimer</h2>
           <p>
             TopShelf is provided "as is" without warranties of any kind. We do not guarantee that the app
             will be error-free or uninterrupted. We are not liable for any loss or damage resulting from
@@ -94,7 +121,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">9. Changes to These Terms</h2>
+          <h2 className="text-base font-semibold text-white mb-2">10. Changes to These Terms</h2>
           <p>
             We may update these Terms of Service from time to time. Continued use of the app after changes
             are posted means you accept the updated terms. We recommend reviewing this page periodically.
