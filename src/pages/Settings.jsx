@@ -114,7 +114,7 @@ export default function Settings() {
     <div className="px-4 pb-24">
       {/* Unblock Confirmation */}
       {confirmUnblock && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-sky-500/20 mx-auto mb-4">
               <UserX className="w-6 h-6 text-sky-400" />
@@ -312,7 +312,7 @@ export default function Settings() {
 
       {/* Delete Profile Modal */}
       {showDeleteProfileConfirm && (
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-end justify-center pb-10 px-4">
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
               <Trash2 className="w-6 h-6 text-red-400" />
@@ -352,7 +352,7 @@ export default function Settings() {
 
       {/* Delete Account Modal */}
       {showDeleteAccountConfirm && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center pb-10 px-4">
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center px-4">
           <div className="bg-slate-800 border border-red-900/50 rounded-2xl p-6 w-full max-w-sm">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
               <AlertTriangle className="w-6 h-6 text-red-500" />
