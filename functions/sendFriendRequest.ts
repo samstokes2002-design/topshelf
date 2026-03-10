@@ -27,8 +27,8 @@ Deno.serve(async (req) => {
     // Check for existing ACTIVE request in either direction (pending or accepted only)
     const existingRequests = await base44.asServiceRole.entities.Friend.list(null, 10000);
     const duplicate = existingRequests.find(f =>
-      ((f.created_by === user.email && f.friend_email === targetEmail) ||
-       (f.created_by === targetEmail && f.friend_email === user.email)) &&
+      (((f.sender_email || f.created_by) === user.email && f.friend_email === targetEmail) ||
+       ((f.sender_email || f.created_by) === targetEmail && f.friend_email === user.email)) &&
       (f.status === 'pending' || f.status === 'accepted')
     );
 
