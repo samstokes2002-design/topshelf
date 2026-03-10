@@ -24,6 +24,7 @@ Deno.serve(async (req) => {
         other_name: profile.name || otherEmail,
         other_username: profile.username || '',
         other_photo: profile.photo_url || null,
+        other_profile_id: profile.id || null,
       };
     });
 
