@@ -223,16 +223,19 @@ export default function Friends() {
             <div className="space-y-2">
               {accepted.map((f) => (
                 <div key={f.id} className="flex items-center justify-between bg-slate-800/60 border border-slate-700/50 rounded-xl p-3">
-                  <div className="flex items-center gap-3">
+                  <Link
+                    to={f.profileId ? createPageUrl("FriendProfile") + `?id=${f.profileId}` : "#"}
+                    className="flex items-center gap-3 flex-1 min-w-0"
+                  >
                     <Avatar name={f.name} size="w-9 h-9" />
                     <div>
                       <p className="text-white text-sm font-medium">{f.name}</p>
                       <p className="text-slate-500 text-xs">@{f.username}</p>
                     </div>
-                  </div>
+                  </Link>
                   <button
                     onClick={() => deleteFriendMutation.mutate(f.id)}
-                    className="text-slate-500 hover:text-red-400 transition-colors text-xs"
+                    className="text-slate-500 hover:text-red-400 transition-colors text-xs ml-3"
                   >
                     Remove
                   </button>
