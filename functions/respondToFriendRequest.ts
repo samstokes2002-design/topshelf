@@ -32,8 +32,33 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Update the friend request using service role (since recipient didn't create the record)
+    // Update the original friend request status
     const updated = await base44.asServiceRole.entities.Friend.update(friendRequestId, { status });
+
+    // If accepted, create a reciprocal accepted entry so both users see each other as friends
+    if (status === 'accepted') {
+      const senderEmail = friendRequest.sender_email || friendRequest.created_by;
+
+      // Check if a reciprocal record already exists to avoid duplicates
+      const reciprocalExists = allRequests.find(f =>
+        (f.sender_email || f.created_by) === user.email &&
+        f.friend_email === senderEmail &&
+        f.status === 'accepted'
+      );
+
+      if (!reciprocalExists) {
+        // Get the sender's profile to fetch their name
+        const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
+        const senderProfile = allProfiles.find(p => p.created_by === senderEmail);
+
+        await base44.asServiceRole.entities.Friend.create({
+          sender_email: user.email,
+          friend_email: senderEmail,
+          friend_name: senderProfile?.name || '',
+          status: 'accepted',
+        });
+      }
+    }
 
     return Response.json(updated, { status: 200 });
   } catch (error) {
