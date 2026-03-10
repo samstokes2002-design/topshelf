@@ -246,6 +246,34 @@ export default function Settings() {
         </a>
       </div>
 
+      {/* Account Management */}
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Account Management</h3>
+        <button
+          onClick={handleExport}
+          disabled={isExporting}
+          className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50"
+        >
+          <div className="flex items-center gap-3">
+            <Download className="w-4 h-4 text-sky-400" />
+            <span className="text-sm text-slate-200">Export My Data</span>
+          </div>
+          {isExporting
+            ? <div className="w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+            : <ChevronRight className="w-4 h-4 text-slate-500" />}
+        </button>
+        <button
+          onClick={() => { setShowDeleteConfirm(true); setDeleteConfirmText(""); }}
+          className="w-full flex items-center justify-between px-4 py-3 hover:bg-red-500/10 transition-colors border-t border-slate-700/50"
+        >
+          <div className="flex items-center gap-3">
+            <Trash2 className="w-4 h-4 text-red-400" />
+            <span className="text-sm text-red-400">Delete Profile</span>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-500" />
+        </button>
+      </div>
+
       {/* Logout */}
       <Button
         onClick={handleLogout}
@@ -255,6 +283,46 @@ export default function Settings() {
         <LogOut className="w-4 h-4 mr-2" />
         Log Out
       </Button>
+
+      {/* Delete Profile Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
+              <AlertTriangle className="w-6 h-6 text-red-400" />
+            </div>
+            <h3 className="text-white font-bold text-center text-lg mb-1">Delete Profile?</h3>
+            <p className="text-slate-400 text-sm text-center mb-4">
+              This will permanently delete your active profile, all sessions, stats, and friends. This cannot be undone.
+            </p>
+            <p className="text-slate-400 text-xs text-center mb-3">
+              Type <span className="text-red-400 font-mono font-bold">DELETE</span> to confirm
+            </p>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder="Type DELETE"
+              className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2 text-sm mb-4 outline-none focus:border-red-500/50"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteProfile}
+                disabled={deleteConfirmText !== "DELETE" || isDeleting}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-40"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
