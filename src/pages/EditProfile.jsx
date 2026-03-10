@@ -30,6 +30,7 @@ export default function EditProfile() {
   const [saved, setSaved] = useState(false);
   const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false, favorite_team: "", favorite_player: "", player_number: "" });
   const [usernameError, setUsernameError] = useState("");
+  const [contentError, setContentError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
   const { data: seasons = [], refetch: refetchSeasons } = useQuery({
@@ -136,6 +137,17 @@ export default function EditProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (usernameError) return;
+    const contentErr = validateContentFields({
+      "name": form.name,
+      "username": form.username,
+      "city": form.city,
+      "country": form.country,
+      "level": form.level,
+      "age group": form.age_group,
+      "favorite player": form.favorite_player,
+    });
+    if (contentErr) { setContentError(contentErr); return; }
+    setContentError("");
     const height = form.height_ft || form.height_in ? `${form.height_ft}'${form.height_in}"` : "";
     const { height_ft, height_in, ...rest } = form;
     updateMutation.mutate({
