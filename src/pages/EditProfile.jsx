@@ -12,7 +12,7 @@ import ImageCropper from "@/components/ImageCropper";
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
 const NHL_TEAMS = [
-  "Anaheim Ducks","Arizona Coyotes","Boston Bruins","Buffalo Sabres","Calgary Flames",
+  "Anaheim Ducks","Boston Bruins","Buffalo Sabres","Calgary Flames",
   "Carolina Hurricanes","Chicago Blackhawks","Colorado Avalanche","Columbus Blue Jackets",
   "Dallas Stars","Detroit Red Wings","Edmonton Oilers","Florida Panthers","Los Angeles Kings",
   "Minnesota Wild","Montreal Canadiens","Nashville Predators","New Jersey Devils",
@@ -264,6 +264,7 @@ export default function EditProfile() {
               <SelectValue placeholder="Select a team" />
             </SelectTrigger>
             <SelectContent className="bg-slate-800 border-slate-700 max-h-60">
+              <SelectItem value="none" className="text-slate-400 focus:bg-slate-700">None</SelectItem>
               {NHL_TEAMS.map((t) => <SelectItem key={t} value={t} className="text-white focus:bg-slate-700">{t}</SelectItem>)}
             </SelectContent>
           </Select>
