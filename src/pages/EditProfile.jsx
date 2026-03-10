@@ -161,7 +161,7 @@ export default function EditProfile() {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="flex justify-center">
           <label className="cursor-pointer">
-            <div className="w-24 h-24 rounded-2xl bg-slate-800/60 border-2 border-dashed border-slate-600 flex items-center justify-center overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-slate-800/60 border-2 border-dashed border-slate-600 flex items-center justify-center overflow-hidden">
               {form.photo_url ? (
                 <img src={form.photo_url} alt="" className="w-full h-full object-cover" />
               ) : (
@@ -209,6 +209,41 @@ export default function EditProfile() {
             <Input type="number" placeholder="185" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
         </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">City</Label>
+            <Input value={form.city} onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))} placeholder="Calgary" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Country</Label>
+            <Input value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} placeholder="Canada" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Level</Label>
+            <Input value={form.level} onChange={(e) => setForm((f) => ({ ...f, level: e.target.value }))} placeholder="e.g. AAA, Junior, Rec" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Age Group</Label>
+            <Input value={form.age_group} onChange={(e) => setForm((f) => ({ ...f, age_group: e.target.value }))} placeholder="e.g. U18, Adult" className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setForm((f) => ({ ...f, show_on_profile: !f.show_on_profile }))}
+          className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-medium transition-colors ${
+            form.show_on_profile
+              ? "bg-sky-500/20 border-sky-500/50 text-sky-400"
+              : "bg-slate-800/60 border-slate-700/50 text-slate-400 hover:border-slate-600"
+          }`}
+        >
+          <Eye className="w-4 h-4" />
+          {form.show_on_profile ? "Showing on Profile" : "Show on Profile"}
+        </button>
 
         <Button type="submit" disabled={updateMutation.isPending || !!usernameError} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed">
           {updateMutation.isPending ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Save Changes"}
