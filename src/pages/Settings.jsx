@@ -311,39 +311,85 @@ export default function Settings() {
       </Button>
 
       {/* Delete Profile Modal */}
-      {showDeleteConfirm && (
+      {showDeleteProfileConfirm && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-end justify-center pb-10 px-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
-              <AlertTriangle className="w-6 h-6 text-red-400" />
+              <Trash2 className="w-6 h-6 text-red-400" />
             </div>
             <h3 className="text-white font-bold text-center text-lg mb-1">Delete Profile?</h3>
             <p className="text-slate-400 text-sm text-center mb-4">
-              This will permanently delete your active profile, all sessions, stats, and friends. This cannot be undone.
+              This removes your active profile and all its sessions and stats. Other profiles remain. This cannot be undone.
             </p>
             <p className="text-slate-400 text-xs text-center mb-3">
               Type <span className="text-red-400 font-mono font-bold">DELETE</span> to confirm
             </p>
             <input
               type="text"
-              value={deleteConfirmText}
-              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              value={deleteProfileText}
+              onChange={(e) => setDeleteProfileText(e.target.value)}
               placeholder="Type DELETE"
               className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2 text-sm mb-4 outline-none focus:border-red-500/50"
             />
             <div className="flex gap-3">
               <button
-                onClick={() => setShowDeleteConfirm(false)}
+                onClick={() => setShowDeleteProfileConfirm(false)}
                 className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteProfile}
-                disabled={deleteConfirmText !== "DELETE" || isDeleting}
+                disabled={deleteProfileText !== "DELETE" || isDeletingProfile}
                 className="flex-1 py-2.5 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-40"
               >
-                {isDeleting ? "Deleting..." : "Delete"}
+                {isDeletingProfile ? "Deleting..." : "Delete Profile"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Account Modal */}
+      {showDeleteAccountConfirm && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-red-900/50 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
+              <AlertTriangle className="w-6 h-6 text-red-500" />
+            </div>
+            <h3 className="text-white font-bold text-center text-lg mb-1">Delete Account?</h3>
+            <p className="text-slate-400 text-sm text-center mb-2">
+              This will <span className="text-red-400 font-semibold">permanently delete</span> your entire account including:
+            </p>
+            <ul className="text-slate-500 text-xs text-center mb-4 space-y-0.5">
+              <li>All profiles &amp; stats</li>
+              <li>All sessions &amp; seasons</li>
+              <li>All friends &amp; connections</li>
+            </ul>
+            <p className="text-slate-400 text-xs text-center mb-1">You can re-register with the same email later.</p>
+            <p className="text-slate-400 text-xs text-center mb-3">
+              Type <span className="text-red-500 font-mono font-bold">DELETE ACCOUNT</span> to confirm
+            </p>
+            <input
+              type="text"
+              value={deleteAccountText}
+              onChange={(e) => setDeleteAccountText(e.target.value)}
+              placeholder="Type DELETE ACCOUNT"
+              className="w-full bg-slate-900/50 border border-red-900/50 text-white rounded-xl px-3 py-2 text-sm mb-4 outline-none focus:border-red-500/50"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteAccountConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteAccountText !== "DELETE ACCOUNT" || isDeletingAccount}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/30 text-red-400 text-sm font-semibold hover:bg-red-500/40 transition-colors disabled:opacity-40"
+              >
+                {isDeletingAccount ? "Deleting..." : "Delete Account"}
               </button>
             </div>
           </div>
