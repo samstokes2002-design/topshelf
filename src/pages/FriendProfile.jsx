@@ -229,19 +229,85 @@ export default function FriendProfile() {
           </div>
           <div>
             <h2 className="text-white font-bold text-lg">{profile.name}</h2>
-            <p className="text-slate-400 text-sm">@{profile.username} · {profile.position}</p>
-            {profile.show_on_profile && (
-              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
-                {(profile.city || profile.country) && (
-                  <p className="text-slate-500 text-xs">{[profile.city, profile.country].filter(Boolean).join(", ")}</p>
+            {profile.username && <p className="text-slate-500 text-xs">@{profile.username}</p>}
+            <p className="text-slate-400 text-sm">{profile.position}</p>
+          </div>
+        </div>
+
+        {profile.show_on_profile && (
+          <div className="border-t border-slate-700/50 pt-4 space-y-3">
+            {(profile.age || profile.height || profile.weight) && (
+              <div className="grid grid-cols-3 gap-3">
+                {profile.age && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Age</p>
+                    <p className="text-white text-sm">{profile.age}</p>
+                  </div>
                 )}
-                {profile.level && <p className="text-slate-500 text-xs">{profile.level}</p>}
-                {profile.age_group && <p className="text-slate-500 text-xs">{profile.age_group}</p>}
-                {profile.age && <p className="text-slate-500 text-xs">Age {profile.age}</p>}
+                {profile.height && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Height</p>
+                    <p className="text-white text-sm">{profile.height}</p>
+                  </div>
+                )}
+                {profile.weight && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Weight</p>
+                    <p className="text-white text-sm">{profile.weight} lbs</p>
+                  </div>
+                )}
+              </div>
+            )}
+            {(profile.city || profile.country) && (
+              <div className="grid grid-cols-2 gap-3">
+                {profile.city && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">City</p>
+                    <p className="text-white text-sm">{profile.city}</p>
+                  </div>
+                )}
+                {profile.country && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Country</p>
+                    <p className="text-white text-sm">{profile.country}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            {(profile.level || profile.age_group) && (
+              <div className="grid grid-cols-2 gap-3">
+                {profile.level && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Level</p>
+                    <p className="text-white text-sm">{profile.level}</p>
+                  </div>
+                )}
+                {profile.age_group && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Age Group</p>
+                    <p className="text-white text-sm">{profile.age_group}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            {(profile.favorite_team || profile.favorite_player) && (
+              <div className="grid grid-cols-2 gap-3">
+                {profile.favorite_team && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
+                    <p className="text-white text-sm">{profile.favorite_team}</p>
+                  </div>
+                )}
+                {profile.favorite_player && (
+                  <div>
+                    <p className="text-slate-500 text-xs mb-0.5">Favourite Player</p>
+                    <p className="text-white text-sm">{profile.favorite_player}</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        </div>
+        )}
 
         {activeSeason && (
           <div className="mt-4 pt-4 border-t border-slate-700/50">
