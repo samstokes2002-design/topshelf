@@ -20,8 +20,19 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Delete ALL records between these two users in either direction
+    const senderProfileId = record.sender_profile_id;
+    const recipientProfileId = record.friend_profile_id;
+
+    // Delete all records between these two profiles in either direction
     const toDelete = allRecords.filter(f => {
+      if (senderProfileId && recipientProfileId) {
+        // Profile-level matching (new records)
+        return (
+          (f.sender_profile_id === senderProfileId && f.friend_profile_id === recipientProfileId) ||
+          (f.sender_profile_id === recipientProfileId && f.friend_profile_id === senderProfileId)
+        );
+      }
+      // Fallback: email-level matching (legacy records without profile IDs)
       const fSender = f.sender_email || f.created_by;
       const fRecipient = f.friend_email;
       return (fSender === senderEmail && fRecipient === recipientEmail) ||
