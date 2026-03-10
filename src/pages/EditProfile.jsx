@@ -11,12 +11,23 @@ import ImageCropper from "@/components/ImageCropper";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
+const NHL_TEAMS = [
+  "Anaheim Ducks","Arizona Coyotes","Boston Bruins","Buffalo Sabres","Calgary Flames",
+  "Carolina Hurricanes","Chicago Blackhawks","Colorado Avalanche","Columbus Blue Jackets",
+  "Dallas Stars","Detroit Red Wings","Edmonton Oilers","Florida Panthers","Los Angeles Kings",
+  "Minnesota Wild","Montreal Canadiens","Nashville Predators","New Jersey Devils",
+  "New York Islanders","New York Rangers","Ottawa Senators","Philadelphia Flyers",
+  "Pittsburgh Penguins","San Jose Sharks","Seattle Kraken","St. Louis Blues",
+  "Tampa Bay Lightning","Toronto Maple Leafs","Utah Hockey Club","Vancouver Canucks",
+  "Vegas Golden Knights","Washington Capitals","Winnipeg Jets"
+];
+
 export default function EditProfile() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false, favorite_team: "", favorite_player: "" });
   const [usernameError, setUsernameError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
@@ -69,6 +80,8 @@ export default function EditProfile() {
         level: p.level || "",
         age_group: p.age_group || "",
         show_on_profile: p.show_on_profile || false,
+        favorite_team: p.favorite_team || "",
+        favorite_player: p.favorite_player || "",
       });
     }
   }, [profiles]);
@@ -191,11 +204,12 @@ export default function EditProfile() {
           </Select>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Age</Label>
-            <Input type="number" value={form.age} onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-          </div>
+        <div>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Age</Label>
+          <Input type="number" value={form.age} onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
             <div className="flex gap-1">
@@ -211,7 +225,7 @@ export default function EditProfile() {
           </div>
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
-            <Input type="number" placeholder="185" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Input type="number" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
         </div>
 
@@ -235,6 +249,23 @@ export default function EditProfile() {
             <Label className="text-slate-400 text-xs mb-1.5 block">Age Group</Label>
             <Input value={form.age_group} onChange={(e) => setForm((f) => ({ ...f, age_group: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
           </div>
+        </div>
+
+        <div>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Favorite NHL Team</Label>
+          <Select value={form.favorite_team} onValueChange={(v) => setForm((f) => ({ ...f, favorite_team: v }))}>
+            <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
+              <SelectValue placeholder="Select a team" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-800 border-slate-700 max-h-60">
+              {NHL_TEAMS.map((t) => <SelectItem key={t} value={t} className="text-white focus:bg-slate-700">{t}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Label className="text-slate-400 text-xs mb-1.5 block">Favorite Player</Label>
+          <Input value={form.favorite_player} onChange={(e) => setForm((f) => ({ ...f, favorite_player: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
         </div>
 
         <button
