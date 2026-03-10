@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { User, Settings, UserCog, ChevronRight, Trophy, Target, Dumbbell, Calendar, Plus } from "lucide-react";
+import { User, Settings, UserCog, ChevronRight, Trophy, Target, Dumbbell, Calendar, Plus, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import SessionCard from "@/components/SessionCard";
