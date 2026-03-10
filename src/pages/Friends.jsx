@@ -14,6 +14,7 @@ export default function Friends() {
   const [addMessage, setAddMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(null); // { id, name }
   const queryClient = useQueryClient();
 
   // Fetch all friend data via backend function (handles both sent and received)
