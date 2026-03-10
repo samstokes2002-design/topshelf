@@ -134,7 +134,10 @@ export default function Profile() {
             )}
           </div>
           <div>
-            <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
+              {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
+            </div>
             {activeProfile.username && <p className="text-slate-500 text-xs">@{activeProfile.username}</p>}
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
           </div>

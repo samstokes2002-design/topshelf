@@ -228,7 +228,10 @@ export default function FriendProfile() {
             )}
           </div>
           <div>
-            <h2 className="text-white font-bold text-lg">{profile.name}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-white font-bold text-lg">{profile.name}</h2>
+              {profile.player_number && <span className="text-sky-400 font-bold text-lg">#{profile.player_number}</span>}
+            </div>
             {profile.username && <p className="text-slate-500 text-xs">@{profile.username}</p>}
             <p className="text-slate-400 text-sm">{profile.position}</p>
           </div>
