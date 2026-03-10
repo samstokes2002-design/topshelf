@@ -51,7 +51,7 @@ export default function SessionCard({ session, profileName, showProfile = false,
       </div>
 
       {showProfile && profileName && (
-        <p className="text-xs text-slate-500 mb-2">{profileName}</p>
+        <p className="text-xs text-sky-400 font-medium mb-2">{profileName}</p>
       )}
 
       {(session.type === "game" || session.type === "shift_by_shift") && (
