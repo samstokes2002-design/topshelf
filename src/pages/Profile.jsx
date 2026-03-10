@@ -124,13 +124,15 @@ export default function Profile() {
             <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
             {activeProfile.show_on_profile && (
-              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
+              <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+                {activeProfile.age && <p className="text-slate-400 text-xs">Age {activeProfile.age}</p>}
+                {activeProfile.height && <p className="text-slate-400 text-xs">{activeProfile.height}</p>}
+                {activeProfile.weight && <p className="text-slate-400 text-xs">{activeProfile.weight} lbs</p>}
                 {(activeProfile.city || activeProfile.country) && (
-                  <p className="text-slate-500 text-xs">{[activeProfile.city, activeProfile.country].filter(Boolean).join(", ")}</p>
+                  <p className="text-slate-400 text-xs">{[activeProfile.city, activeProfile.country].filter(Boolean).join(", ")}</p>
                 )}
-                {activeProfile.level && <p className="text-slate-500 text-xs">{activeProfile.level}</p>}
-                {activeProfile.age_group && <p className="text-slate-500 text-xs">{activeProfile.age_group}</p>}
-                {activeProfile.age && <p className="text-slate-500 text-xs">Age {activeProfile.age}</p>}
+                {activeProfile.level && <p className="text-slate-400 text-xs">{activeProfile.level}</p>}
+                {activeProfile.age_group && <p className="text-slate-400 text-xs">{activeProfile.age_group}</p>}
               </div>
             )}
           </div>
