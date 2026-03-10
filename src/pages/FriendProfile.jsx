@@ -86,15 +86,125 @@ export default function FriendProfile() {
     );
   }
 
+  if (actionDone === 'blocked') {
+    return (
+      <div className="px-4 py-8 text-center">
+        <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center mx-auto mb-4">
+          <Shield className="w-8 h-8 text-slate-400" />
+        </div>
+        <h2 className="text-white font-bold text-lg mb-2">User Blocked</h2>
+        <p className="text-slate-400 text-sm mb-6">This user has been blocked and you've been unfriended.</p>
+        <button onClick={() => navigate(-1)} className="text-sky-400 text-sm">Go back</button>
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 pb-24">
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-bold text-lg">Report User</h3>
+              <button onClick={() => setShowReportModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="text-slate-400 text-sm mb-4">Tell us why you're reporting <span className="text-white font-medium">{profile.name}</span>.</p>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              placeholder="Describe the issue..."
+              className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl p-3 text-sm resize-none h-24 outline-none focus:border-sky-500"
+            />
+            <div className="flex gap-3 mt-4">
+              <button onClick={() => setShowReportModal(false)} className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors">
+                Cancel
+              </button>
+              <button
+                onClick={() => reportMutation.mutate()}
+                disabled={reportMutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-50"
+              >
+                {reportMutation.isPending ? "Submitting..." : "Submit Report"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Block Confirmation Modal */}
+      {showBlockModal && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
+              <Shield className="w-6 h-6 text-red-400" />
+            </div>
+            <h3 className="text-white font-bold text-center text-lg mb-1">Block {profile.name}?</h3>
+            <p className="text-slate-400 text-sm text-center mb-6">
+              They won't be able to view your profile or send you friend requests. You'll also be unfriended.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowBlockModal(false)} className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors">
+                Cancel
+              </button>
+              <button
+                onClick={() => blockMutation.mutate()}
+                disabled={blockMutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-50"
+              >
+                {blockMutation.isPending ? "Blocking..." : "Block User"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="flex items-center gap-3 py-4">
-        <button onClick={() => navigate(-1)} className="text-slate-400 hover:text-white transition-colors">
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <h1 className="text-white font-bold text-xl">{profile.name}'s Profile</h1>
+      <div className="flex items-center justify-between py-4">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)} className="text-slate-400 hover:text-white transition-colors">
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <h1 className="text-white font-bold text-xl">{profile.name}'s Profile</h1>
+        </div>
+        <div className="relative">
+          <button
+            onClick={() => setShowMenu(prev => !prev)}
+            className="text-slate-400 hover:text-white transition-colors p-1"
+          >
+            <MoreVertical className="w-5 h-5" />
+          </button>
+          {showMenu && (
+            <>
+              <div className="fixed inset-0 z-30" onClick={() => setShowMenu(false)} />
+              <div className="absolute right-0 top-8 z-40 bg-slate-800 border border-slate-700 rounded-xl shadow-xl overflow-hidden w-44">
+                <button
+                  onClick={() => { setShowMenu(false); setShowReportModal(true); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700 transition-colors"
+                >
+                  <Flag className="w-4 h-4 text-amber-400" />
+                  Report User
+                </button>
+                <button
+                  onClick={() => { setShowMenu(false); setShowBlockModal(true); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-slate-700 transition-colors"
+                >
+                  <Shield className="w-4 h-4" />
+                  Block User
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
+
+      {actionDone === 'reported' && (
+        <div className="bg-emerald-500/20 text-emerald-400 text-sm rounded-xl px-4 py-2 mb-4 text-center">
+          Report submitted. Thank you.
+        </div>
+      )}
 
       {/* Profile Card */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
