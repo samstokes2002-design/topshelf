@@ -107,6 +107,17 @@ export default function Settings() {
     window.location.href = createPageUrl("Home");
   };
 
+  const handleContactSupport = async () => {
+    if (!supportMessage.trim()) return;
+    setIsSendingSupport(true);
+    const profileId = await getActiveProfileId();
+    await base44.functions.invoke('contactSupport', { message: supportMessage, profileId });
+    setIsSendingSupport(false);
+    setSupportSent(true);
+    setSupportMessage("");
+    setTimeout(() => { setShowSupportModal(false); setSupportSent(false); }, 2000);
+  };
+
   const handleDeleteAccount = async () => {
     setIsDeletingAccount(true);
     await base44.functions.invoke('deleteAccount', {});
@@ -251,13 +262,13 @@ export default function Settings() {
           </div>
           <ChevronRight className="w-4 h-4 text-slate-500" />
         </Link>
-        <a href="mailto:support@topshelf.app" className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
+        <button onClick={() => { setShowSupportModal(true); setSupportSent(false); setSupportMessage(""); }} className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
           <div className="flex items-center gap-3">
             <Mail className="w-4 h-4 text-sky-400" />
             <span className="text-sm text-slate-200">Contact Support</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-500" />
-        </a>
+        </button>
       </div>
 
       {/* Account Management */}
