@@ -59,6 +59,7 @@ import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +76,7 @@ export const PAGES = {
     "Settings": Settings,
     "Stats": Stats,
     "PrivacyPolicy": PrivacyPolicy,
+    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {
