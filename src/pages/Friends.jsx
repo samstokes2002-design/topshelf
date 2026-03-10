@@ -75,8 +75,11 @@ export default function Friends() {
 
   const respondToRequestMutation = useMutation({
     mutationFn: ({ id, status }) =>
-      base44.functions.invoke('respondToFriendRequest', { friendRequestId: id, status }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["friendRequests", activeProfileId] }),
+      base44.functions.invoke('respondToFriendRequest', { friendId: id, action: status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friendRequests", activeProfileId] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
   });
 
   const deleteFriendMutation = useMutation({
