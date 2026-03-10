@@ -301,6 +301,12 @@ export default function EditProfile() {
           {form.show_on_profile ? "Showing on Profile" : "Show on Profile"}
         </button>
 
+        {contentError && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+            <p className="text-red-400 text-sm">{contentError}</p>
+          </div>
+        )}
+
         <Button type="submit" disabled={updateMutation.isPending || !!usernameError} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed">
           {updateMutation.isPending ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Save Changes"}
         </Button>

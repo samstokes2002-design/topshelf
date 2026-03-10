@@ -32,6 +32,7 @@ export default function LogSession() {
 
   const [saved, setSaved] = useState(false);
   const [savedDraft, setSavedDraft] = useState(false);
+  const [contentError, setContentError] = useState("");
   const [currentPeriod, setCurrentPeriod] = useState(1);
   const DRAFT_KEY = "shift_session_draft";
 
@@ -238,7 +239,13 @@ export default function LogSession() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    const contentErr = validateContentFields({
+      "opponent": form.opponent,
+      "notes": form.notes,
+    });
+    if (contentErr) { setContentError(contentErr); return; }
+    setContentError("");
+
     let payload = {
       ...form,
       duration: form.duration ? parseInt(form.duration) : 0,
@@ -613,6 +620,12 @@ export default function LogSession() {
             <Save className="w-4 h-4" />
             {savedDraft ? "Draft Saved!" : "Save Progress"}
           </Button>
+        )}
+
+        {contentError && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+            <p className="text-red-400 text-sm">{contentError}</p>
+          </div>
         )}
 
         {/* Submit */}
