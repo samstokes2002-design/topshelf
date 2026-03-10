@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SessionCard from "@/components/SessionCard";
+import SeasonStats from "@/components/SeasonStats";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function FriendProfile() {
