@@ -31,16 +31,7 @@ export default function Settings() {
     },
   });
 
-  const { data: seasons = [] } = useQuery({
-    queryKey: ["seasons", activeProfile?.id],
-    queryFn: async () => {
-      if (!activeProfile?.id) return [];
-      return base44.entities.Season.filter({ 
-        profile_id: activeProfile.id 
-      }, "-created_date");
-    },
-    enabled: !!activeProfile?.id,
-  });
+
 
   useEffect(() => {
     if (profiles.length > 0 && !activeProfile) {
