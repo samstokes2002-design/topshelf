@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LogOut, Save, ArrowLeft, Trophy, Plus } from "lucide-react";
+import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
 import { useNavigate } from "react-router-dom";
