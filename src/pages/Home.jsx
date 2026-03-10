@@ -250,21 +250,21 @@ export default function Home() {
           />
         ) : (
           <div className="space-y-3">
-            {/* Combine user's sessions and friends' sessions, sorted by date */}
             {[...sessions, ...friendSessions]
               .sort((a, b) => new Date(b.date) - new Date(a.date))
-              .slice(0, 10)
+              .slice(0, 20)
               .map((session) => {
-                const sessionProfile = [...(activeProfile ? [activeProfile] : []), ...friendProfiles].find(p => p.id === session.profile_id);
                 const isOwnSession = session.profile_id === activeProfile?.id;
+                const friendProfile = acceptedFriendProfiles.find(p => p.profileId === session.profile_id);
+                const username = !isOwnSession && friendProfile ? `@${friendProfile.username}` : undefined;
 
                 return (
                   <SessionCard
                     key={session.id}
                     session={session}
-                    profileName={!isOwnSession ? sessionProfile?.name : undefined}
+                    profileName={username}
                     showProfile={!isOwnSession}
-                    onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
+                    onClick={isOwnSession ? () => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}` : undefined}
                   />
                 );
               })}
