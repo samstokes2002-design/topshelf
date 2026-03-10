@@ -16,7 +16,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "" });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false });
   const [usernameError, setUsernameError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
@@ -63,6 +63,11 @@ export default function EditProfile() {
         photo_url: p.photo_url || "",
         height: p.height || "",
         weight: p.weight?.toString() || "",
+        city: p.city || "",
+        country: p.country || "",
+        level: p.level || "",
+        age_group: p.age_group || "",
+        show_on_profile: p.show_on_profile || false,
       });
     }
   }, [profiles]);
