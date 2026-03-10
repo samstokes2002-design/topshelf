@@ -48,13 +48,15 @@ export default function Home() {
     enabled: profiles.length > 0,
   });
 
-  // Fetch friend sessions via backend function (handles both directions)
+  // Fetch friend sessions scoped to the active profile
   const { data: friendData = { sessions: [], friendMap: {} } } = useQuery({
-    queryKey: ["friendSessions"],
+    queryKey: ["friendSessions", activeProfile?.id],
     queryFn: async () => {
-      const res = await base44.functions.invoke('getFriendSessions', {});
+      if (!activeProfile?.id) return { sessions: [], friendMap: {} };
+      const res = await base44.functions.invoke('getFriendSessions', { profileId: activeProfile.id });
       return res.data;
     },
+    enabled: !!activeProfile?.id,
   });
 
   const friendSessions = friendData.sessions || [];
