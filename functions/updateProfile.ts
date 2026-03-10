@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     const payload = await req.json();
-    const { profileId, username, name, position, age, photo_url, height, weight } = payload;
+    const { profileId, username, name, position, age, photo_url, height, weight, city, country, level, age_group, show_on_profile, favorite_team, favorite_player } = payload;
 
     if (!profileId) {
       return Response.json({ error: 'Missing profileId' }, { status: 400 });
@@ -20,29 +20,29 @@ Deno.serve(async (req) => {
     if (username) {
       const normalizedUsername = username.toLowerCase().trim();
       const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
-      
-      // Check if any OTHER profile has this username
       const existingUsername = allProfiles.find(
         p => p.id !== profileId && p.username && p.username.toLowerCase().trim() === normalizedUsername
       );
-
       if (existingUsername) {
-        return Response.json(
-          { error: 'That username is already taken' },
-          { status: 409 }
-        );
+        return Response.json({ error: 'That username is already taken' }, { status: 409 });
       }
     }
 
-    // Update the profile
     const updateData = {
       ...(name && { name }),
       ...(position && { position }),
       ...(username && { username: username.toLowerCase().trim() }),
-      ...(age && { age: parseInt(age) }),
+      ...(age !== undefined && age !== null && age !== "" && { age: parseInt(age) }),
       ...(photo_url && { photo_url }),
-      ...(height && { height }),
-      ...(weight && { weight: parseInt(weight) }),
+      ...(height !== undefined && { height }),
+      ...(weight !== undefined && weight !== null && weight !== "" && { weight: parseInt(weight) }),
+      city: city || "",
+      country: country || "",
+      level: level || "",
+      age_group: age_group || "",
+      show_on_profile: show_on_profile === true,
+      favorite_team: favorite_team || "",
+      favorite_player: favorite_player || "",
     };
 
     const updatedProfile = await base44.entities.Profile.update(profileId, updateData);
