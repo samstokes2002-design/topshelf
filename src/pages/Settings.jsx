@@ -66,6 +66,35 @@ export default function Settings() {
 
   return (
     <div className="px-4 pb-24">
+      {/* Unblock Confirmation */}
+      {confirmUnblock && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-sky-500/20 mx-auto mb-4">
+              <UserX className="w-6 h-6 text-sky-400" />
+            </div>
+            <h3 className="text-white font-bold text-center text-lg mb-1">Unblock User?</h3>
+            <p className="text-slate-400 text-sm text-center mb-6">
+              Are you sure you want to unblock <span className="text-white font-medium">{confirmUnblock.blocked_name || "this user"}</span>? They will be able to send you friend requests again.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmUnblock(null)}
+                className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => unblockMutation.mutate(confirmUnblock.id)}
+                disabled={unblockMutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-sky-500/20 text-sky-400 text-sm font-medium hover:bg-sky-500/30 transition-colors disabled:opacity-50"
+              >
+                {unblockMutation.isPending ? "Unblocking..." : "Unblock"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex items-center gap-3 py-4">
         <button onClick={() => navigate(createPageUrl("Profile"), { replace: true })} className="text-slate-400 hover:text-white transition-colors">
           <ArrowLeft className="w-5 h-5" />
