@@ -325,6 +325,51 @@ export default function Settings() {
         Log Out
       </Button>
 
+      {/* Contact Support Modal */}
+      {showSupportModal && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-bold text-lg">Contact Support</h3>
+              <button onClick={() => setShowSupportModal(false)} className="text-slate-400 hover:text-white">
+                <span className="text-xl leading-none">×</span>
+              </button>
+            </div>
+            {supportSent ? (
+              <div className="text-center py-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                  <Mail className="w-6 h-6 text-emerald-400" />
+                </div>
+                <p className="text-emerald-400 font-semibold">Message sent!</p>
+                <p className="text-slate-400 text-sm mt-1">We'll get back to you soon.</p>
+              </div>
+            ) : (
+              <>
+                <p className="text-slate-400 text-sm mb-4">Describe your issue or question and we'll get back to you.</p>
+                <textarea
+                  value={supportMessage}
+                  onChange={(e) => setSupportMessage(e.target.value)}
+                  placeholder="Describe your issue..."
+                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl p-3 text-sm resize-none h-28 outline-none focus:border-sky-500 mb-4"
+                />
+                <div className="flex gap-3">
+                  <button onClick={() => setShowSupportModal(false)} className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleContactSupport}
+                    disabled={!supportMessage.trim() || isSendingSupport}
+                    className="flex-1 py-2.5 rounded-xl bg-sky-500/20 text-sky-400 text-sm font-medium hover:bg-sky-500/30 transition-colors disabled:opacity-50"
+                  >
+                    {isSendingSupport ? "Sending..." : "Send"}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Delete Profile Modal */}
       {showDeleteProfileConfirm && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
