@@ -234,13 +234,13 @@ export default function Friends() {
               {pendingOutgoing.map((f) => (
                 <div key={f.id} className="flex items-center justify-between bg-slate-800/60 border border-slate-700/50 rounded-xl p-3">
                   <div className="flex items-center gap-3">
-                    <Avatar name={f.other_name} size="w-8 h-8" />
-                    <div>
-                      <p className="text-white text-sm font-medium">{f.other_name}</p>
-                      <p className="text-slate-500 text-xs">@{f.other_username}</p>
+                    <Avatar name={f.other_name} photo={f.other_photo} size="w-8 h-8" />
+                     <div>
+                       <p className="text-white text-sm font-medium">{f.other_name}</p>
+                       <p className="text-slate-500 text-xs">@{f.other_username}</p>
+                     </div>
                     </div>
-                  </div>
-                  <span className="text-slate-400 text-xs">Invite Pending</span>
+                    <span className="text-slate-400 text-xs">Invite Pending</span>
                 </div>
               ))}
             </div>
