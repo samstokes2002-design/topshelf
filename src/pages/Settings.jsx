@@ -16,7 +16,6 @@ export default function Settings() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
-  const [activeProfile, setActiveProfile] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
