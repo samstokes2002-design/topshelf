@@ -32,10 +32,17 @@ export default function Friends() {
   // Accepted connections: union of both sides
   const acceptedSent = friendData.sent.filter(f => f.status === "accepted");
   const acceptedReceived = friendData.received.filter(f => f.status === "accepted");
-  const accepted = [
+  const acceptedAll = [
     ...acceptedSent.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, profileId: f.other_profile_id, side: 'sent' })),
     ...acceptedReceived.map(f => ({ id: f.id, name: f.other_name, username: f.other_username, photo: f.other_photo, profileId: f.other_profile_id, side: 'received' })),
   ];
+  // Deduplicate by username, keeping first occurrence
+  const seenUsernames = new Set();
+  const accepted = acceptedAll.filter(f => {
+    if (seenUsernames.has(f.username)) return false;
+    seenUsernames.add(f.username);
+    return true;
+  });
 
   const sendFriendRequestMutation = useMutation({
     mutationFn: (username) => base44.functions.invoke('sendFriendRequest', { username }),
