@@ -111,10 +111,14 @@ export default function Friends() {
           </div>
           <Button
             type="submit"
-            disabled={!searchUsername.trim()}
+            disabled={!searchUsername.trim() || isSearching}
             className="bg-sky-500 hover:bg-sky-600 rounded-xl"
           >
-            <Search className="w-4 h-4" />
+            {isSearching ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Search className="w-4 h-4" />
+            )}
           </Button>
         </form>
 
