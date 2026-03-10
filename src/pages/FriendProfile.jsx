@@ -30,7 +30,7 @@ export default function FriendProfile() {
   });
 
   const reportMutation = useMutation({
-    mutationFn: () => base44.functions.invoke('reportUser', { profileId, reason: reportReason }),
+    mutationFn: () => base44.functions.invoke('reportUser', { profileId, reason: reportReason, reporterProfileId: myProfileId }),
     onSuccess: () => {
       setShowReportModal(false);
       setReportReason("");

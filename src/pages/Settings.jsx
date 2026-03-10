@@ -22,6 +22,10 @@ export default function Settings() {
   const [isExporting, setIsExporting] = useState(false);
   const [isDeletingProfile, setIsDeletingProfile] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [supportMessage, setSupportMessage] = useState("");
+  const [isSendingSupport, setIsSendingSupport] = useState(false);
+  const [supportSent, setSupportSent] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
