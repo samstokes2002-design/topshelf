@@ -61,6 +61,17 @@ Deno.serve(async (req) => {
       status: 'pending',
     });
 
+    // Send notification to the friend request recipient
+    const senderProfile = allProfiles.find(p => p.id === senderProfileId);
+    const senderUsername = senderProfile?.username || user.email.split('@')[0];
+
+    await base44.functions.invoke('sendNotificationWithChannels', {
+      recipient_email: targetEmail,
+      type: 'friend_request_received',
+      actor_username: senderUsername,
+      actor_email: user.email
+    }).catch(err => console.error('Notification failed:', err.message));
+
     return Response.json(friendRequest, { status: 201 });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
