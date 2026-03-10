@@ -12,6 +12,7 @@ export default function FriendProfile() {
   const profileId = urlParams.get("id");
   const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
+  const [selectedSeasonId, setSelectedSeasonId] = useState(null);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["friend-profile", profileId],
