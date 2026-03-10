@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import FilteredInput from "@/components/FilteredInput";
+import { validateContentFields } from "@/components/contentFilter";
 import { Trophy, Check } from "lucide-react";
 
 const AVAILABLE_STATS = [
@@ -50,6 +52,7 @@ export default function SeasonSetup() {
   const [seasonType, setSeasonType] = useState("winter");
   const [year, setYear] = useState(new Date().getFullYear());
   const [teamName, setTeamName] = useState("");
+  const [contentError, setContentError] = useState("");
   const [selectedStats, setSelectedStats] = useState([
     "goals", "assists", "shots", "plus_minus", "rating"
   ]);
@@ -147,6 +150,12 @@ export default function SeasonSetup() {
   };
 
   const handleSubmit = () => {
+    const contentErr = validateContentFields({
+      "team name": teamName,
+    });
+    if (contentErr) { setContentError(contentErr); return; }
+    setContentError("");
+
     const selectedType = SEASON_TYPES.find((t) => t.value === seasonType);
     const seasonYear = selectedType.format(year);
 
@@ -246,7 +255,7 @@ export default function SeasonSetup() {
 
             <div>
               <Label className="text-slate-400 text-xs mb-2 block">Team Name (Optional)</Label>
-              <Input
+              <FilteredInput
                 placeholder="e.g., Thunder AAA"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
@@ -298,6 +307,12 @@ export default function SeasonSetup() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {contentError && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+            <p className="text-red-400 text-sm">{contentError}</p>
           </div>
         )}
 
