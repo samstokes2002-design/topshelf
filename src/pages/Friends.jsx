@@ -97,6 +97,35 @@ export default function Friends() {
 
   return (
     <div className="px-4 pb-24">
+      {/* Remove Friend Confirmation */}
+      {confirmRemove && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center pb-10 px-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4">
+              <UserMinus className="w-6 h-6 text-red-400" />
+            </div>
+            <h3 className="text-white font-bold text-center text-lg mb-1">Remove Friend?</h3>
+            <p className="text-slate-400 text-sm text-center mb-6">
+              Are you sure you want to remove <span className="text-white font-medium">{confirmRemove.name}</span> from your friends?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmRemove(null)}
+                className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteFriendMutation.mutate(confirmRemove.id)}
+                disabled={deleteFriendMutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-50"
+              >
+                {deleteFriendMutation.isPending ? "Removing..." : "Remove"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="py-4">
         <h1 className="text-white font-bold text-xl mb-4">Friends</h1>
 
