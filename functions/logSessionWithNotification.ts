@@ -39,12 +39,15 @@ Deno.serve(async (req) => {
       const notificationType = sessionData.type === 'game' ? 'friend_session_logged' : null;
       
       if (notificationType) {
-        await base44.functions.invoke('createNotification', {
+        const description = `${actorUsername} logged a ${sessionData.type} session on ${sessionData.date}.`;
+        
+        await base44.functions.invoke('sendNotificationWithChannels', {
           recipient_email: fr.friend_email,
           type: notificationType,
           actor_username: actorUsername,
           actor_email: user.email,
-          session_id: session.id
+          session_id: session.id,
+          description
         });
       }
     }

@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
       const senderProfiles = await base44.asServiceRole.entities.Profile.filter({ created_by: user.email });
       const senderUsername = senderProfiles[0]?.username || user.email.split('@')[0];
 
-      await base44.functions.invoke('createNotification', {
+      await base44.functions.invoke('sendNotificationWithChannels', {
         recipient_email: fr.sender_email,
         type: notificationType,
         actor_username: senderUsername,
