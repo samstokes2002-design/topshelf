@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, UserPlus, Users, Check, X, Clock, AlertCircle } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 
 export default function Friends() {
   const [searchUsername, setSearchUsername] = useState("");
