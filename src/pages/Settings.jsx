@@ -5,9 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, UserX, Download, Trash2, AlertTriangle } from "lucide-react";
+import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, UserX, Download, Trash2, AlertTriangle, Bell } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
+import NotificationSettings from "@/components/NotificationSettings";
 
 export default function Settings() {
   const { toast } = useToast();
@@ -213,6 +214,15 @@ export default function Settings() {
             <span className="text-white capitalize">{user?.role || "User"}</span>
           </div>
         </div>
+      </div>
+
+      {/* Notifications */}
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Bell className="w-4 h-4 text-sky-400" />
+          <h3 className="text-white font-semibold text-sm">Notifications</h3>
+        </div>
+        <NotificationSettings />
       </div>
 
       {/* Blocked Users */}
