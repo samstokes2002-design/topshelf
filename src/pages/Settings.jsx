@@ -95,12 +95,19 @@ export default function Settings() {
   };
 
   const handleDeleteProfile = async () => {
-    setIsDeleting(true);
+    setIsDeletingProfile(true);
     const profileId = await getActiveProfileId();
-    if (!profileId) { setIsDeleting(false); return; }
+    if (!profileId) { setIsDeletingProfile(false); return; }
     await base44.functions.invoke('deleteProfile', { profileId });
     localStorage.removeItem("activeProfileId");
     window.location.href = createPageUrl("Home");
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeletingAccount(true);
+    await base44.functions.invoke('deleteAccount', {});
+    localStorage.clear();
+    await base44.auth.logout();
   };
 
   return (
