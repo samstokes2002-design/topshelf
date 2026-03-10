@@ -112,29 +112,30 @@ export default function LogSession() {
     }
   }, [activeSeason]);
 
-  // Auto-update PPP and goals if PPG is logged
+  // Auto-update goals based on PPG and SHG
   useEffect(() => {
     setForm((f) => {
       let updated = { ...f };
+      const totalPowerPlayAndShorty = f.power_play_goals + f.shorthanded_goals;
+      
+      // Ensure goals >= PPG + SHG
+      if (totalPowerPlayAndShorty > f.goals) {
+        updated.goals = totalPowerPlayAndShorty;
+      }
+      
+      // Auto-update PPP if PPG is logged without PPP
       if (f.power_play_goals > 0 && f.power_play_points === 0) {
         updated.power_play_points = f.power_play_goals;
       }
-      if (f.power_play_goals > f.goals) {
-        updated.goals = f.power_play_goals;
+      
+      // Auto-update SHP if SHG is logged without SHP
+      if (f.shorthanded_goals > 0 && f.shorthanded_points === 0) {
+        updated.shorthanded_points = f.shorthanded_goals;
       }
+      
       return updated;
     });
-  }, [form.power_play_goals]);
-
-  // Auto-update SHP if SHG is logged without SHP
-  useEffect(() => {
-    setForm((f) => {
-      if (f.shorthanded_goals > 0 && f.shorthanded_points === 0) {
-        return { ...f, shorthanded_points: f.shorthanded_goals };
-      }
-      return f;
-    });
-  }, [form.shorthanded_goals]);
+  }, [form.power_play_goals, form.shorthanded_goals]);
 
   const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
   const defaultStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
@@ -265,6 +266,12 @@ export default function LogSession() {
       
       const totalIceTimeSeconds = form.shifts.reduce((sum, shift) => sum + shift.duration_seconds, 0);
       const totalIceTimeMinutes = Math.round(totalIceTimeSeconds / 60);
+      
+      // Ensure goals includes PPG and SHG
+      const totalPPGandSHG = (aggregatedStats.power_play_goals || 0) + (aggregatedStats.shorthanded_goals || 0);
+      if (totalPPGandSHG > (aggregatedStats.goals || 0)) {
+        aggregatedStats.goals = totalPPGandSHG;
+      }
       
       payload = { ...payload, ...aggregatedStats, time_on_ice: totalIceTimeMinutes };
     }
