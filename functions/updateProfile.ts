@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     const payload = await req.json();
-    const { profileId, username, name, position, age, photo_url, height, weight, city, country, level, age_group, show_on_profile, favorite_team, favorite_player } = payload;
+    const { profileId, username, name, position, age, photo_url, height, weight, city, country, level, age_group, show_on_profile, favorite_team, favorite_player, player_number } = payload;
 
     if (!profileId) {
       return Response.json({ error: 'Missing profileId' }, { status: 400 });
@@ -43,6 +43,7 @@ Deno.serve(async (req) => {
       show_on_profile: show_on_profile === true,
       favorite_team: favorite_team || "",
       favorite_player: favorite_player || "",
+      player_number: player_number || "",
     };
 
     const updatedProfile = await base44.entities.Profile.update(profileId, updateData);
