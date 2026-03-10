@@ -28,7 +28,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", city: "", country: "", level: "", age_group: "", show_on_profile: false, favorite_team: "", favorite_player: "", player_number: "" });
+  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", show_on_profile: false, favorite_team: "", player_number: "" });
   const [usernameError, setUsernameError] = useState("");
   const [contentError, setContentError] = useState("");
   const [cropFile, setCropFile] = useState(null);
@@ -77,13 +77,8 @@ export default function EditProfile() {
         height_ft: p.height ? p.height.split("'")[0] : "",
         height_in: p.height ? (p.height.split("'")[1] || "").replace('"', "") : "",
         weight: p.weight?.toString() || "",
-        city: p.city || "",
-        country: p.country || "",
-        level: p.level || "",
-        age_group: p.age_group || "",
         show_on_profile: p.show_on_profile || false,
         favorite_team: p.favorite_team || "",
-        favorite_player: p.favorite_player || "",
         player_number: p.player_number || "",
       });
     }
@@ -140,11 +135,6 @@ export default function EditProfile() {
     const contentErr = validateContentFields({
       "name": form.name,
       "username": form.username,
-      "city": form.city,
-      "country": form.country,
-      "level": form.level,
-      "age group": form.age_group,
-      "favorite player": form.favorite_player,
     });
     if (contentErr) { setContentError(contentErr); return; }
     setContentError("");
@@ -220,7 +210,7 @@ export default function EditProfile() {
 
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Player Number</Label>
-          <Input value={form.player_number} onChange={(e) => setForm((f) => ({ ...f, player_number: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          <Input type="number" value={form.player_number} onChange={(e) => { const val = e.target.value; setForm((f) => ({ ...f, player_number: val === '' ? '' : Math.max(0, parseInt(val) || 0).toString() })); }} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" min="0" />
         </div>
 
         <div>
@@ -248,28 +238,6 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">City</Label>
-            <Input value={form.city} onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-          </div>
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Country</Label>
-            <Input value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Level</Label>
-            <Input value={form.level} onChange={(e) => setForm((f) => ({ ...f, level: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-          </div>
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Age Group</Label>
-            <Input value={form.age_group} onChange={(e) => setForm((f) => ({ ...f, age_group: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-          </div>
-        </div>
-
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Favorite NHL Team</Label>
           <Select value={form.favorite_team} onValueChange={(v) => setForm((f) => ({ ...f, favorite_team: v }))}>
@@ -281,11 +249,6 @@ export default function EditProfile() {
               {NHL_TEAMS.map((t) => <SelectItem key={t} value={t} className="text-white focus:bg-slate-700">{t}</SelectItem>)}
             </SelectContent>
           </Select>
-        </div>
-
-        <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Favorite Player</Label>
-          <Input value={form.favorite_player} onChange={(e) => setForm((f) => ({ ...f, favorite_player: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
         </div>
 
         <button
