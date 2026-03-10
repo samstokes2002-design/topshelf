@@ -114,6 +114,47 @@ export default function FriendProfile() {
         )}
       </div>
 
+      {/* Seasons */}
+      {seasons.length > 0 && (
+        <div className="mb-5">
+          <h3 className="text-white font-semibold text-sm mb-3">Seasons</h3>
+          <div className="space-y-2">
+            {seasons.map((season) => {
+              const seasonSessions = getSessionsForSeason(season);
+              const seasonGames = seasonSessions.filter(s => s.type === "game" || s.type === "shift_by_shift");
+              const seasonPractices = seasonSessions.filter(s => s.type === "practice");
+              const seasonTraining = seasonSessions.filter(s => s.type === "training");
+
+              return (
+                <button
+                  key={season.id}
+                  onClick={() => setSelectedSeasonId(selectedSeasonId === season.id ? null : season.id)}
+                  className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 hover:bg-slate-700/60 transition-colors text-left"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h4 className="text-white font-medium text-sm">{season.season_year}</h4>
+                      {season.team_name && <p className="text-slate-400 text-xs">{season.team_name}</p>}
+                    </div>
+                    {season.is_active && (
+                      <span className="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full">Active</span>
+                    )}
+                  </div>
+                  <div className="flex gap-4 text-xs">
+                    <span className="text-slate-400">{seasonGames.length} Games</span>
+                    <span className="text-slate-400">{seasonPractices.length} Practices</span>
+                    <span className="text-slate-400">{seasonTraining.length} Training</span>
+                  </div>
+                  {selectedSeasonId === season.id && (
+                    <SeasonStats sessions={seasonSessions} selectedStats={season.selected_stats} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Session Filters */}
       <Tabs value={filter} onValueChange={setFilter} className="mb-4">
         <TabsList className="bg-slate-800/60 border border-slate-700/50 w-full">
