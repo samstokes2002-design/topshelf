@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
     }
 
     const friendRequest = await base44.asServiceRole.entities.Friend.create({
-      created_by: user.email,
+      sender_email: user.email,
       friend_email: targetEmail,
       friend_name: targetProfile.name,
       status: 'pending',

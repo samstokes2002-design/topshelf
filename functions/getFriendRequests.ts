@@ -27,12 +27,12 @@ Deno.serve(async (req) => {
       };
     });
 
-    const sent = allRecords.filter(f => f.created_by === user.email);
+    const sent = allRecords.filter(f => (f.sender_email || f.created_by) === user.email);
     const received = allRecords.filter(f => f.friend_email === user.email);
 
     return Response.json({
       sent: enrich(sent, r => r.friend_email),
-      received: enrich(received, r => r.created_by),
+      received: enrich(received, r => r.sender_email || r.created_by),
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
