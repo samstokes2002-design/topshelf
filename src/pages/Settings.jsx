@@ -26,6 +26,24 @@ export default function Settings() {
     }
   }, [user]);
 
+  const { data: blockedData } = useQuery({
+    queryKey: ["blockedUsers"],
+    queryFn: async () => {
+      const res = await base44.functions.invoke('getBlockedUsers', {});
+      return res.data;
+    },
+  });
+
+  const blockedUsers = blockedData?.blocks || [];
+
+  const unblockMutation = useMutation({
+    mutationFn: (blockId) => base44.functions.invoke('unblockUser', { blockId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blockedUsers"] });
+      toast({ title: "User unblocked" });
+    },
+  });
+
   const updateUserMutation = useMutation({
     mutationFn: (data) => base44.auth.updateMe(data),
     onSuccess: () => {
