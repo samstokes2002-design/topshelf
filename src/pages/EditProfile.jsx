@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Upload, Check, Trophy, Plus, Eye } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
+import FilteredInput from "@/components/FilteredInput";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
@@ -187,11 +188,11 @@ export default function EditProfile() {
 
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Player Name</Label>
-          <Input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          <FilteredInput value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
         </div>
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Username</Label>
-          <Input 
+          <FilteredInput 
             value={form.username} 
             onChange={(e) => handleUsernameChange(e.target.value)} 
             className={`bg-slate-800/60 text-white rounded-xl ${usernameError ? 'border-red-500/50' : 'border-slate-700/50'}`}

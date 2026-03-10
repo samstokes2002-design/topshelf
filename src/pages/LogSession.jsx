@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Trophy, Target, Dumbbell, Timer, Check, Save } from "lucide-react";
 import { validateContentFields } from "@/components/contentFilter";
+import FilteredInput from "@/components/FilteredInput";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import StarRating from "@/components/ui/StarRating";
@@ -603,7 +604,10 @@ export default function LogSession() {
           <Textarea
             placeholder="Quick thoughts..."
             value={form.notes}
-            onChange={(e) => update("notes", e.target.value)}
+            onChange={(e) => {
+              const sanitized = e.target.value.replace(/[^a-zA-Z0-9\s]/g, "");
+              update("notes", sanitized);
+            }}
             rows={3}
             className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl resize-none"
           />
