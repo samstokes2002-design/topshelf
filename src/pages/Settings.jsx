@@ -41,6 +41,7 @@ export default function Settings() {
     mutationFn: (blockId) => base44.functions.invoke('unblockUser', { blockId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blockedUsers"] });
+      setConfirmUnblock(null);
       toast({ title: "User unblocked" });
     },
   });
