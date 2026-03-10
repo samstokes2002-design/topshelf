@@ -295,10 +295,7 @@ export default function EditProfile() {
           )}
         </div>
 
-        <Button type="button" variant="ghost" onClick={() => { if (confirm("Delete this profile?")) deleteMutation.mutate(); }} className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl h-12">
-          <Trash2 className="w-4 h-4 mr-2" />
-          Delete Profile
-        </Button>
+
       </form>
     </div>
   );
