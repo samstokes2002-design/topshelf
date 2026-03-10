@@ -38,13 +38,24 @@ export default function FriendProfile() {
     },
   });
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["friend-profile", profileId],
+  const { data: myProfileId } = useQuery({
+    queryKey: ["myProfileId"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('getFriendProfile', { profileId });
+      const currentUser = await base44.auth.me();
+      const savedId = localStorage.getItem("activeProfileId");
+      const profiles = await base44.entities.Profile.filter({ created_by: currentUser.email });
+      if (savedId && profiles.find(p => p.id === savedId)) return savedId;
+      return profiles[0]?.id || null;
+    },
+  });
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["friend-profile", profileId, myProfileId],
+    queryFn: async () => {
+      const res = await base44.functions.invoke('getFriendProfile', { profileId, myProfileId });
       return res.data;
     },
-    enabled: !!profileId,
+    enabled: !!profileId && !!myProfileId,
   });
 
   const profile = data?.profile;
