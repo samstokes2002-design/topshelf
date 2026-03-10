@@ -58,7 +58,7 @@ export default function Friends() {
   });
 
   const sendFriendRequestMutation = useMutation({
-    mutationFn: (username) => base44.functions.invoke('sendFriendRequest', { username }),
+    mutationFn: (username) => base44.functions.invoke('sendFriendRequest', { username, senderProfileId: activeProfileId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
       setSearchUsername("");
