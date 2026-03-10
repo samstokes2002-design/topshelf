@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-export default function ProfileSwitcher({ profiles, activeProfile, onSwitch, onAdd }) {
+export default function ProfileSwitcher({ profiles, activeProfile, onSwitch, onAdd, inline }) {
   if (!profiles || profiles.length === 0) return null;
 
   const current = activeProfile || profiles[0];
@@ -17,17 +17,25 @@ export default function ProfileSwitcher({ profiles, activeProfile, onSwitch, onA
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 bg-slate-800/80 border border-slate-700/50 rounded-xl px-3 py-2 hover:bg-slate-700/80 transition-colors">
-          <div className="w-7 h-7 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden">
-            {current.photo_url ? (
-              <img src={current.photo_url} alt="" className="w-full h-full object-cover" />
-            ) : (
-              <User className="w-3.5 h-3.5 text-sky-400" />
-            )}
-          </div>
-          <span className="text-white text-sm font-medium max-w-[120px] truncate">{current.name}</span>
-          <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-        </button>
+        {inline ? (
+          <button className="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
+            <span className="text-white font-bold text-lg">{current.name}</span>
+            {current.player_number && <span className="text-sky-400 font-bold text-lg">#{current.player_number}</span>}
+            <ChevronDown className="w-4 h-4 text-slate-400 mt-0.5" />
+          </button>
+        ) : (
+          <button className="flex items-center gap-2 bg-slate-800/80 border border-slate-700/50 rounded-xl px-3 py-2 hover:bg-slate-700/80 transition-colors">
+            <div className="w-7 h-7 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden">
+              {current.photo_url ? (
+                <img src={current.photo_url} alt="" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-3.5 h-3.5 text-sky-400" />
+              )}
+            </div>
+            <span className="text-white text-sm font-medium max-w-[120px] truncate">{current.name}</span>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+          </button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-slate-800 border-slate-700 min-w-[180px]">
         {profiles.map((p) => (
