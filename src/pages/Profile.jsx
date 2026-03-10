@@ -112,7 +112,7 @@ export default function Profile() {
 
       {/* Profile Card */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
-        {/* Photo + Name + Position + Age/Height/Weight */}
+        {/* Photo + Name + Position */}
         <div className="flex items-start gap-4 mb-4">
           <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden flex-shrink-0">
             {activeProfile.photo_url ? (
@@ -121,47 +121,23 @@ export default function Profile() {
               <User className="w-7 h-7 text-sky-400" />
             )}
           </div>
-          <div className="flex-1 flex items-start justify-between">
-            <div>
-              {profiles.length > 1 ? (
-                <ProfileSwitcher
-                  profiles={profiles}
-                  activeProfile={activeProfile}
-                  onSwitch={handleProfileSwitch}
-                  onAdd={() => window.location.href = createPageUrl("CreateProfile")}
-                  inline
-                />
-              ) : (
-                <div className="flex items-center gap-2">
-                  <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
-                  {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
-                </div>
-              )}
-              {activeProfile.username && <p className="text-slate-500 text-xs">@{activeProfile.username}</p>}
-              <p className="text-slate-400 text-sm">{activeProfile.position}</p>
-            </div>
-            {(activeProfile.age || activeProfile.height || activeProfile.weight) && (
-              <div className="flex flex-col items-end gap-1 ml-2">
-                {activeProfile.age && (
-                  <div className="text-right">
-                    <p className="text-white text-sm font-medium leading-tight">{activeProfile.age}</p>
-                    <p className="text-slate-500 text-[10px]">Age</p>
-                  </div>
-                )}
-                {activeProfile.height && (
-                  <div className="text-right">
-                    <p className="text-white text-sm font-medium leading-tight">{activeProfile.height}</p>
-                    <p className="text-slate-500 text-[10px]">Height</p>
-                  </div>
-                )}
-                {activeProfile.weight && (
-                  <div className="text-right">
-                    <p className="text-white text-sm font-medium leading-tight">{activeProfile.weight} lbs</p>
-                    <p className="text-slate-500 text-[10px]">Weight</p>
-                  </div>
-                )}
+          <div className="flex-1">
+            {profiles.length > 1 ? (
+              <ProfileSwitcher
+                profiles={profiles}
+                activeProfile={activeProfile}
+                onSwitch={handleProfileSwitch}
+                onAdd={() => window.location.href = createPageUrl("CreateProfile")}
+                inline
+              />
+            ) : (
+              <div className="flex items-center gap-2">
+                <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
+                {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
               </div>
             )}
+            {activeProfile.username && <p className="text-slate-500 text-xs">@{activeProfile.username}</p>}
+            <p className="text-slate-400 text-sm">{activeProfile.position}</p>
           </div>
         </div>
 
@@ -171,6 +147,32 @@ export default function Profile() {
             <div>
               <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
               <p className="text-white text-sm">{activeProfile.favorite_team}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Age/Height/Weight Stats */}
+        {(activeProfile.age || activeProfile.height || activeProfile.weight) && (
+          <div className="mt-4 pt-4 border-t border-slate-700/50">
+            <div className="flex gap-4">
+              {activeProfile.age && (
+                <div className="text-center flex-1">
+                  <p className="text-white text-sm font-medium">{activeProfile.age}</p>
+                  <p className="text-slate-500 text-[10px]">Age</p>
+                </div>
+              )}
+              {activeProfile.height && (
+                <div className="text-center flex-1">
+                  <p className="text-white text-sm font-medium">{activeProfile.height}</p>
+                  <p className="text-slate-500 text-[10px]">Height</p>
+                </div>
+              )}
+              {activeProfile.weight && (
+                <div className="text-center flex-1">
+                  <p className="text-white text-sm font-medium">{activeProfile.weight} lbs</p>
+                  <p className="text-slate-500 text-[10px]">Weight</p>
+                </div>
+              )}
             </div>
           </div>
         )}
