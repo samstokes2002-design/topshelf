@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, User } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ChevronLeft, User, MoreVertical, Flag, Shield, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SessionCard from "@/components/SessionCard";
 import SeasonStats from "@/components/SeasonStats";
@@ -11,8 +11,32 @@ export default function FriendProfile() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("id");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [actionDone, setActionDone] = useState(null); // 'reported' | 'blocked'
+
+  const blockMutation = useMutation({
+    mutationFn: () => base44.functions.invoke('blockUser', { profileId }),
+    onSuccess: () => {
+      setShowBlockModal(false);
+      setActionDone('blocked');
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+    },
+  });
+
+  const reportMutation = useMutation({
+    mutationFn: () => base44.functions.invoke('reportUser', { profileId, reason: reportReason }),
+    onSuccess: () => {
+      setShowReportModal(false);
+      setReportReason("");
+      setActionDone('reported');
+    },
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["friend-profile", profileId],
