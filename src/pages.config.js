@@ -49,6 +49,7 @@
  */
 import CreateProfile from './pages/CreateProfile';
 import EditProfile from './pages/EditProfile';
+import FriendProfile from './pages/FriendProfile';
 import Friends from './pages/Friends';
 import Home from './pages/Home';
 import LogSession from './pages/LogSession';
@@ -57,13 +58,13 @@ import SeasonSetup from './pages/SeasonSetup';
 import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
-import FriendProfile from './pages/FriendProfile';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "CreateProfile": CreateProfile,
     "EditProfile": EditProfile,
+    "FriendProfile": FriendProfile,
     "Friends": Friends,
     "Home": Home,
     "LogSession": LogSession,
@@ -72,7 +73,6 @@ export const PAGES = {
     "SessionDetail": SessionDetail,
     "Settings": Settings,
     "Stats": Stats,
-    "FriendProfile": FriendProfile,
 }
 
 export const pagesConfig = {
