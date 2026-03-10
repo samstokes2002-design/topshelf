@@ -47,34 +47,14 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import CreateProfile from './pages/CreateProfile';
-import EditProfile from './pages/EditProfile';
 import Friends from './pages/Friends';
-import Home from './pages/Home';
-import LogSession from './pages/LogSession';
-import Profile from './pages/Profile';
-import SeasonSetup from './pages/SeasonSetup';
-import SessionDetail from './pages/SessionDetail';
-import Settings from './pages/Settings';
-import Stats from './pages/Stats';
-import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "CreateProfile": CreateProfile,
-    "EditProfile": EditProfile,
     "Friends": Friends,
-    "Home": Home,
-    "LogSession": LogSession,
-    "Profile": Profile,
-    "SeasonSetup": SeasonSetup,
-    "SessionDetail": SessionDetail,
-    "Settings": Settings,
-    "Stats": Stats,
 }
 
 export const pagesConfig = {
-    mainPage: "Home",
+    mainPage: "Friends",
     Pages: PAGES,
-    Layout: __Layout,
 };
