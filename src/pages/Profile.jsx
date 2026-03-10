@@ -200,9 +200,9 @@ export default function Profile() {
                 )}
               </div>
             )}
-            {(activeProfile.favorite_team || activeProfile.favorite_player) && (
+            {((activeProfile.favorite_team && activeProfile.favorite_team !== "none") || activeProfile.favorite_player) && (
               <div className="grid grid-cols-2 gap-3">
-                {activeProfile.favorite_team && (
+                {activeProfile.favorite_team && activeProfile.favorite_team !== "none" && (
                   <div>
                     <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
                     <p className="text-white text-sm">{activeProfile.favorite_team}</p>

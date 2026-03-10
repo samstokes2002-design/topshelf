@@ -293,9 +293,9 @@ export default function FriendProfile() {
                 )}
               </div>
             )}
-            {(profile.favorite_team || profile.favorite_player) && (
+            {((profile.favorite_team && profile.favorite_team !== "none") || profile.favorite_player) && (
               <div className="grid grid-cols-2 gap-3">
-                {profile.favorite_team && (
+                {profile.favorite_team && profile.favorite_team !== "none" && (
                   <div>
                     <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
                     <p className="text-white text-sm">{profile.favorite_team}</p>
