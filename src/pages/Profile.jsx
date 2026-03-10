@@ -168,52 +168,10 @@ export default function Profile() {
         {/* Detailed Info — only when show_on_profile is on */}
         {activeProfile.show_on_profile && (
           <div className="border-t border-slate-700/50 pt-4 space-y-3">
-            {(activeProfile.city || activeProfile.country) && (
-              <div className="grid grid-cols-2 gap-3">
-                {activeProfile.city && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">City</p>
-                    <p className="text-white text-sm">{activeProfile.city}</p>
-                  </div>
-                )}
-                {activeProfile.country && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">Country</p>
-                    <p className="text-white text-sm">{activeProfile.country}</p>
-                  </div>
-                )}
-              </div>
-            )}
-            {(activeProfile.level || activeProfile.age_group) && (
-              <div className="grid grid-cols-2 gap-3">
-                {activeProfile.level && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">Level</p>
-                    <p className="text-white text-sm">{activeProfile.level}</p>
-                  </div>
-                )}
-                {activeProfile.age_group && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">Age Group</p>
-                    <p className="text-white text-sm">{activeProfile.age_group}</p>
-                  </div>
-                )}
-              </div>
-            )}
-            {((activeProfile.favorite_team && activeProfile.favorite_team !== "none") || activeProfile.favorite_player) && (
-              <div className="grid grid-cols-2 gap-3">
-                {activeProfile.favorite_team && activeProfile.favorite_team !== "none" && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
-                    <p className="text-white text-sm">{activeProfile.favorite_team}</p>
-                  </div>
-                )}
-                {activeProfile.favorite_player && (
-                  <div>
-                    <p className="text-slate-500 text-xs mb-0.5">Favourite Player</p>
-                    <p className="text-white text-sm">{activeProfile.favorite_player}</p>
-                  </div>
-                )}
+            {activeProfile.favorite_team && activeProfile.favorite_team !== "none" && (
+              <div>
+                <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
+                <p className="text-white text-sm">{activeProfile.favorite_team}</p>
               </div>
             )}
           </div>
