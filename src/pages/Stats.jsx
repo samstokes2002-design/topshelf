@@ -213,6 +213,7 @@ export default function Stats() {
               />
               <StatCard label="Shots" value={totalShots} icon={Target} color="text-white" />
               <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
+              <StatCard label="Avg Rating" value={`${avgRating}★`} icon={Star} color="text-amber-400" />
             </div>
           </SectionCard>
 
