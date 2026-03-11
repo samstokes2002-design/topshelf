@@ -135,7 +135,11 @@ export default function StatsAnalyzer() {
     const init = async () => {
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
-        metadata: { name: `${activeProfile.name} Stats Analysis` },
+        metadata: { 
+          name: `${activeProfile.name} Stats Analysis`,
+          profile_id: activeProfile.id,
+          profile_name: activeProfile.name,
+        },
       });
       setConversation(conv);
       setMessages([{
