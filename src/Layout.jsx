@@ -10,7 +10,7 @@ const navItems = [
   { name: "Home", icon: Home, page: "Home" },
   { name: "Stats", icon: BarChart3, page: "Stats" },
   { name: "Log", icon: Plus, page: "LogSession", isAction: true },
-  { name: "Friends", icon: Users, page: "Friends" },
+  { name: "AI", icon: Sparkles, page: "StatsAnalyzer" },
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
