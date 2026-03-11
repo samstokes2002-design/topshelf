@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { base44 } from "@/api/base44Client";
 
 export const AuthContext = createContext(null);
