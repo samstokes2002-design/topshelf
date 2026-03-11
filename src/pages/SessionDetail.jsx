@@ -13,7 +13,7 @@ const typeConfig = {
   game: { icon: Trophy, color: "text-sky-400", bg: "bg-sky-500/20", label: "Game" },
   practice: { icon: Target, color: "text-emerald-400", bg: "bg-emerald-500/20", label: "Practice" },
   training: { icon: Dumbbell, color: "text-violet-400", bg: "bg-violet-500/20", label: "Training" },
-  shift_by_shift: { icon: Timer, color: "text-amber-400", bg: "bg-amber-500/20", label: "Shift by Shift" },
+  shift_by_shift: { icon: Timer, color: "text-amber-400", bg: "bg-amber-500/20", label: "Shift Tracker" },
 };
 
 const resultColors = { win: "text-emerald-400", loss: "text-red-400", tie: "text-amber-400" };

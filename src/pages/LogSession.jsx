@@ -21,7 +21,7 @@ const sessionTypes = [
   { value: "game", label: "Game", icon: Trophy, color: "bg-sky-500/20 text-sky-400 border-sky-500/30" },
   { value: "practice", label: "Practice", icon: Target, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
   { value: "training", label: "Training", icon: Dumbbell, color: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
-  { value: "shift_by_shift", label: "Shift by Shift", icon: Timer, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
+  { value: "shift_by_shift", label: "Shift Tracker", icon: Timer, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
 ];
 
 export default function LogSession() {
