@@ -8,7 +8,7 @@ const typeConfig = {
   game: { icon: Trophy, color: "bg-sky-500/20 text-sky-400", label: "Game" },
   practice: { icon: Target, color: "bg-emerald-500/20 text-emerald-400", label: "Practice" },
   training: { icon: Dumbbell, color: "bg-violet-500/20 text-violet-400", label: "Training" },
-  shift_by_shift: { icon: Timer, color: "bg-amber-500/20 text-amber-400", label: "Shift by Shift" },
+  shift_by_shift: { icon: Timer, color: "bg-amber-500/20 text-amber-400", label: "Shift Tracker" },
 };
 
 const resultBadge = {
