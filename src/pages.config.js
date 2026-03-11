@@ -57,8 +57,8 @@ import SeasonSetup from './pages/SeasonSetup';
 import SessionDetail from './pages/SessionDetail';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
-import TermsOfService from './pages/TermsOfService';
 import StatsAnalyzer from './pages/StatsAnalyzer';
+import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -73,8 +73,8 @@ export const PAGES = {
     "SessionDetail": SessionDetail,
     "Settings": Settings,
     "Stats": Stats,
-    "TermsOfService": TermsOfService,
     "StatsAnalyzer": StatsAnalyzer,
+    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {

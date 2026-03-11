@@ -100,10 +100,10 @@ function MessageBubble({ message }) {
 }
 
 const SUGGESTIONS = [
-  "Show my goals by month as a chart",
-  "Compare my stats in wins vs losses",
   "What should I work on to improve?",
-  "Show my shooting % trend this season",
+  "Compare last month vs this month",
+  "Show my win vs loss performance",
+  "Show my per-game averages as a chart",
 ];
 
 export default function StatsAnalyzer() {
