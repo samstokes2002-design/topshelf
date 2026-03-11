@@ -14,7 +14,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
-  const [confirmUnblock, setConfirmUnblock] = useState(null);
+
   const [showDeleteProfileConfirm, setShowDeleteProfileConfirm] = useState(false);
   const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
   const [deleteProfileText, setDeleteProfileText] = useState("");
