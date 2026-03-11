@@ -48,20 +48,7 @@ export default function Home() {
     enabled: profiles.length > 0,
   });
 
-  // Fetch friend sessions scoped to the active profile
-  const { data: friendData = { sessions: [], friendMap: {} } } = useQuery({
-    queryKey: ["friendSessions", activeProfile?.id],
-    queryFn: async () => {
-      if (!activeProfile?.id) return { sessions: [], friendMap: {} };
-      const res = await base44.functions.invoke('getFriendSessions', { profileId: activeProfile.id });
-      return res.data;
-    },
-    enabled: !!activeProfile?.id,
-  });
 
-  const friendSessions = friendData.sessions || [];
-  const friendMap = friendData.friendMap || {};
-  const acceptedFriendProfiles = Object.entries(friendMap).map(([profileId, username]) => ({ profileId, username }));
 
   useEffect(() => {
     if (profiles.length > 0 && !activeProfile) {
