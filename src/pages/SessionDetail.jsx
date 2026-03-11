@@ -136,14 +136,21 @@ export default function SessionDetail() {
       {/* Stats */}
       {(session.type === "game" || session.type === "shift_by_shift") && (
         <>
-          <div className="grid grid-cols-2 gap-3 mb-4">
-             <StatBlock label="Goals" value={session.goals || 0} />
-             <StatBlock label="Assists" value={session.assists || 0} />
-             <StatBlock label="Shots" value={session.shots || 0} />
-             <StatBlock label="+/-" value={`${(session.plus_minus || 0) > 0 ? "+" : ""}${session.plus_minus || 0}`} />
-           </div>
-          
-          {((session.hits || 0) > 0 || (session.blocked_shots || 0) > 0 || (session.takeaways || 0) > 0 || (session.giveaways || 0) > 0) && (
+          {/* Scoring */}
+          {((session.goals || 0) > 0 || (session.assists || 0) > 0 || (session.shots || 0) > 0 || (session.plus_minus || 0) !== 0) && (
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+              <h3 className="text-white font-semibold text-sm mb-3">Scoring</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {(session.goals || 0) > 0 && <StatBlock label="Goals" value={session.goals} />}
+                {(session.assists || 0) > 0 && <StatBlock label="Assists" value={session.assists} />}
+                {(session.shots || 0) > 0 && <StatBlock label="Shots" value={session.shots} />}
+                {(session.plus_minus || 0) !== 0 && <StatBlock label="+/-" value={`${(session.plus_minus || 0) > 0 ? "+" : ""}${session.plus_minus}`} />}
+              </div>
+            </div>
+          )}
+
+          {/* Defense & Possession */}
+          {((session.hits || 0) > 0 || (session.blocked_shots || 0) > 0 || (session.takeaways || 0) > 0 || (session.giveaways || 0) > 0 || (session.penalty_minutes || 0) > 0 || (session.faceoff_wins || 0) > 0 || (session.faceoff_losses || 0) > 0) && (
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
               <h3 className="text-white font-semibold text-sm mb-3">Defense & Possession</h3>
               <div className="grid grid-cols-2 gap-3">
@@ -151,12 +158,27 @@ export default function SessionDetail() {
                 {(session.blocked_shots || 0) > 0 && <StatBlock label="Blocked Shots" value={session.blocked_shots} />}
                 {(session.takeaways || 0) > 0 && <StatBlock label="Takeaways" value={session.takeaways} />}
                 {(session.giveaways || 0) > 0 && <StatBlock label="Giveaways" value={session.giveaways} />}
+                {(session.penalty_minutes || 0) > 0 && <StatBlock label="Penalty Min" value={session.penalty_minutes} />}
                 {((session.faceoff_wins || 0) > 0 || (session.faceoff_losses || 0) > 0) && (
-                  <StatBlock 
-                    label="FO%" 
-                    value={`${((session.faceoff_wins / (session.faceoff_wins + session.faceoff_losses)) * 100).toFixed(1)}%`}
+                  <StatBlock
+                    label="FO%"
+                    value={`${(((session.faceoff_wins || 0) / ((session.faceoff_wins || 0) + (session.faceoff_losses || 0))) * 100).toFixed(1)}%`}
                   />
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Advanced Stats */}
+          {((session.power_play_goals || 0) > 0 || (session.power_play_points || 0) > 0 || (session.shorthanded_goals || 0) > 0 || (session.shorthanded_points || 0) > 0 || (session.time_on_ice || 0) > 0) && (
+            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+              <h3 className="text-white font-semibold text-sm mb-3">Advanced Stats</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {(session.power_play_goals || 0) > 0 && <StatBlock label="PPG" value={session.power_play_goals} />}
+                {(session.power_play_points || 0) > 0 && <StatBlock label="PPP" value={session.power_play_points} />}
+                {(session.shorthanded_goals || 0) > 0 && <StatBlock label="SHG" value={session.shorthanded_goals} />}
+                {(session.shorthanded_points || 0) > 0 && <StatBlock label="SHP" value={session.shorthanded_points} />}
+                {(session.time_on_ice || 0) > 0 && <StatBlock label="Time on Ice" value={`${session.time_on_ice}m`} />}
               </div>
             </div>
           )}
