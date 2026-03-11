@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Home, Plus, BarChart3, User, Users } from "lucide-react";
+import { Home, Plus, BarChart3, User, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AuthGuard from "@/components/AuthGuard";
 import { base44 } from "@/api/base44Client";

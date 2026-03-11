@@ -205,7 +205,7 @@ export default function Home() {
               <div key={i} className="bg-slate-800/40 rounded-2xl h-24 animate-pulse" />
             ))}
           </div>
-        ) : sessions.length === 0 && friendSessions.length === 0 ? (
+        ) : sessions.length === 0 ? (
           <EmptyState
             icon={Activity}
             title="No sessions yet"
@@ -218,23 +218,16 @@ export default function Home() {
           />
         ) : (
           <div className="space-y-3">
-            {[...sessions, ...friendSessions]
+            {sessions
               .sort((a, b) => new Date(b.date) - new Date(a.date))
               .slice(0, 20)
-              .map((session) => {
-                const isOwnSession = session.profile_id === activeProfile?.id;
-                const username = !isOwnSession && friendMap[session.profile_id] ? `@${friendMap[session.profile_id]}` : undefined;
-
-                return (
-                  <SessionCard
-                    key={session.id}
-                    session={session}
-                    profileName={username}
-                    showProfile={!isOwnSession}
-                    onClick={isOwnSession ? () => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}` : undefined}
-                  />
-                );
-              })}
+              .map((session) => (
+                <SessionCard
+                  key={session.id}
+                  session={session}
+                  onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
+                />
+              ))}
           </div>
         )}
       </div>
