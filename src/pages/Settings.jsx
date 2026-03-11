@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -347,7 +348,6 @@ export default function Settings() {
             <ul className="text-slate-500 text-xs text-center mb-4 space-y-0.5">
               <li>All profiles &amp; stats</li>
               <li>All sessions &amp; seasons</li>
-              <li>All friends &amp; connections</li>
             </ul>
             <p className="text-slate-400 text-xs text-center mb-1">You can re-register with the same email later.</p>
             <p className="text-slate-400 text-xs text-center mb-3">
