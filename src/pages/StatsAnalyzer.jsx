@@ -133,6 +133,9 @@ export default function StatsAnalyzer() {
   useEffect(() => {
     if (!activeProfile) return;
     const init = async () => {
+      // Fetch sessions upfront so the AI has real data immediately
+      const sessions = await base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200);
+
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
         metadata: { 
@@ -141,6 +144,37 @@ export default function StatsAnalyzer() {
           profile_name: activeProfile.name,
         },
       });
+
+      // Inject session data as context so the AI never has to query-and-filter itself
+      const sessionSummary = JSON.stringify(sessions.map(s => ({
+        id: s.id,
+        date: s.date,
+        type: s.type,
+        result: s.result || null,
+        opponent: s.opponent || null,
+        goals: s.goals || 0,
+        assists: s.assists || 0,
+        shots: s.shots || 0,
+        plus_minus: s.plus_minus || 0,
+        hits: s.hits || 0,
+        blocked_shots: s.blocked_shots || 0,
+        takeaways: s.takeaways || 0,
+        giveaways: s.giveaways || 0,
+        penalty_minutes: s.penalty_minutes || 0,
+        faceoff_wins: s.faceoff_wins || 0,
+        faceoff_losses: s.faceoff_losses || 0,
+        power_play_goals: s.power_play_goals || 0,
+        power_play_points: s.power_play_points || 0,
+        shorthanded_goals: s.shorthanded_goals || 0,
+        time_on_ice: s.time_on_ice || 0,
+        rating: s.rating || null,
+      })));
+
+      await base44.agents.addMessage(conv, {
+        role: "user",
+        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name} (id: ${activeProfile.id})\nHere are all their logged sessions as JSON. Use ONLY this data for all analysis — do not query the database:\n${sessionSummary}`,
+      });
+
       setConversation(conv);
       setMessages([{
         role: "assistant",
