@@ -224,7 +224,7 @@ export default function StatsAnalyzer() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.map((msg, i) => (
+        {messages.filter(msg => !msg.content?.startsWith("[SYSTEM CONTEXT")).map((msg, i) => (
           <MessageBubble key={i} message={msg} />
         ))}
 
