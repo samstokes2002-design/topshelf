@@ -539,7 +539,7 @@ export default function LogSession() {
           </>
         )}
 
-        {/* Shift by Shift - Opponent / Result / Period */}
+        {/* Shift Tracker - Opponent / Result / Period */}
         {form.type === "shift_by_shift" && (
           <>
             <div className="grid grid-cols-2 gap-3">
