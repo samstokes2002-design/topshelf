@@ -145,6 +145,12 @@ export default function StatsAnalyzer() {
         },
       });
 
+      setConversation(conv);
+      setMessages([{
+        role: "assistant",
+        content: `Hey! I'm your AI stats analyst for **${activeProfile.name}**. I can analyze your performance, compare your stats over time, show you charts, and suggest areas to improve.\n\nWhat would you like to explore?`,
+      }]);
+
       // Inject session data as context so the AI never has to query-and-filter itself
       const sessionSummary = JSON.stringify(sessions.map(s => ({
         id: s.id,
