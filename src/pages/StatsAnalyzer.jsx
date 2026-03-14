@@ -180,12 +180,6 @@ export default function StatsAnalyzer() {
         role: "user",
         content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name} (id: ${activeProfile.id})\nHere are all their logged sessions as JSON. Use ONLY this data for all analysis — do not query the database:\n${sessionSummary}`,
       });
-
-      setConversation(conv);
-      setMessages([{
-        role: "assistant",
-        content: `Hey! I'm your AI stats analyst for **${activeProfile.name}**. I can analyze your performance, compare your stats over time, show you charts, and suggest areas to improve.\n\nWhat would you like to explore?`,
-      }]);
     };
     init();
   }, [activeProfile]);
