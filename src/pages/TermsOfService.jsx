@@ -78,7 +78,7 @@ export default function TermsOfService() {
             <li>Any other language intended to demean, insult, or harm others</li>
           </ul>
           <p className="mt-2">
-            <strong>Filter Evasion Prohibited:</strong> Attempting to bypass our content filters through misspellings, altered spellings, spacing tricks, character substitutions (such as F*ck, sh!t, or niga), or any other workaround is strictly prohibited and will be treated as a violation of this policy.
+            <strong>Filter Evasion Prohibited:</strong> Attempting to bypass our content filters through misspellings, altered spellings, spacing tricks, character substitutions, or any other workaround is strictly prohibited and will be treated as a violation of this policy.
           </p>
           <p className="mt-2">
             <strong>Scope:</strong> This rule applies to all user input fields throughout the app, including but not limited to usernames, profile information, season names, player notes, session details, team names, and any other text you submit.
