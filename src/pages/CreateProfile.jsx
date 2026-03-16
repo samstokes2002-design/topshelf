@@ -225,9 +225,27 @@ export default function CreateProfile() {
           </div>
         )}
 
+        {/* Age confirmation checkbox */}
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <div
+            onClick={() => setAgeConfirmed(v => !v)}
+            className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+              ageConfirmed ? "bg-sky-500 border-sky-500" : "border-slate-600 bg-slate-800/60 group-hover:border-slate-400"
+            }`}
+          >
+            {ageConfirmed && <Check className="w-3 h-3 text-white" />}
+          </div>
+          <span className="text-slate-300 text-sm leading-relaxed">
+            I confirm I am at least <strong className="text-white">13 years old</strong> and I agree to the{" "}
+            <a href={createPageUrl("TermsOfService")} className="text-sky-400 underline hover:text-sky-300" onClick={e => e.stopPropagation()}>Terms of Service</a>{" "}
+            and{" "}
+            <a href={createPageUrl("PrivacyPolicy")} className="text-sky-400 underline hover:text-sky-300" onClick={e => e.stopPropagation()}>Privacy Policy</a>.
+          </span>
+        </label>
+
         <Button
           type="submit"
-          disabled={!form.name || !form.position || !form.username || usernameError || mutation.isPending || checkingUsername}
+          disabled={!form.name || !form.position || !form.username || usernameError || mutation.isPending || checkingUsername || !ageConfirmed}
           className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 text-base"
         >
           {mutation.isPending ? (
