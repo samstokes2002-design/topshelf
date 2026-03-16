@@ -21,6 +21,7 @@ export default function CreateProfile() {
   const [contentError, setContentError] = useState("");
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [cropFile, setCropFile] = useState(null);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [form, setForm] = useState({
     name: "",
     age: "",
