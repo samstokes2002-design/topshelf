@@ -23,8 +23,7 @@ export default function TermsOfService() {
         <div>
           <h2 className="text-base font-semibold text-white mb-2">1. Eligibility</h2>
           <p>
-            You must be at least 13 years of age to use TopShelf. By creating an account, you confirm that
-            you meet this requirement. If you are under 18, you should have parental or guardian consent.
+            TopShelf is open to users of all ages. If you are under 18, you should have parental or guardian consent before creating an account.
           </p>
         </div>
 
