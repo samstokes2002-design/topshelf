@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Upload, Check } from "lucide-react";
+import { ArrowLeft, Upload, Check, ShieldAlert } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
 import FilteredInput from "@/components/FilteredInput";
+import { createPageUrl } from "@/utils";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
