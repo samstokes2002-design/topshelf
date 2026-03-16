@@ -84,16 +84,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">7. Reporting and Blocking</h2>
-          <p>
-            If you encounter a user who violates these Terms, you can block or report them through the app.
-            We take reports seriously and will investigate all complaints. We reserve the right to suspend or
-            remove any account that violates these Terms.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold text-white mb-2">8. Account Termination</h2>
+          <h2 className="text-base font-semibold text-white mb-2">6. Account Termination</h2>
           <p>
             You may request deletion of your account at any time by contacting our support team.
             We reserve the right to suspend or terminate accounts that violate these Terms of Service
