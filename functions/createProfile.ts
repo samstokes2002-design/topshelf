@@ -10,31 +10,15 @@ Deno.serve(async (req) => {
     }
 
     const payload = await req.json();
-    const { username, name, position, age, photo_url } = payload;
+    const { name, position, age, photo_url } = payload;
 
-    if (!username || !name || !position) {
+    if (!name || !position) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Check if username already exists (globally unique)
-    const normalizedUsername = username.toLowerCase().trim();
-    const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
-    const existingUsername = allProfiles.find(
-      p => p.username && p.username.toLowerCase().trim() === normalizedUsername
-    );
-
-    if (existingUsername) {
-      return Response.json(
-        { error: 'That username is already taken.' },
-        { status: 409 }
-      );
-    }
-
-    // Create the profile
     const newProfile = await base44.entities.Profile.create({
       name,
       position,
-      username: normalizedUsername,
       age: age ? parseInt(age) : undefined,
       photo_url: photo_url || undefined,
     });

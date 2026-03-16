@@ -16,16 +16,13 @@ const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 export default function CreateProfile() {
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [usernameError, setUsernameError] = useState("");
   const [contentError, setContentError] = useState("");
-  const [checkingUsername, setCheckingUsername] = useState(false);
   const [cropFile, setCropFile] = useState(null);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [form, setForm] = useState({
     name: "",
     age: "",
     position: "",
-    username: "",
     photo_url: "",
   });
 

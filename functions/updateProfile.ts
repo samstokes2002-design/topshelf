@@ -10,39 +10,21 @@ Deno.serve(async (req) => {
     }
 
     const payload = await req.json();
-    const { profileId, username, name, position, age, photo_url, height, weight, city, country, level, age_group, show_on_profile, favorite_team, favorite_player, player_number } = payload;
+    const { profileId, name, position, age, photo_url, height, weight, show_on_profile, favorite_team, player_number } = payload;
 
     if (!profileId) {
       return Response.json({ error: 'Missing profileId' }, { status: 400 });
     }
 
-    // Check if username is being changed and if it's already taken
-    if (username) {
-      const normalizedUsername = username.toLowerCase().trim();
-      const allProfiles = await base44.asServiceRole.entities.Profile.list(null, 10000);
-      const existingUsername = allProfiles.find(
-        p => p.id !== profileId && p.username && p.username.toLowerCase().trim() === normalizedUsername
-      );
-      if (existingUsername) {
-        return Response.json({ error: 'That username is already taken' }, { status: 409 });
-      }
-    }
-
     const updateData = {
       ...(name && { name }),
       ...(position && { position }),
-      ...(username && { username: username.toLowerCase().trim() }),
       ...(age !== undefined && age !== null && age !== "" && { age: parseInt(age) }),
       ...(photo_url && { photo_url }),
       ...(height !== undefined && { height }),
       ...(weight !== undefined && weight !== null && weight !== "" && { weight: parseInt(weight) }),
-      city: city || "",
-      country: country || "",
-      level: level || "",
-      age_group: age_group || "",
       show_on_profile: show_on_profile === true,
       favorite_team: favorite_team || "",
-      favorite_player: favorite_player || "",
       player_number: player_number || "",
     };
 

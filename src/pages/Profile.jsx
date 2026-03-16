@@ -136,7 +136,6 @@ export default function Profile() {
                 {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
               </div>
             )}
-            {activeProfile.username && <p className="text-slate-500 text-xs">@{activeProfile.username}</p>}
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
           </div>
         </div>
