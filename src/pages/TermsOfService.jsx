@@ -109,7 +109,7 @@ export default function TermsOfService() {
           </p>
         </div>
 
-        <p className="text-slate-500 text-xs pt-2 border-t border-slate-700/50">Last updated: March 10, 2026</p>
+        <p className="text-slate-500 text-xs pt-2 border-t border-slate-700/50">Last updated: March 16, 2026</p>
       </div>
     </div>
   );
