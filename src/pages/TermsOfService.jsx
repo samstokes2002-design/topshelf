@@ -93,7 +93,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">9. Disclaimer</h2>
+          <h2 className="text-base font-semibold text-white mb-2">7. Disclaimer</h2>
           <p>
             TopShelf is provided "as is" without warranties of any kind. We do not guarantee that the app
             will be error-free or uninterrupted. We are not liable for any loss or damage resulting from
