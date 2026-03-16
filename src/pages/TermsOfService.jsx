@@ -102,7 +102,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">10. Changes to These Terms</h2>
+          <h2 className="text-base font-semibold text-white mb-2">8. Changes to These Terms</h2>
           <p>
             We may update these Terms of Service from time to time. Continued use of the app after changes
             are posted means you accept the updated terms. We recommend reviewing this page periodically.
