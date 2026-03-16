@@ -14,8 +14,6 @@ export default function Settings() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [username, setUsername] = useState("");
-
   const [showDeleteProfileConfirm, setShowDeleteProfileConfirm] = useState(false);
   const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
   const [deleteProfileText, setDeleteProfileText] = useState("");
@@ -32,26 +30,6 @@ export default function Settings() {
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
   });
-
-  React.useEffect(() => {
-    if (user?.username) {
-      setUsername(user.username);
-    }
-  }, [user]);
-
-  const updateUserMutation = useMutation({
-    mutationFn: (data) => base44.auth.updateMe(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      toast({ title: "Username updated!" });
-    },
-  });
-
-  const handleSaveUsername = () => {
-    if (username.trim()) {
-      updateUserMutation.mutate({ username: username.trim() });
-    }
-  };
 
   const handleLogout = async () => {
     await base44.auth.logout();
@@ -129,29 +107,7 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label className="text-slate-400 text-xs">Username</Label>
-          <div className="flex gap-2">
-            <Input
-              placeholder="@username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="bg-slate-900/50 border-slate-700/50 text-white rounded-xl flex-1"
-            />
-            <Button
-              onClick={handleSaveUsername}
-              disabled={!username.trim() || updateUserMutation.isPending}
-              className="bg-sky-500 hover:bg-sky-600 rounded-xl"
-            >
-              {updateUserMutation.isPending ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Save className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
-          <p className="text-slate-500 text-xs">Your unique username for the app</p>
-        </div>
+
       </div>
 
       {/* About */}
