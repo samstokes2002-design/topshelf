@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,6 @@ import { ArrowLeft, Upload, Check, ShieldAlert } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
 import FilteredInput from "@/components/FilteredInput";
-import { createPageUrl } from "@/utils";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
@@ -91,7 +91,7 @@ export default function CreateProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!form.username.trim()) {
       setUsernameError("Username is required");
       return;
