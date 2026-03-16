@@ -29,8 +29,7 @@ export default function EditProfile() {
   const profileId = urlParams.get("id");
   const queryClient = useQueryClient();
   const [saved, setSaved] = useState(false);
-  const [form, setForm] = useState({ name: "", age: "", position: "", username: "", photo_url: "", height_ft: "", height_in: "", weight: "", show_on_profile: false, favorite_team: "", player_number: "" });
-  const [usernameError, setUsernameError] = useState("");
+  const [form, setForm] = useState({ name: "", age: "", position: "", photo_url: "", height_ft: "", height_in: "", weight: "", show_on_profile: false, favorite_team: "", player_number: "" });
   const [contentError, setContentError] = useState("");
   const [cropFile, setCropFile] = useState(null);
 
@@ -73,7 +72,6 @@ export default function EditProfile() {
         name: p.name || "",
         age: p.age?.toString() || "",
         position: p.position || "",
-        username: p.username || "",
         photo_url: p.photo_url || "",
         height_ft: p.height ? p.height.split("'")[0] : "",
         height_in: p.height ? (p.height.split("'")[1] || "").replace('"', "") : "",
@@ -118,25 +116,9 @@ export default function EditProfile() {
     setForm((f) => ({ ...f, photo_url: file_url }));
   };
 
-  const handleUsernameChange = async (value) => {
-    setForm((f) => ({ ...f, username: value }));
-    setUsernameError("");
-    
-    if (!value.trim()) return;
-    
-    const response = await base44.functions.invoke('checkUsername', { username: value });
-    if (!response.data.available) {
-      setUsernameError("That username is already taken");
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (usernameError) return;
-    const contentErr = validateContentFields({
-      "name": form.name,
-      "username": form.username,
-    });
+    const contentErr = validateContentFields({ "name": form.name });
     if (contentErr) { setContentError(contentErr); return; }
     setContentError("");
     const height = form.height_ft || form.height_in ? `${form.height_ft}'${form.height_in}"` : "";
@@ -189,15 +171,6 @@ export default function EditProfile() {
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Player Name</Label>
           <FilteredInput value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
-        </div>
-        <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Username</Label>
-          <FilteredInput 
-            value={form.username} 
-            onChange={(e) => handleUsernameChange(e.target.value)} 
-            className={`bg-slate-800/60 text-white rounded-xl ${usernameError ? 'border-red-500/50' : 'border-slate-700/50'}`}
-          />
-          {usernameError && <p className="text-red-400 text-xs mt-1.5">{usernameError}</p>}
         </div>
         <div>
           <Label className="text-slate-400 text-xs mb-1.5 block">Position</Label>
@@ -271,7 +244,7 @@ export default function EditProfile() {
           </div>
         )}
 
-        <Button type="submit" disabled={updateMutation.isPending || !!usernameError} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed">
+        <Button type="submit" disabled={updateMutation.isPending} className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed">
           {updateMutation.isPending ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Save Changes"}
         </Button>
 

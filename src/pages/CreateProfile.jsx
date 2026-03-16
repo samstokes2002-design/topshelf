@@ -44,35 +44,6 @@ export default function CreateProfile() {
     },
   });
 
-  const checkUsernameUniqueness = async (username) => {
-    if (!username.trim()) {
-      setUsernameError("");
-      return true;
-    }
-
-    setCheckingUsername(true);
-    try {
-      const response = await base44.functions.invoke('checkUsername', { username });
-      if (!response.data.available) {
-        setUsernameError("That username is already taken.");
-        setCheckingUsername(false);
-        return false;
-      }
-      setUsernameError("");
-      setCheckingUsername(false);
-      return true;
-    } catch {
-      setUsernameError("");
-      setCheckingUsername(false);
-      return true;
-    }
-  };
-
-  const handleUsernameChange = (value) => {
-    setForm((f) => ({ ...f, username: value }));
-    setUsernameError("");
-  };
-
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -89,24 +60,12 @@ export default function CreateProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.username.trim()) {
-      setUsernameError("Username is required");
-      return;
-    }
-
-    const contentErr = validateContentFields({
-      "name": form.name,
-      "username": form.username,
-    });
+    const contentErr = validateContentFields({ "name": form.name });
     if (contentErr) { setContentError(contentErr); return; }
     setContentError("");
 
-    const isUnique = await checkUsernameUniqueness(form.username);
-    if (!isUnique) return;
-
     mutation.mutate({
       ...form,
-      username: form.username.toLowerCase().trim(),
       age: form.age ? parseInt(form.age) : undefined,
     });
   };
@@ -172,23 +131,6 @@ export default function CreateProfile() {
           />
         </div>
 
-        <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Username *</Label>
-          <FilteredInput
-            placeholder="@username"
-            value={form.username}
-            onChange={(e) => handleUsernameChange(e.target.value)}
-            onBlur={() => form.username && checkUsernameUniqueness(form.username)}
-            className={`bg-slate-800/60 border-slate-700/50 text-white rounded-xl ${usernameError ? "border-red-500/50" : ""}`}
-          />
-          {usernameError && (
-            <p className="text-red-400 text-xs mt-1.5">{usernameError}</p>
-          )}
-          {checkingUsername && (
-            <p className="text-slate-400 text-xs mt-1.5">Checking availability...</p>
-          )}
-        </div>
-
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Position *</Label>
@@ -241,7 +183,7 @@ export default function CreateProfile() {
 
         <Button
           type="submit"
-          disabled={!form.name || !form.position || !form.username || usernameError || mutation.isPending || checkingUsername || !ageConfirmed}
+          disabled={!form.name || !form.position || mutation.isPending || !ageConfirmed}
           className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 text-base"
         >
           {mutation.isPending ? (
