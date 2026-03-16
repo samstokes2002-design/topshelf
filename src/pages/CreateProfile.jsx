@@ -138,6 +138,17 @@ export default function CreateProfile() {
         <h1 className="text-white font-bold text-lg">Create Profile</h1>
       </div>
 
+      {/* Age Notice Banner */}
+      <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl px-4 py-4 mb-5 flex gap-3 items-start">
+        <ShieldAlert className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+        <p className="text-amber-200 text-sm leading-relaxed">
+          You must be at least <strong>13 years old</strong> to create an account or use this app. By signing up, you confirm that you are at least 13 and agree to the{" "}
+          <a href={createPageUrl("TermsOfService")} className="underline text-amber-300 hover:text-amber-100">Terms of Service</a>{" "}
+          and{" "}
+          <a href={createPageUrl("PrivacyPolicy")} className="underline text-amber-300 hover:text-amber-100">Privacy Policy</a>.
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Photo */}
         <div className="flex justify-center">
