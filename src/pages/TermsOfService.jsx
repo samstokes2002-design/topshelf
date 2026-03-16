@@ -42,24 +42,14 @@ export default function TermsOfService() {
           <p>When using TopShelf, you agree to:</p>
           <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
             <li>Provide accurate and truthful information when creating your account and profile.</li>
-            <li>Use the app only for its intended purpose — tracking hockey performance and connecting with other players.</li>
-            <li>Treat other users with respect.</li>
+            <li>Use the app only for its intended purpose — tracking your hockey performance.</li>
             <li>Not attempt to access or modify another user's account or data.</li>
             <li>Not use the app for any unlawful or harmful purpose.</li>
           </ul>
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">4. Social Features</h2>
-          <p>
-            The app includes a friend system. You may search for, add, accept, or decline other users as friends.
-            You may view a friend's profile and their logged sessions. You may not edit or modify another user's data.
-            The app does not support direct messaging between users.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold text-white mb-2">5. Content You Provide</h2>
+          <h2 className="text-base font-semibold text-white mb-2">4. Content You Provide</h2>
           <p>
             You are responsible for the content you submit to the app, including your profile information and
             session logs. You agree not to submit false, misleading, or inappropriate content.
