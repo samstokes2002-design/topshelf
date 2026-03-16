@@ -96,11 +96,7 @@ export default function EditProfile() {
       setSaved(true);
       setTimeout(() => window.location.href = createPageUrl("Profile"), 800);
     },
-    onError: (error) => {
-      if (error.message.includes("already taken")) {
-        setUsernameError(error.message);
-      }
-    },
+    onError: () => {},
   });
 
   const handlePhotoUpload = (e) => {
