@@ -57,7 +57,7 @@ export default function TermsOfService() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">6. Zero-Tolerance Policy for Inappropriate Language</h2>
+          <h2 className="text-base font-semibold text-white mb-2">5. Zero-Tolerance Policy for Inappropriate Language</h2>
           <p>
             TopShelf maintains a strict zero-tolerance policy for inappropriate language or content. This policy applies to all areas of the app without exception.
           </p>
