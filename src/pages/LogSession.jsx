@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPageUrl } from "@/utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Trophy, Target, Dumbbell, Timer, Check, Save } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Dumbbell, Timer, Check, Save, Lock, Crown } from "lucide-react";
 import { validateContentFields } from "@/components/contentFilter";
 import FilteredInput from "@/components/FilteredInput";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import StarRating from "@/components/ui/StarRating";
 import ShiftTimer from "@/components/ShiftTimer";
 import StatControl from "@/components/StatControl";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const sessionTypes = [
   { value: "game", label: "Game", icon: Trophy, color: "bg-sky-500/20 text-sky-400 border-sky-500/30" },
@@ -24,12 +25,15 @@ const sessionTypes = [
   { value: "shift_by_shift", label: "Shift Tracker", icon: Timer, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
 ];
 
+const FREE_STATS = ["goals", "assists", "shots", "plus_minus", "rating"];
+
 export default function LogSession() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { isPro } = useSubscription();
 
   const [saved, setSaved] = useState(false);
   const [savedDraft, setSavedDraft] = useState(false);
@@ -341,18 +345,25 @@ export default function LogSession() {
         <div className="grid grid-cols-2 gap-2">
           {sessionTypes.map((t) => {
             const Icon = t.icon;
+            const locked = !isPro && t.value === "shift_by_shift";
             return (
               <button
                 key={t.value}
                 type="button"
-                onClick={() => update("type", t.value)}
+                onClick={() => {
+                  if (locked) { window.location.href = createPageUrl("Plans"); return; }
+                  update("type", t.value);
+                }}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all",
-                  form.type === t.value
+                  "flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all relative",
+                  locked
+                    ? "bg-slate-800/20 border-slate-700/30 text-slate-600 opacity-60"
+                    : form.type === t.value
                     ? t.color + " border-current"
                     : "bg-slate-800/40 border-slate-700/50 text-slate-400"
                 )}
               >
+                {locked && <Lock className="w-3 h-3 absolute top-2 right-2 text-slate-500" />}
                 <Icon className="w-5 h-5" />
                 <span className="text-xs font-medium">{t.label}</span>
               </button>
