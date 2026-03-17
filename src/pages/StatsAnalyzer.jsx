@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Send, Sparkles, BarChart2, TrendingUp, Lightbulb } from "lucide-react";
+import { Send, Sparkles, BarChart2, TrendingUp, Lightbulb, Lock, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import ReactMarkdown from "react-markdown";
+import { useSubscription } from "@/hooks/useSubscription";
+import { createPageUrl } from "@/utils";
+
+const FREE_AI_LIMIT = 5;
+const AI_USAGE_KEY = "ai_message_count_week";
 
 const CHART_COLORS = ["#38bdf8", "#34d399", "#fb923c", "#a78bfa", "#f472b6"];
 
@@ -106,13 +111,35 @@ const SUGGESTIONS = [
   "Show my per-game averages as a chart",
 ];
 
+function getWeeklyUsage() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(AI_USAGE_KEY) || '{}');
+    const weekStart = new Date();
+    weekStart.setHours(0,0,0,0);
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+    if (!stored.weekStart || new Date(stored.weekStart) < weekStart) {
+      return { count: 0, weekStart: weekStart.toISOString() };
+    }
+    return stored;
+  } catch { return { count: 0, weekStart: new Date().toISOString() }; }
+}
+
+function incrementWeeklyUsage() {
+  const usage = getWeeklyUsage();
+  usage.count = (usage.count || 0) + 1;
+  localStorage.setItem(AI_USAGE_KEY, JSON.stringify(usage));
+  return usage.count;
+}
+
 export default function StatsAnalyzer() {
   const [conversation, setConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeProfile, setActiveProfile] = useState(null);
+  const [weeklyUsage, setWeeklyUsage] = useState(0);
   const bottomRef = useRef(null);
+  const { isPro } = useSubscription();
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
@@ -129,6 +156,10 @@ export default function StatsAnalyzer() {
       setActiveProfile(saved || profiles[0]);
     }
   }, [profiles, activeProfile]);
+
+  useEffect(() => {
+    setWeeklyUsage(getWeeklyUsage().count || 0);
+  }, []);
 
   useEffect(() => {
     if (!activeProfile) return;
@@ -202,8 +233,13 @@ export default function StatsAnalyzer() {
 
   const sendMessage = async (text) => {
     if (!text.trim() || !conversation || isLoading) return;
+    if (!isPro && weeklyUsage >= FREE_AI_LIMIT) return;
     setInput("");
     setIsLoading(true);
+    if (!isPro) {
+      const newCount = incrementWeeklyUsage();
+      setWeeklyUsage(newCount);
+    }
     await base44.agents.addMessage(conversation, { role: "user", content: text });
   };
 
