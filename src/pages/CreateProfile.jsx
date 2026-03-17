@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Upload, Check, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Upload, Check, ShieldAlert, Crown, Lock } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
 import FilteredInput from "@/components/FilteredInput";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Link } from "react-router-dom";
 
 const positions = ["Center", "Left Wing", "Right Wing", "Defenseman", "Goalie"];
 
@@ -25,6 +27,17 @@ export default function CreateProfile() {
     position: "",
     photo_url: "",
   });
+  const { isPro } = useSubscription();
+
+  const { data: existingProfiles = [] } = useQuery({
+    queryKey: ["profiles"],
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Profile.filter({ created_by: currentUser.email });
+    },
+  });
+
+  const isBlocked = !isPro && existingProfiles.length >= 1;
 
   const mutation = useMutation({
     mutationFn: (data) => base44.functions.invoke('createProfile', data),
@@ -77,6 +90,32 @@ export default function CreateProfile() {
           <Check className="w-8 h-8 text-emerald-400" />
         </div>
         <h2 className="text-white font-bold text-xl">Profile Created!</h2>
+      </div>
+    );
+  }
+
+  if (isBlocked) {
+    return (
+      <div className="px-4 pb-24">
+        <div className="flex items-center gap-3 py-4">
+          <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-white font-bold text-lg">Create Profile</h1>
+        </div>
+        <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-4">
+            <Lock className="w-8 h-8 text-amber-400" />
+          </div>
+          <h2 className="text-white font-bold text-xl mb-2">Multiple Profiles — Pro Only</h2>
+          <p className="text-slate-400 text-sm mb-6 max-w-xs">
+            The Free plan allows 1 profile per account. Upgrade to Pro to create unlimited profiles.
+          </p>
+          <Link to={createPageUrl("Plans")} className="bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl px-6 py-3 flex items-center gap-2">
+            <Crown className="w-4 h-4" />
+            Upgrade to Pro
+          </Link>
+        </div>
       </div>
     );
   }
