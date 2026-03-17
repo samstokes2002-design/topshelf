@@ -144,9 +144,11 @@ export default function LogSession() {
   const selectedSeason = seasons.find(s => s.id === form.season_id) || activeSeason;
   const defaultStats = ["goals", "assists", "shots", "plus_minus", "hits", "blocked_shots", "takeaways", "giveaways", "penalty_minutes"];
   const rawSelectedStats = selectedSeason?.selected_stats || [];
-  const selectedStats = (form.type === "shift_by_shift" || form.type === "game") && rawSelectedStats.length === 0
+  const allSelectedStats = (form.type === "shift_by_shift" || form.type === "game") && rawSelectedStats.length === 0
     ? defaultStats
     : rawSelectedStats;
+  // Free users can only use scoring stats
+  const selectedStats = isPro ? allSelectedStats : allSelectedStats.filter(s => FREE_STATS.includes(s));
 
   // Load session for editing
   const { data: editSession } = useQuery({
