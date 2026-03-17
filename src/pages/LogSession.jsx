@@ -523,6 +523,18 @@ export default function LogSession() {
               </div>
             )}
 
+            {/* Pro upsell for non-scoring stats */}
+            {!isPro && (
+              <Link to={createPageUrl("Plans")} className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3">
+                <Lock className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-amber-300 text-sm font-medium">Unlock All Stats</p>
+                  <p className="text-slate-400 text-xs">Upgrade to Pro for Defensive, Discipline & Advanced stats</p>
+                </div>
+                <Crown className="w-4 h-4 text-amber-400" />
+              </Link>
+            )}
+
             {/* Advanced Stats */}
             {(selectedStats.includes("faceoff_percentage") || selectedStats.includes("power_play_goals") || selectedStats.includes("power_play_points") || selectedStats.includes("shorthanded_goals") || selectedStats.includes("shorthanded_points")) && (
               <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
