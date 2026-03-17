@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Clock, Star } from "lucide-react";
+import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Clock, Star, Lock, Crown } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
+import { Link } from "react-router-dom";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const COLORS = ["#0ea5e9", "#10b981", "#8b5cf6", "#f59e0b"];
 
@@ -19,6 +21,7 @@ const TABS = [
 export default function Stats() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("season");
+  const { isPro } = useSubscription();
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
@@ -175,19 +178,28 @@ export default function Stats() {
 
       {/* Tab Selector */}
       <div className="flex bg-slate-800/60 border border-slate-700/50 rounded-2xl p-1 mb-5">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all ${
-              activeTab === tab.id
-                ? "bg-sky-500 text-white shadow"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+        {TABS.map((tab) => {
+          const locked = !isPro && tab.id !== "season";
+          return (
+            <button
+              key={tab.id}
+              onClick={() => {
+                if (locked) { window.location.href = createPageUrl("Plans"); return; }
+                setActiveTab(tab.id);
+              }}
+              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-1 ${
+                activeTab === tab.id
+                  ? "bg-sky-500 text-white shadow"
+                  : locked
+                  ? "text-slate-600"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              {locked && <Lock className="w-2.5 h-2.5" />}
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
 
       {isLoading ? (
