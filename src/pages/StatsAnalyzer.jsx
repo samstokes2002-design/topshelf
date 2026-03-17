@@ -304,22 +304,40 @@ export default function StatsAnalyzer() {
 
       {/* Input */}
       <div className="px-4 pb-6 pt-3 border-t border-slate-800/80">
-        <div className="flex gap-2">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-            placeholder="Ask about your stats..."
-            className="flex-1 bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-sky-500/50"
-          />
-          <Button
-            onClick={() => sendMessage(input)}
-            disabled={!input.trim() || isLoading || !conversation}
-            className="bg-sky-500 hover:bg-sky-600 rounded-2xl w-11 h-11 p-0 flex-shrink-0"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
-        </div>
+        {!isPro && weeklyUsage >= FREE_AI_LIMIT ? (
+          <a href={createPageUrl("Plans")} className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl px-4 py-3">
+            <Lock className="w-5 h-5 text-amber-400 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-amber-300 text-sm font-semibold">Weekly limit reached</p>
+              <p className="text-slate-400 text-xs">Free plan: 5 messages/week. Upgrade for unlimited.</p>
+            </div>
+            <Crown className="w-5 h-5 text-amber-400" />
+          </a>
+        ) : (
+          <>
+            {!isPro && (
+              <p className="text-slate-500 text-xs text-center mb-2">
+                {FREE_AI_LIMIT - weeklyUsage} of {FREE_AI_LIMIT} free messages remaining this week
+              </p>
+            )}
+            <div className="flex gap-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+                placeholder="Ask about your stats..."
+                className="flex-1 bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-sky-500/50"
+              />
+              <Button
+                onClick={() => sendMessage(input)}
+                disabled={!input.trim() || isLoading || !conversation}
+                className="bg-sky-500 hover:bg-sky-600 rounded-2xl w-11 h-11 p-0 flex-shrink-0"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
