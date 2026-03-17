@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, Download, Trash2, AlertTriangle } from "lucide-react";
+import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, Download, Trash2, AlertTriangle, Crown } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
 
@@ -123,6 +123,18 @@ export default function Settings() {
             <span className="text-white capitalize">{user?.role || "User"}</span>
           </div>
         </div>
+      </div>
+
+      {/* Subscription */}
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Subscription</h3>
+        <Link to={createPageUrl("Plans")} className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
+          <div className="flex items-center gap-3">
+            <Crown className="w-4 h-4 text-amber-400" />
+            <span className="text-sm text-slate-200">View Plans</span>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-500" />
+        </Link>
       </div>
 
       {/* Legal */}
