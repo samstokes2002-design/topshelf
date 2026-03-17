@@ -9,7 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import FilteredInput from "@/components/FilteredInput";
 import { validateContentFields } from "@/components/contentFilter";
-import { Trophy, Check } from "lucide-react";
+import { Trophy, Check, Lock, Crown } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Link } from "react-router-dom";
 
 const AVAILABLE_STATS = [
   // Scoring
