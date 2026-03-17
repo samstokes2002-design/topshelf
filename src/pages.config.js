@@ -59,6 +59,7 @@ import Settings from './pages/Settings';
 import Stats from './pages/Stats';
 import StatsAnalyzer from './pages/StatsAnalyzer';
 import TermsOfService from './pages/TermsOfService';
+import Plans from './pages/Plans';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +76,7 @@ export const PAGES = {
     "Stats": Stats,
     "StatsAnalyzer": StatsAnalyzer,
     "TermsOfService": TermsOfService,
+    "Plans": Plans,
 }
 
 export const pagesConfig = {
