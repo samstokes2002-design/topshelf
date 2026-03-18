@@ -78,6 +78,7 @@ export const PAGES = {
     "StatsAnalyzer": StatsAnalyzer,
     "TermsOfService": TermsOfService,
     "Plans": Plans,
+    "PricingDemo": PricingDemo,
 }
 
 export const pagesConfig = {
