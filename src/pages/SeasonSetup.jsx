@@ -9,9 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import FilteredInput from "@/components/FilteredInput";
 import { validateContentFields } from "@/components/contentFilter";
-import { Trophy, Check, Lock, Crown } from "lucide-react";
-import { useSubscription } from "@/hooks/useSubscription";
-import { Link } from "react-router-dom";
+import { Trophy, Check } from "lucide-react";
 
 const AVAILABLE_STATS = [
   // Scoring
@@ -45,7 +43,6 @@ const SEASON_TYPES = [
 export default function SeasonSetup() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { isPro } = useSubscription();
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
@@ -277,44 +274,33 @@ export default function SeasonSetup() {
             {["scoring", "defensive", "discipline", "advanced"].map((category) => {
               const categoryStats = AVAILABLE_STATS.filter((s) => s.category === category);
               if (categoryStats.length === 0) return null;
-              const isLocked = !isPro && category !== "scoring";
               const allSelected = categoryStats.every((s) => selectedStats.includes(s.id));
               return (
-                <div key={category} className={`border rounded-2xl p-4 ${isLocked ? "bg-slate-800/30 border-slate-700/30 opacity-70" : "bg-slate-800/60 border-slate-700/50"}`}>
+                <div key={category} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      {isLocked && <Lock className="w-3.5 h-3.5 text-amber-400" />}
-                      <h3 className={`font-semibold text-xs uppercase tracking-wider ${isLocked ? "text-slate-500" : "text-white"}`}>
-                        {category === "advanced" ? "Advanced Stats" : category}
-                      </h3>
-                    </div>
-                    {isLocked ? (
-                      <Link to={createPageUrl("Plans")} className="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
-                        <Crown className="w-3 h-3" /> Pro
-                      </Link>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => selectAllInCategory(category)}
-                        className="text-xs text-sky-400 hover:text-sky-300 font-medium"
-                      >
-                        {allSelected ? "Deselect All" : "Select All"}
-                      </button>
-                    )}
+                    <h3 className="text-white font-semibold text-xs uppercase tracking-wider">
+                      {category === "advanced" ? "Advanced Stats" : category}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => selectAllInCategory(category)}
+                      className="text-xs text-sky-400 hover:text-sky-300 font-medium"
+                    >
+                      {allSelected ? "Deselect All" : "Select All"}
+                    </button>
                   </div>
                   <div className="space-y-2">
                     {categoryStats.map((stat) => (
                       <label
                         key={stat.id}
-                        className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isLocked ? "cursor-not-allowed" : "cursor-pointer hover:bg-slate-700/30"}`}
+                        className="flex items-center gap-3 cursor-pointer hover:bg-slate-700/30 p-2 rounded-lg transition-colors"
                       >
                         <Checkbox
                           checked={selectedStats.includes(stat.id)}
-                          onCheckedChange={() => !isLocked && toggleStat(stat.id)}
-                          disabled={isLocked}
+                          onCheckedChange={() => toggleStat(stat.id)}
                           className="border-slate-600"
                         />
-                        <span className={`text-sm ${isLocked ? "text-slate-500" : "text-white"}`}>{stat.label}</span>
+                        <span className="text-white text-sm">{stat.label}</span>
                       </label>
                     ))}
                   </div>
