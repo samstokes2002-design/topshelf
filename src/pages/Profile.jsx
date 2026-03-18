@@ -136,9 +136,14 @@ export default function Profile() {
                 inline
               />
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
                 {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
+                {isPro && (
+                  <span className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    <Crown className="w-2.5 h-2.5" /> PRO
+                  </span>
+                )}
               </div>
             )}
             <p className="text-slate-400 text-sm">{activeProfile.position}</p>
