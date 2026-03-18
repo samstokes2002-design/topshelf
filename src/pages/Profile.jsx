@@ -17,6 +17,7 @@ export default function Profile() {
   const [filter, setFilter] = useState("all");
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
   const queryClient = useQueryClient();
+  const { isPro } = useSubscription();
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
