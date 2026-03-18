@@ -60,6 +60,7 @@ import Stats from './pages/Stats';
 import StatsAnalyzer from './pages/StatsAnalyzer';
 import TermsOfService from './pages/TermsOfService';
 import Plans from './pages/Plans';
+import PricingDemo from './pages/PricingDemo';
 import __Layout from './Layout.jsx';
 
 
