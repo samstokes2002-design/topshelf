@@ -108,14 +108,12 @@ export default function Plans() {
 
       {/* Pro Plan */}
       <div className="bg-gradient-to-b from-amber-500/10 to-amber-500/5 border border-amber-500/40 rounded-2xl p-5 mb-6 relative overflow-hidden">
-        <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-          RECOMMENDED
-        </div>
         <div className="flex items-center justify-between mb-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Crown className="w-4 h-4 text-amber-400" />
               <h3 className="text-white font-bold text-lg">Pro</h3>
+              <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">RECOMMENDED</span>
             </div>
             <p className="text-slate-400 text-sm">Full access, no limits</p>
           </div>

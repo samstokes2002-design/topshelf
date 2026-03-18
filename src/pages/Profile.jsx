@@ -10,6 +10,7 @@ import SessionCard from "@/components/SessionCard";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import SeasonStats from "@/components/SeasonStats";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export default function Profile() {
   const [activeProfile, setActiveProfile] = useState(null);
