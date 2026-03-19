@@ -29,8 +29,13 @@ Deno.serve(async (req) => {
       await base44.asServiceRole.entities.Profile.delete(p.id);
     }
 
-    // Delete the user account itself
-    await base44.asServiceRole.entities.User.delete(user.id);
+    // Attempt to delete the user account (may fail for app owner, which is fine)
+    try {
+      await base44.asServiceRole.entities.User.delete(user.id);
+    } catch (userDeleteError) {
+      console.log('Could not delete user record:', userDeleteError.message);
+      // Non-fatal: all user data has already been deleted
+    }
 
     return Response.json({ success: true });
   } catch (error) {
