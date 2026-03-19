@@ -268,32 +268,14 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Session Filters */}
-      <Tabs value={filter} onValueChange={setFilter} className="mb-4">
-        <TabsList className="bg-slate-800/60 border border-slate-700/50 w-full">
-          <TabsTrigger value="all" className="flex-1 data-[state=active]:bg-slate-700 text-xs">All</TabsTrigger>
-          <TabsTrigger value="game" className="flex-1 data-[state=active]:bg-slate-700 text-xs">Games</TabsTrigger>
-          <TabsTrigger value="practice" className="flex-1 data-[state=active]:bg-slate-700 text-xs">Practice</TabsTrigger>
-          <TabsTrigger value="training" className="flex-1 data-[state=active]:bg-slate-700 text-xs">Training</TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      {/* Session History */}
-      <div className="space-y-3">
-        {isLoading ? (
-          [1, 2, 3].map((i) => <div key={i} className="bg-slate-800/40 rounded-2xl h-24 animate-pulse" />)
-        ) : filteredSessions.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-sm">No sessions found</div>
-        ) : (
-          filteredSessions.map((session) => (
-            <SessionCard
-              key={session.id}
-              session={session}
-              onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
-            />
-          ))
-        )}
-      </div>
+      {/* Season Targets */}
+      {activeSeason && (
+        <SeasonTargets
+          profileId={activeProfile.id}
+          seasonId={activeSeason.id}
+          sessions={currentSeasonSessions}
+        />
+      )}
     </div>
   );
 }
