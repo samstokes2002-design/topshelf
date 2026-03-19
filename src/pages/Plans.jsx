@@ -99,6 +99,52 @@ export default function Plans() {
         </div>
       )}
 
+      {/* Cancel Success Banner */}
+      {cancelSuccess && (
+        <div className="bg-slate-700/60 border border-slate-600/50 rounded-2xl px-4 py-3 mb-5">
+          <p className="text-slate-300 font-semibold text-sm">Subscription Cancelled</p>
+          <p className="text-slate-400 text-xs mt-0.5">
+            Your Pro access continues until {currentPeriodEnd ? new Date(currentPeriodEnd).toLocaleDateString() : "the end of your billing period"} and won't renew.
+          </p>
+        </div>
+      )}
+
+      {/* Cancel Confirm Dialog */}
+      {showCancelConfirm && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+            <h3 className="text-white font-bold text-lg mb-2">Cancel Pro?</h3>
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              Your Pro access will remain active until{" "}
+              <span className="text-white font-medium">
+                {currentPeriodEnd ? new Date(currentPeriodEnd).toLocaleDateString() : "the end of your billing period"}
+              </span>
+              . After that, your account will revert to the Free plan and won't be charged again.
+            </p>
+            <div className="flex gap-3">
+              <Button
+                onClick={() => setShowCancelConfirm(false)}
+                variant="outline"
+                className="flex-1 bg-slate-700/50 border-slate-600 text-white hover:bg-slate-700 rounded-xl"
+              >
+                Keep Pro
+              </Button>
+              <Button
+                onClick={handleCancel}
+                disabled={cancelling}
+                className="flex-1 bg-red-500/80 hover:bg-red-500 text-white rounded-xl"
+              >
+                {cancelling ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  "Yes, Cancel"
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Free Plan */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between mb-4">
