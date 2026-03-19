@@ -317,7 +317,7 @@ export default function Settings() {
               <li>All profiles &amp; stats</li>
               <li>All sessions &amp; seasons</li>
             </ul>
-            <p className="text-slate-400 text-xs text-center mb-1">You can re-register with the same email later.</p>
+            <p className="text-slate-400 text-xs text-center mb-3 text-amber-400/80">⚠ To re-use the same email, contact support before deleting.</p>
             <p className="text-slate-400 text-xs text-center mb-3">
               Type <span className="text-red-500 font-mono font-bold">DELETE ACCOUNT</span> to confirm
             </p>
