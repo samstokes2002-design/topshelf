@@ -60,6 +60,7 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      <Route path="/DeleteAccount" element={<DeleteAccount />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

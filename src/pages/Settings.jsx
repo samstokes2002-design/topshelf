@@ -163,6 +163,26 @@ export default function Settings() {
         </button>
       </div>
 
+      {/* Account Deletion Web Link */}
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Account Deletion</h3>
+        <a
+          href="/DeleteAccount"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50"
+        >
+          <div className="flex items-center gap-3">
+            <ExternalLink className="w-4 h-4 text-red-400" />
+            <div className="text-left">
+              <span className="text-sm text-slate-200 block">Delete Account on Web</span>
+              <span className="text-xs text-slate-500">Submit a deletion request online</span>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-500" />
+        </a>
+      </div>
+
       {/* Account Management */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
         <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Account Management</h3>
