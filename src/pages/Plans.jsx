@@ -31,6 +31,23 @@ export default function Plans() {
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [cancelSuccess, setCancelSuccess] = useState(false);
 
+  const handleCancel = async () => {
+    setCancelling(true);
+    try {
+      const res = await base44.functions.invoke('cancelSubscription', {});
+      if (res.data?.success) {
+        setCancelSuccess(true);
+        setShowCancelConfirm(false);
+        refetch && refetch();
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      alert("Something went wrong. Please try again.");
+    }
+    setCancelling(false);
+  };
+
   const handleUpgrade = async () => {
     const isInIframe = window.self !== window.top;
     if (isInIframe) {
