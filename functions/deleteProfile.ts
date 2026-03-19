@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 
 Deno.serve(async (req) => {
   try {
@@ -16,10 +16,9 @@ Deno.serve(async (req) => {
     }
 
     // Fetch profile-scoped data
-    const [sessions, seasons, allFriends] = await Promise.all([
+    const [sessions, seasons] = await Promise.all([
       base44.asServiceRole.entities.Session.filter({ profile_id: profileId }, null, 10000),
       base44.asServiceRole.entities.Season.filter({ profile_id: profileId }, null, 10000),
-      base44.asServiceRole.entities.Friend.list(null, 10000),
     ]);
 
     // Delete sessions
@@ -32,19 +31,12 @@ Deno.serve(async (req) => {
       await base44.asServiceRole.entities.Season.delete(s.id);
     }
 
-    // Delete friend records scoped to this profile only
-    const friendsToDelete = allFriends.filter(f =>
-      f.sender_profile_id === profileId || f.friend_profile_id === profileId
-    );
-    for (const f of friendsToDelete) {
-      await base44.asServiceRole.entities.Friend.delete(f.id);
-    }
-
     // Delete the profile itself
     await base44.asServiceRole.entities.Profile.delete(profileId);
 
     return Response.json({ success: true });
   } catch (error) {
+    console.error('deleteProfile error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
