@@ -193,6 +193,26 @@ export default function CreateProfile() {
           </div>
         </div>
 
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
+            <div className="flex gap-1">
+              <div className="relative flex-1">
+                <Input type="number" min="4" max="7" placeholder="ft" value={form.height_ft || ""} onChange={(e) => setForm((f) => ({ ...f, height_ft: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">ft</span>
+              </div>
+              <div className="relative flex-1">
+                <Input type="number" min="0" max="11" placeholder="in" value={form.height_in || ""} onChange={(e) => setForm((f) => ({ ...f, height_in: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">in</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
+            <Input type="number" placeholder="lbs" value={form.weight || ""} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+          </div>
+        </div>
+
         {contentError && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-1">
             <p className="text-red-400 text-sm">{contentError}</p>
