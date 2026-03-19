@@ -208,19 +208,6 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Favorite NHL Team</Label>
-          <Select value={form.favorite_team} onValueChange={(v) => setForm((f) => ({ ...f, favorite_team: v }))}>
-            <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
-              <SelectValue placeholder="Select a team" />
-            </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 max-h-60">
-              <SelectItem value="none" className="text-slate-400 focus:bg-slate-700">None</SelectItem>
-              {NHL_TEAMS.map((t) => <SelectItem key={t} value={t} className="text-white focus:bg-slate-700">{t}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
-
         <button
           type="button"
           onClick={() => setForm((f) => ({ ...f, show_on_profile: !f.show_on_profile }))}
