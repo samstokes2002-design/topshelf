@@ -215,67 +215,93 @@ export default function Stats() {
       ) : (
         <>
           {/* Scoring */}
-          <SectionCard title="Scoring" icon={Trophy} iconColor="text-sky-400">
-            <div className="grid grid-cols-2 gap-3">
-              <StatCard label="Games Played" value={games.length} icon={Trophy} color="text-slate-400" />
-              <StatCard label="Goals" value={totalGoals} icon={Trophy} color="text-sky-400" />
-              <StatCard label="Assists" value={totalAssists} icon={Target} color="text-emerald-400" />
-              <StatCard label="Points" value={totalPoints} icon={TrendingUp} color="text-violet-400" />
-              <StatCard
-                label="+/-"
-                value={totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus}
-                icon={totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle}
-                color={totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400"}
-              />
-              <StatCard label="Shots" value={totalShots} icon={Target} color="text-white" />
-              <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
-              <StatCard label="Avg Rating" value={`${avgRating}★`} icon={Star} color="text-amber-400" />
-            </div>
-          </SectionCard>
+          {(() => {
+            const scoringCards = [
+              { key: "goals", label: "Goals", icon: Trophy, color: "text-sky-400" },
+              { key: "assists", label: "Assists", icon: Target, color: "text-emerald-400" },
+              { key: "goals+assists", label: "Points", icon: TrendingUp, color: "text-violet-400", always: hasStat("goals") && hasStat("assists") },
+              { key: "plus_minus", label: "+/-", icon: totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle, color: totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400", value: totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus },
+              { key: "shots", label: "Shots", icon: Target, color: "text-white" },
+              { key: "rating", label: "Avg Rating", icon: Star, color: "text-amber-400", value: `${avgRating}★` },
+            ].filter(c => c.always !== undefined ? c.always : hasStat(c.key));
+            if (scoringCards.length === 0) return null;
+            return (
+              <SectionCard title="Scoring" icon={Trophy} iconColor="text-sky-400">
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard label="Games Played" value={games.length} icon={Trophy} color="text-slate-400" />
+                  {scoringCards.map(c => (
+                    <StatCard key={c.key} label={c.label} value={c.value !== undefined ? c.value : c.key === "goals" ? totalGoals : c.key === "assists" ? totalAssists : totalPoints} icon={c.icon} color={c.color} />
+                  ))}
+                  {hasStat("goals") && hasStat("shots") && (
+                    <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
+                  )}
+                  {(hasStat("goals") || hasStat("assists")) && games.length > 0 && (
+                    <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
+                  )}
+                </div>
+              </SectionCard>
+            );
+          })()}
 
           {/* Defensive */}
-          {isPro ? (
-            <SectionCard title="Defensive" icon={Shield} iconColor="text-blue-400">
-              <div className="grid grid-cols-2 gap-3">
-                <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-blue-400" />
-                <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
-                <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
-              </div>
-            </SectionCard>
-          ) : (
-            <ProLockedSection title="Defensive" icon={Shield} iconColor="text-blue-400" />
-          )}
+          {(() => {
+            const defensiveStats = [
+              { key: "blocked_shots", label: "Blocks", icon: Shield, color: "text-blue-400", value: totalBlocks },
+              { key: "hits", label: "Hits", icon: Zap, color: "text-white", value: totalHits },
+              { key: "takeaways", label: "Takeaways", icon: ArrowUpCircle, color: "text-emerald-400", value: totalTakeaways },
+            ].filter(c => hasStat(c.key));
+            if (defensiveStats.length === 0) return null;
+            return isPro ? (
+              <SectionCard title="Defensive" icon={Shield} iconColor="text-blue-400">
+                <div className="grid grid-cols-2 gap-3">
+                  {defensiveStats.map(c => <StatCard key={c.key} label={c.label} value={c.value} icon={c.icon} color={c.color} />)}
+                </div>
+              </SectionCard>
+            ) : (
+              <ProLockedSection title="Defensive" icon={Shield} iconColor="text-blue-400" />
+            );
+          })()}
 
           {/* Discipline */}
-          {isPro ? (
-            <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
-              <div className="grid grid-cols-2 gap-3">
-                <StatCard label="Penalty Min" value={totalPenaltyMinutes} icon={Flame} color="text-orange-400" />
-                <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
-              </div>
-            </SectionCard>
-          ) : (
-            <ProLockedSection title="Discipline" icon={Flame} iconColor="text-orange-400" />
-          )}
+          {(() => {
+            const disciplineStats = [
+              { key: "penalty_minutes", label: "Penalty Min", icon: Flame, color: "text-orange-400", value: totalPenaltyMinutes },
+              { key: "giveaways", label: "Giveaways", icon: ArrowDownCircle, color: "text-red-400", value: totalGiveaways },
+            ].filter(c => hasStat(c.key));
+            if (disciplineStats.length === 0) return null;
+            return isPro ? (
+              <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
+                <div className="grid grid-cols-2 gap-3">
+                  {disciplineStats.map(c => <StatCard key={c.key} label={c.label} value={c.value} icon={c.icon} color={c.color} />)}
+                </div>
+              </SectionCard>
+            ) : (
+              <ProLockedSection title="Discipline" icon={Flame} iconColor="text-orange-400" />
+            );
+          })()}
 
           {/* Advanced Stats */}
-          {isPro ? (
-            <SectionCard title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400">
-              <div className="grid grid-cols-2 gap-3">
-                {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
-                  <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
-                )}
-                <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
-                <StatCard label="PPG" value={totalPPG} icon={TrendingUp} color="text-violet-400" />
-                <StatCard label="PPP" value={totalPPP} icon={TrendingUp} color="text-violet-400" />
-                <StatCard label="SHG" value={totalSHG} icon={TrendingUp} color="text-emerald-400" />
-                <StatCard label="SHP" value={totalSHP} icon={TrendingUp} color="text-emerald-400" />
-                <StatCard label="Avg TOI" value={avgToiDisplay} icon={Clock} color="text-amber-400" />
-              </div>
-            </SectionCard>
-          ) : (
-            <ProLockedSection title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400" />
-          )}
+          {(() => {
+            const advancedCards = [
+              { key: "faceoff_percentage", label: "FO%", icon: Target, color: "text-sky-400", value: `${faceoffPct}%`, show: (totalFaceoffWins + totalFaceoffLosses) > 0 },
+              { key: "power_play_goals", label: "PPG", icon: TrendingUp, color: "text-violet-400", value: totalPPG },
+              { key: "power_play_points", label: "PPP", icon: TrendingUp, color: "text-violet-400", value: totalPPP },
+              { key: "shorthanded_goals", label: "SHG", icon: TrendingUp, color: "text-emerald-400", value: totalSHG },
+              { key: "shorthanded_points", label: "SHP", icon: TrendingUp, color: "text-emerald-400", value: totalSHP },
+            ].filter(c => hasStat(c.key) && (c.show === undefined || c.show));
+            const showAvgToi = shiftSessions.length > 0;
+            if (advancedCards.length === 0 && !showAvgToi) return null;
+            return isPro ? (
+              <SectionCard title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400">
+                <div className="grid grid-cols-2 gap-3">
+                  {advancedCards.map(c => <StatCard key={c.key} label={c.label} value={c.value} icon={c.icon} color={c.color} />)}
+                  {showAvgToi && <StatCard label="Avg TOI" value={avgToiDisplay} icon={Clock} color="text-amber-400" />}
+                </div>
+              </SectionCard>
+            ) : (
+              <ProLockedSection title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400" />
+            );
+          })()}
 
           {/* Period Breakdown */}
           {hasPeriodData && isPro && (
