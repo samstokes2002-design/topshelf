@@ -230,41 +230,51 @@ export default function Stats() {
           </SectionCard>
 
           {/* Defensive */}
-          <SectionCard title="Defensive" icon={Shield} iconColor="text-blue-400">
-            <div className="grid grid-cols-2 gap-3">
-              <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-blue-400" />
-              <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
-              <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
-            </div>
-          </SectionCard>
+          {isPro ? (
+            <SectionCard title="Defensive" icon={Shield} iconColor="text-blue-400">
+              <div className="grid grid-cols-2 gap-3">
+                <StatCard label="Blocks" value={totalBlocks} icon={Shield} color="text-blue-400" />
+                <StatCard label="Hits" value={totalHits} icon={Zap} color="text-white" />
+                <StatCard label="Takeaways" value={totalTakeaways} icon={ArrowUpCircle} color="text-emerald-400" />
+              </div>
+            </SectionCard>
+          ) : (
+            <ProLockedSection title="Defensive" icon={Shield} iconColor="text-blue-400" />
+          )}
 
           {/* Discipline */}
-          <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
-            <div className="grid grid-cols-2 gap-3">
-              <StatCard label="Penalty Min" value={totalPenaltyMinutes} icon={Flame} color="text-orange-400" />
-              <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
-            </div>
-          </SectionCard>
+          {isPro ? (
+            <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
+              <div className="grid grid-cols-2 gap-3">
+                <StatCard label="Penalty Min" value={totalPenaltyMinutes} icon={Flame} color="text-orange-400" />
+                <StatCard label="Giveaways" value={totalGiveaways} icon={ArrowDownCircle} color="text-red-400" />
+              </div>
+            </SectionCard>
+          ) : (
+            <ProLockedSection title="Discipline" icon={Flame} iconColor="text-orange-400" />
+          )}
 
           {/* Advanced Stats */}
-          <SectionCard title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400">
-            <div className="grid grid-cols-2 gap-3">
-              {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
-                <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
-              )}
-              <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
-              <StatCard label="PPG" value={totalPPG} icon={TrendingUp} color="text-violet-400" />
-              <StatCard label="PPP" value={totalPPP} icon={TrendingUp} color="text-violet-400" />
-              <StatCard label="SHG" value={totalSHG} icon={TrendingUp} color="text-emerald-400" />
-              <StatCard label="SHP" value={totalSHP} icon={TrendingUp} color="text-emerald-400" />
-              <StatCard label="Avg TOI" value={avgToiDisplay} icon={Clock} color="text-amber-400" />
-            </div>
-          </SectionCard>
-
-
+          {isPro ? (
+            <SectionCard title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400">
+              <div className="grid grid-cols-2 gap-3">
+                {(totalFaceoffWins + totalFaceoffLosses) > 0 && (
+                  <StatCard label="FO%" value={`${faceoffPct}%`} icon={Target} color="text-sky-400" />
+                )}
+                <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
+                <StatCard label="PPG" value={totalPPG} icon={TrendingUp} color="text-violet-400" />
+                <StatCard label="PPP" value={totalPPP} icon={TrendingUp} color="text-violet-400" />
+                <StatCard label="SHG" value={totalSHG} icon={TrendingUp} color="text-emerald-400" />
+                <StatCard label="SHP" value={totalSHP} icon={TrendingUp} color="text-emerald-400" />
+                <StatCard label="Avg TOI" value={avgToiDisplay} icon={Clock} color="text-amber-400" />
+              </div>
+            </SectionCard>
+          ) : (
+            <ProLockedSection title="Advanced Stats" icon={TrendingUp} iconColor="text-violet-400" />
+          )}
 
           {/* Period Breakdown */}
-          {hasPeriodData && (
+          {hasPeriodData && isPro && (
             <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
               <h3 className="text-white font-semibold text-sm mb-3">Period Breakdown</h3>
               <div className="grid grid-cols-3 gap-2">
