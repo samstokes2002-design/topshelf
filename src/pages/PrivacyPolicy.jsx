@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
           <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
             <li><span className="text-white font-medium">Name</span> — to personalize your experience.</li>
             <li><span className="text-white font-medium">Email address</span> — for account management and security.</li>
-            <li><span className="text-white font-medium">Username</span> — a unique identifier that allows other users to find and connect with you.</li>
+            <li><span className="text-white font-medium">Optional profile details</span> — such as age, height, weight, position, and photo, used solely to display your personal stats profile.</li>
           </ul>
         </div>
 
@@ -35,46 +35,14 @@ export default function PrivacyPolicy() {
           <p>We use your information only to operate the app's features, including:</p>
           <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
             <li>Creating and managing your account.</li>
-            <li>Displaying your profile to you and your accepted friends.</li>
-            <li>Enabling social connections through the friend system.</li>
-            <li>Showing friends' logged sessions on your home feed.</li>
+            <li>Displaying your personal stats, sessions, and season history.</li>
+            <li>Providing AI-powered performance analysis based on your logged data.</li>
           </ul>
           <p className="mt-2">We do not sell, rent, or share your personal information with third parties.</p>
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">3. Social Connections</h2>
-          <p>The app includes a friend system that allows you to:</p>
-          <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
-            <li>Search for other users by their username.</li>
-            <li>Send, receive, accept, or decline friend requests.</li>
-            <li>View your friends' profiles and logged sessions.</li>
-          </ul>
-          <p className="mt-2">
-            You can only <span className="text-white font-medium">view</span> another user's profile.
-            You cannot edit, modify, or change any information on another user's account.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold text-white mb-2">4. User Interaction Limits</h2>
-          <p>
-            TopShelf does not support direct messaging or private communication between users.
-            The only interactions between users are sending, accepting, or declining friend requests.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold text-white mb-2">5. Safety Features</h2>
-          <p>To help keep the community safe and respectful, you can:</p>
-          <ul className="list-disc list-inside ml-2 mt-2 space-y-1">
-            <li><span className="text-white font-medium">Block</span> other users to prevent them from interacting with you.</li>
-            <li><span className="text-white font-medium">Report</span> users for inappropriate behavior, which we will review.</li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold text-white mb-2">6. Your Data Control</h2>
+          <h2 className="text-base font-semibold text-white mb-2">3. Your Data Control</h2>
           <p>
             You are in control of your own account and information. No other user can change or edit your data.
             You can manage your account through the Settings section of the app.
