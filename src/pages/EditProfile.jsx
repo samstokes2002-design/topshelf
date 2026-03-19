@@ -208,19 +208,6 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setForm((f) => ({ ...f, show_on_profile: !f.show_on_profile }))}
-          className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-medium transition-colors ${
-            form.show_on_profile
-              ? "bg-sky-500/20 border-sky-500/50 text-sky-400"
-              : "bg-slate-800/60 border-slate-700/50 text-slate-400 hover:border-slate-600"
-          }`}
-        >
-          <Eye className="w-4 h-4" />
-          {form.show_on_profile ? "Showing on Profile" : "Show on Profile"}
-        </button>
-
         {contentError && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
             <p className="text-red-400 text-sm">{contentError}</p>

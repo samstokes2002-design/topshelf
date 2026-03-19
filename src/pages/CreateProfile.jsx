@@ -26,6 +26,7 @@ export default function CreateProfile() {
     age: "",
     position: "",
     photo_url: "",
+    player_number: "",
   });
   const { isPro } = useSubscription();
 
