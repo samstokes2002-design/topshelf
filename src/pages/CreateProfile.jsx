@@ -82,6 +82,7 @@ export default function CreateProfile() {
       photo_url: form.photo_url,
       height: height || undefined,
       weight: form.weight ? parseInt(form.weight) : undefined,
+      player_number: form.player_number || undefined,
       username: form.name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now(),
     });
   };
