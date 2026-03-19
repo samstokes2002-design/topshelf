@@ -354,6 +354,24 @@ export default function Stats() {
   );
 }
 
+function ProLockedSection({ title, icon: Icon, iconColor }) {
+  return (
+    <Link to={createPageUrl("Plans")}>
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4 flex items-center justify-between opacity-70 hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-2">
+          <Icon className={`w-4 h-4 ${iconColor}`} />
+          <h3 className="text-white font-semibold text-sm">{title}</h3>
+        </div>
+        <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-1.5">
+          <Lock className="w-3 h-3 text-amber-400" />
+          <span className="text-amber-400 text-xs font-semibold">Pro</span>
+          <Crown className="w-3 h-3 text-amber-400" />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 function SectionCard({ title, icon: Icon, iconColor, children }) {
   return (
     <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
