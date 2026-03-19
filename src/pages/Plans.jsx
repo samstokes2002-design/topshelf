@@ -198,10 +198,20 @@ export default function Plans() {
         </div>
 
         {isPro ? (
-          <div className="py-3 rounded-xl bg-amber-500/20 border border-amber-500/30 text-center">
-            <span className="text-amber-300 font-semibold text-sm flex items-center justify-center gap-2">
-              <Crown className="w-4 h-4" /> Active Pro Plan
-            </span>
+          <div className="space-y-3">
+            <div className="py-3 rounded-xl bg-amber-500/20 border border-amber-500/30 text-center">
+              <span className="text-amber-300 font-semibold text-sm flex items-center justify-center gap-2">
+                <Crown className="w-4 h-4" /> Active Pro Plan
+              </span>
+            </div>
+            {!cancelSuccess && (
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className="w-full text-slate-500 hover:text-slate-300 text-xs text-center py-1 transition-colors"
+              >
+                Cancel subscription
+              </button>
+            )}
           </div>
         ) : (
           <Button
