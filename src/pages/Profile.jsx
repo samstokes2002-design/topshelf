@@ -270,6 +270,7 @@ export default function Profile() {
           profileId={activeProfile.id}
           seasonId={activeSeason.id}
           sessions={currentSeasonSessions}
+          isPro={isPro}
         />
       )}
     </div>
