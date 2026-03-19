@@ -53,7 +53,7 @@ export default function PrivacyPolicy() {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-white mb-2">7. Changes to This Policy</h2>
+          <h2 className="text-base font-semibold text-white mb-2">4. Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy from time to time. Any changes will be posted within the app.
             We encourage you to review this page periodically.
