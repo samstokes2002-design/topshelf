@@ -73,9 +73,14 @@ export default function CreateProfile() {
     if (contentErr) { setContentError(contentErr); return; }
     setContentError("");
 
+    const height = form.height_ft || form.height_in ? `${form.height_ft}'${form.height_in}"` : "";
     mutation.mutate({
-      ...form,
+      name: form.name,
       age: form.age ? parseInt(form.age) : undefined,
+      position: form.position,
+      photo_url: form.photo_url,
+      height: height || undefined,
+      weight: form.weight ? parseInt(form.weight) : undefined,
       username: form.name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now(),
     });
   };
