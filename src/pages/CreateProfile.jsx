@@ -76,6 +76,7 @@ export default function CreateProfile() {
     mutation.mutate({
       ...form,
       age: form.age ? parseInt(form.age) : undefined,
+      username: form.name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now(),
     });
   };
 
