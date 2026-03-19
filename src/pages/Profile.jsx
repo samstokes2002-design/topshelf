@@ -83,10 +83,6 @@ export default function Profile() {
   const selectedSeason = selectedSeasonId ? seasons.find((s) => s.id === selectedSeasonId) : null;
   const selectedSeasonSessions = selectedSeason ? getSessionsForSeason(selectedSeason) : [];
 
-  const filteredSessions = filter === "all"
-    ? sessions
-    : sessions.filter((s) => s.type === filter);
-
   const games = currentSeasonSessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
   const totalGoals = games.reduce((sum, g) => sum + (g.goals || 0), 0);
   const totalAssists = games.reduce((sum, g) => sum + (g.assists || 0), 0);
