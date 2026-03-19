@@ -46,7 +46,7 @@ function calculateProgress(target, sessions) {
   return gameSessions.reduce((sum, s) => sum + (s[target.stat_key] || 0), 0);
 }
 
-export default function SeasonTargets({ profileId, seasonId, sessions }) {
+export default function SeasonTargets({ profileId, seasonId, sessions, isPro = false }) {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [statKey, setStatKey] = useState("");
