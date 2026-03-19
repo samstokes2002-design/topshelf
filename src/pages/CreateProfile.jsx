@@ -186,19 +186,6 @@ export default function CreateProfile() {
             />
           </div>
           <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Age</Label>
-            <Input
-              type="number"
-              placeholder="Age"
-              value={form.age}
-              onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))}
-              className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
             <Label className="text-slate-400 text-xs mb-1.5 block">Position *</Label>
             <Select value={form.position} onValueChange={(v) => setForm((f) => ({ ...f, position: v }))}>
               <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
@@ -210,16 +197,6 @@ export default function CreateProfile() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Age</Label>
-            <Input
-              type="number"
-              placeholder="Age"
-              value={form.age}
-              onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))}
-              className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
-            />
           </div>
         </div>
 
