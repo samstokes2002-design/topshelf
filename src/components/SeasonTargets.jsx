@@ -118,9 +118,14 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
                     <SelectItem key={o.key} value={o.key} className="text-white focus:bg-slate-700">{o.label}</SelectItem>
                   ))}
                   <div className="px-2 py-1 text-[10px] text-slate-500 uppercase tracking-wider mt-1">Stats</div>
-                  {STAT_OPTIONS.filter(o => o.type === "stat").map(o => (
+                  {STAT_OPTIONS.filter(o => o.type === "stat" && (isPro || !o.pro)).map(o => (
                     <SelectItem key={o.key} value={o.key} className="text-white focus:bg-slate-700">{o.label}</SelectItem>
                   ))}
+                  {!isPro && (
+                    <div className="px-2 py-2 text-[10px] text-amber-500/70 flex items-center gap-1 mt-1">
+                      🔒 Defensive & advanced stats require Pro
+                    </div>
+                  )}
                 </SelectContent>
               </Select>
             </div>
