@@ -156,6 +156,10 @@ export default function Stats() {
     shorthanded_goals: "SHG", shorthanded_points: "SHP",
   };
 
+  // The set of stats the user has enabled for this season
+  const selectedStats = activeSeason?.selected_stats || [];
+  const hasStat = (key) => selectedStats.includes(key);
+
   const typeBreakdown = [
     { name: "Games", value: games.length },
     { name: "Practice", value: filteredSessions.filter((s) => s.type === "practice").length },
