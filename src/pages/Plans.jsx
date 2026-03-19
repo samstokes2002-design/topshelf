@@ -25,8 +25,11 @@ const PRO_FEATURES = [
 
 export default function Plans() {
   const navigate = useNavigate();
-  const { isPro, isLoading, currentPeriodEnd } = useSubscription();
+  const { isPro, isLoading, currentPeriodEnd, refetch } = useSubscription();
   const [checkingOut, setCheckingOut] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [cancelSuccess, setCancelSuccess] = useState(false);
 
   const handleUpgrade = async () => {
     const isInIframe = window.self !== window.top;
