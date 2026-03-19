@@ -40,20 +40,16 @@ export default function CreateProfile() {
   const isBlocked = !isPro && existingProfiles.length >= 1;
 
   const mutation = useMutation({
-    mutationFn: (data) => base44.functions.invoke('createProfile', data),
-    onSuccess: (response) => {
+    mutationFn: (data) => base44.entities.Profile.create(data),
+    onSuccess: (newProfile) => {
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
       setSaved(true);
       setTimeout(() => {
-        window.location.href = createPageUrl("SeasonSetup") + `?profileId=${response.data.id}`;
+        window.location.href = createPageUrl("SeasonSetup") + `?profileId=${newProfile.id}`;
       }, 800);
     },
-    onError: (error) => {
-      if (error.response?.status === 409) {
-        setUsernameError("That username is already taken.");
-      } else {
-        setUsernameError("Error creating profile. Please try again.");
-      }
+    onError: () => {
+      setContentError("Error creating profile. Please try again.");
     },
   });
 
