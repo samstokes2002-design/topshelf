@@ -2,31 +2,33 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Target, Plus, Trash2, X, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const FREE_STAT_KEYS = ["goals", "assists", "shots", "plus_minus"];
+
 const STAT_OPTIONS = [
-  // Session counts
-  { key: "game", label: "Games Played", type: "session_count" },
-  { key: "practice", label: "Practices", type: "session_count" },
-  { key: "training", label: "Training Sessions", type: "session_count" },
-  // Stats
-  { key: "goals", label: "Goals", type: "stat" },
-  { key: "assists", label: "Assists", type: "stat" },
-  { key: "points", label: "Points (G+A)", type: "stat" },
-  { key: "shots", label: "Shots", type: "stat" },
-  { key: "plus_minus", label: "Plus/Minus (+/-)", type: "stat" },
-  { key: "hits", label: "Hits", type: "stat" },
-  { key: "blocked_shots", label: "Blocked Shots", type: "stat" },
-  { key: "takeaways", label: "Takeaways", type: "stat" },
-  { key: "giveaways", label: "Giveaways", type: "stat" },
-  { key: "penalty_minutes", label: "Penalty Minutes", type: "stat" },
-  { key: "power_play_goals", label: "Power Play Goals", type: "stat" },
-  { key: "power_play_points", label: "Power Play Points", type: "stat" },
-  { key: "shorthanded_goals", label: "Shorthanded Goals", type: "stat" },
-  { key: "shorthanded_points", label: "Shorthanded Points", type: "stat" },
+  // Session counts (always available)
+  { key: "game", label: "Games Played", type: "session_count", pro: false },
+  { key: "practice", label: "Practices", type: "session_count", pro: false },
+  { key: "training", label: "Training Sessions", type: "session_count", pro: false },
+  // Free stats
+  { key: "goals", label: "Goals", type: "stat", pro: false },
+  { key: "assists", label: "Assists", type: "stat", pro: false },
+  { key: "points", label: "Points (G+A)", type: "stat", pro: false },
+  { key: "shots", label: "Shots", type: "stat", pro: false },
+  { key: "plus_minus", label: "Plus/Minus (+/-)", type: "stat", pro: false },
+  // Pro-only stats
+  { key: "hits", label: "Hits", type: "stat", pro: true },
+  { key: "blocked_shots", label: "Blocked Shots", type: "stat", pro: true },
+  { key: "takeaways", label: "Takeaways", type: "stat", pro: true },
+  { key: "giveaways", label: "Giveaways", type: "stat", pro: true },
+  { key: "penalty_minutes", label: "Penalty Minutes", type: "stat", pro: true },
+  { key: "power_play_goals", label: "Power Play Goals", type: "stat", pro: true },
+  { key: "power_play_points", label: "Power Play Points", type: "stat", pro: true },
+  { key: "shorthanded_goals", label: "Shorthanded Goals", type: "stat", pro: true },
+  { key: "shorthanded_points", label: "Shorthanded Points", type: "stat", pro: true },
 ];
 
 function calculateProgress(target, sessions) {
