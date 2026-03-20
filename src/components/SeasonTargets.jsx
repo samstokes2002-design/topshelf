@@ -160,13 +160,31 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
           <Target className="w-4 h-4 text-sky-400" />
           <h3 className="text-white font-semibold text-sm">Season Targets</h3>
         </div>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="w-7 h-7 rounded-full bg-sky-500/20 flex items-center justify-center hover:bg-sky-500/30 transition-colors"
-        >
-          {showForm ? <X className="w-3.5 h-3.5 text-sky-400" /> : <Plus className="w-3.5 h-3.5 text-sky-400" />}
-        </button>
+        {atFreeLimit ? (
+          <Link
+            to={createPageUrl("Plans")}
+            className="w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center hover:bg-amber-500/30 transition-colors"
+            title="Upgrade to Pro for unlimited targets"
+          >
+            <Lock className="w-3.5 h-3.5 text-amber-400" />
+          </Link>
+        ) : (
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="w-7 h-7 rounded-full bg-sky-500/20 flex items-center justify-center hover:bg-sky-500/30 transition-colors"
+          >
+            {showForm ? <X className="w-3.5 h-3.5 text-sky-400" /> : <Plus className="w-3.5 h-3.5 text-sky-400" />}
+          </button>
+        )}
       </div>
+
+      {/* Free limit upsell */}
+      {atFreeLimit && (
+        <Link to={createPageUrl("Plans")} className="flex items-center gap-2.5 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-2.5 mb-3 hover:bg-amber-500/15 transition-colors">
+          <Crown className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+          <p className="text-amber-300 text-xs">Upgrade to Pro for unlimited season targets</p>
+        </Link>
+      )}
 
       {/* Add Target Form */}
       {showForm && (
