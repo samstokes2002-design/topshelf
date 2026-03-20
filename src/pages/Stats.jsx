@@ -228,7 +228,7 @@ export default function Stats() {
             return (
               <SectionCard title="Scoring" icon={Trophy} iconColor="text-sky-400">
                 <div className="grid grid-cols-2 gap-3">
-                  <StatCard label="Games Played" value={games.length} icon={Trophy} color="text-slate-400" />
+                  <StatCard label="Games Played" value={games.length} icon={BarChart2} color="text-slate-400" />
                   {scoringCards.map(c => (
                     <StatCard key={c.key} label={c.label} value={c.value !== undefined ? c.value : c.key === "goals" ? totalGoals : c.key === "assists" ? totalAssists : totalPoints} icon={c.icon} color={c.color} />
                   ))}
