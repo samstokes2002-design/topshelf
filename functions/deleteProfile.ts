@@ -15,21 +15,19 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Profile not found or unauthorized' }, { status: 403 });
     }
 
-    // Fetch profile-scoped data
-    const [sessions, seasons] = await Promise.all([
+    // Fetch all related data in parallel
+    const [sessions, seasons, targets] = await Promise.all([
       base44.asServiceRole.entities.Session.filter({ profile_id: profileId }, null, 10000),
       base44.asServiceRole.entities.Season.filter({ profile_id: profileId }, null, 10000),
+      base44.asServiceRole.entities.SeasonTarget.filter({ profile_id: profileId }, null, 10000),
     ]);
 
-    // Delete sessions
-    for (const s of sessions) {
-      await base44.asServiceRole.entities.Session.delete(s.id);
-    }
-
-    // Delete seasons
-    for (const s of seasons) {
-      await base44.asServiceRole.entities.Season.delete(s.id);
-    }
+    // Delete everything in parallel
+    await Promise.all([
+      ...sessions.map(s => base44.asServiceRole.entities.Session.delete(s.id)),
+      ...seasons.map(s => base44.asServiceRole.entities.Season.delete(s.id)),
+      ...targets.map(t => base44.asServiceRole.entities.SeasonTarget.delete(t.id)),
+    ]);
 
     // Delete the profile itself
     await base44.asServiceRole.entities.Profile.delete(profileId);
