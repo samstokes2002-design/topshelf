@@ -247,8 +247,8 @@ export default function Stats() {
           {(() => {
             const defensiveStats = [
               { key: "blocked_shots", label: "Blocks", icon: Shield, color: "text-blue-400", value: totalBlocks },
-              { key: "hits", label: "Hits", icon: Zap, color: "text-white", value: totalHits },
-              { key: "takeaways", label: "Takeaways", icon: ArrowUpCircle, color: "text-emerald-400", value: totalTakeaways },
+              { key: "hits", label: "Hits", icon: Swords, color: "text-white", value: totalHits },
+              { key: "takeaways", label: "Takeaways", icon: Target, color: "text-emerald-400", value: totalTakeaways },
             ].filter(c => hasStat(c.key));
             if (defensiveStats.length === 0) return null;
             return isPro ? (
