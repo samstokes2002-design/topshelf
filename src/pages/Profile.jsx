@@ -24,13 +24,27 @@ export default function Profile() {
     },
   });
 
-  const { data: seasons = [] } = useQuery({
+  const { data: seasons = [], refetch: refetchSeasons } = useQuery({
     queryKey: ["seasons", activeProfile?.id],
     queryFn: () =>
       activeProfile
         ? base44.entities.Season.filter({ profile_id: activeProfile.id }, "-created_date")
         : [],
     enabled: !!activeProfile,
+  });
+
+  const activateSeasonMutation = useMutation({
+    mutationFn: async (seasonId) => {
+      const otherActive = seasons.filter(s => s.id !== seasonId && s.is_active);
+      await Promise.all(otherActive.map(s => base44.entities.Season.update(s.id, { is_active: false })));
+      await base44.entities.Season.update(seasonId, { is_active: true });
+    },
+    onSuccess: () => refetchSeasons(),
+  });
+
+  const deleteSeasonMutation = useMutation({
+    mutationFn: (seasonId) => base44.entities.Season.delete(seasonId),
+    onSuccess: () => refetchSeasons(),
   });
 
   const { data: sessions = [], isLoading } = useQuery({
