@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { Trophy, Target, TrendingUp, Flame, Zap, Shield, ArrowUpCircle, ArrowDownCircle, Clock, Star, Lock, Crown, Crosshair, Swords, BarChart2, Percent, Layers, Activity, Users } from "lucide-react";
+import { Trophy, Target, TrendingUp, Flame, Shield, ArrowUpCircle, ArrowDownCircle, Clock, Star, Lock, Crown, Crosshair, Swords, BarChart2, Percent, Users } from "lucide-react";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
 import { createPageUrl } from "@/utils";
 import { Link } from "react-router-dom";
