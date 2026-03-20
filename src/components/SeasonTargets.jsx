@@ -178,11 +178,11 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <div className="px-2 py-1 text-[10px] text-slate-500 uppercase tracking-wider">Session Counts</div>
-                  {STAT_OPTIONS.filter(o => o.type === "session_count").map(o => (
+                  {STAT_OPTIONS.filter(o => o.type === "session_count" && !existingStatKeys.has(o.key)).map(o => (
                     <SelectItem key={o.key} value={o.key} className="text-white focus:bg-slate-700">{o.label}</SelectItem>
                   ))}
                   <div className="px-2 py-1 text-[10px] text-slate-500 uppercase tracking-wider mt-1">Stats</div>
-                  {STAT_OPTIONS.filter(o => o.type === "stat" && (isPro || !o.pro)).map(o => (
+                  {STAT_OPTIONS.filter(o => o.type === "stat" && (isPro || !o.pro) && !existingStatKeys.has(o.key)).map(o => (
                     <SelectItem key={o.key} value={o.key} className="text-white focus:bg-slate-700">{o.label}</SelectItem>
                   ))}
                   {!isPro && (
