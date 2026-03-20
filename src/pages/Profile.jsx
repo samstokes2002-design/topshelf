@@ -249,10 +249,15 @@ export default function Profile() {
                       <span className="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full">Active</span>
                     )}
                   </div>
-                  <div className="flex gap-4 text-xs">
+                  <div className="flex gap-4 text-xs flex-wrap">
                     <span className="text-slate-400">{seasonGames.length} Games</span>
                     <span className="text-slate-400">{seasonPractices.length} Practices</span>
                     <span className="text-slate-400">{seasonTraining.length} Training</span>
+                    {season.targets_total > 0 && (
+                      <span className={`flex items-center gap-1 font-medium ${season.targets_completed === season.targets_total ? "text-emerald-400" : "text-sky-400"}`}>
+                        🎯 {season.targets_completed}/{season.targets_total} targets
+                      </span>
+                    )}
                   </div>
                   {selectedSeasonId === season.id && (
                     <SeasonStats sessions={seasonSessions} selectedStats={season.selected_stats} />
