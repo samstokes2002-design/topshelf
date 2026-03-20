@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Upload, Check, Trophy, Plus } from "lucide-react";
+import { ArrowLeft, Upload, Check } from "lucide-react";
 import ImageCropper from "@/components/ImageCropper";
 import { validateContentFields } from "@/components/contentFilter";
 import FilteredInput from "@/components/FilteredInput";
@@ -32,26 +32,6 @@ export default function EditProfile() {
   const [form, setForm] = useState({ name: "", age: "", position: "", photo_url: "", height_ft: "", height_in: "", weight: "", show_on_profile: false, favorite_team: "", player_number: "" });
   const [contentError, setContentError] = useState("");
   const [cropFile, setCropFile] = useState(null);
-
-  const { data: seasons = [], refetch: refetchSeasons } = useQuery({
-    queryKey: ["seasons-edit", profileId],
-    queryFn: () => base44.entities.Season.filter({ profile_id: profileId }, "-created_date"),
-    enabled: !!profileId,
-  });
-
-  const activateSeasonMutation = useMutation({
-    mutationFn: async (seasonId) => {
-      const otherActive = seasons.filter(s => s.id !== seasonId && s.is_active);
-      await Promise.all(otherActive.map(s => base44.entities.Season.update(s.id, { is_active: false })));
-      await base44.entities.Season.update(seasonId, { is_active: true });
-    },
-    onSuccess: () => refetchSeasons(),
-  });
-
-  const deleteSeasonMutation = useMutation({
-    mutationFn: (seasonId) => base44.entities.Season.delete(seasonId),
-    onSuccess: () => refetchSeasons(),
-  });
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["profile-edit", profileId],
