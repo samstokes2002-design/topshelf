@@ -218,10 +218,10 @@ export default function Stats() {
           {(() => {
             const scoringCards = [
               { key: "goals", label: "Goals", icon: Trophy, color: "text-sky-400" },
-              { key: "assists", label: "Assists", icon: Target, color: "text-emerald-400" },
+              { key: "assists", label: "Assists", icon: Handshake, color: "text-emerald-400" },
               { key: "goals+assists", label: "Points", icon: TrendingUp, color: "text-violet-400", always: hasStat("goals") && hasStat("assists") },
               { key: "plus_minus", label: "+/-", icon: totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle, color: totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400", value: totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus },
-              { key: "shots", label: "Shots", icon: Target, color: "text-white" },
+              { key: "shots", label: "Shots", icon: Crosshair, color: "text-white" },
               { key: "rating", label: "Avg Rating", icon: Star, color: "text-amber-400", value: `${avgRating}★` },
             ].filter(c => c.always !== undefined ? c.always : hasStat(c.key));
             if (scoringCards.length === 0) return null;
