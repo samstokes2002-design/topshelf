@@ -76,22 +76,31 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["season-targets", seasonId] }),
   });
 
-  // Detect newly completed targets
+  // Sync completed/total counts to season + detect celebrations
   useEffect(() => {
-    if (!targets.length || !sessions) return;
+    if (!sessions) return;
+    if (targets.length === 0) return;
+
     const nowCompleted = new Set();
     targets.forEach((t) => {
       const current = calculateProgress(t, sessions);
       if (current >= t.target_value) nowCompleted.add(t.id);
     });
 
-    // Find targets that just became completed
+    // Save to season entity
+    base44.entities.Season.update(seasonId, {
+      targets_completed: nowCompleted.size,
+      targets_total: targets.length,
+    }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ["seasons"] });
+    });
+
+    // Find targets that just became completed (skip initial load)
     const newlyDone = [...nowCompleted].filter(id => !prevCompletedRef.current.has(id));
     if (newlyDone.length > 0 && prevCompletedRef.current.size > 0) {
       const completedTarget = targets.find(t => t.id === newlyDone[0]);
       if (completedTarget) {
         setCelebrationTarget(completedTarget);
-        // Fire confetti
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ["#38bdf8", "#34d399", "#fbbf24", "#f472b6", "#a78bfa"] });
         setTimeout(() => {
           confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.2 }, colors: ["#38bdf8", "#34d399", "#fbbf24"] });
@@ -100,7 +109,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
       }
     }
     prevCompletedRef.current = nowCompleted;
-  }, [targets, sessions]);
+  }, [targets, sessions, seasonId]);
 
   const handleCreate = () => {
     if (!statKey || !targetValue || isNaN(Number(targetValue)) || Number(targetValue) <= 0) return;
