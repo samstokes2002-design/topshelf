@@ -117,6 +117,33 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
 
   return (
     <div className="mb-5">
+      {/* Celebration Modal */}
+      {celebrationTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-800 border border-slate-600 rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl animate-[scale-in_0.3s_ease-out]">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+              <Trophy className="w-10 h-10 text-white" />
+            </div>
+            <div className="flex justify-center gap-1 mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+              ))}
+            </div>
+            <h2 className="text-white font-bold text-2xl mb-1">Target Reached!</h2>
+            <p className="text-slate-300 text-sm mb-1">You crushed your</p>
+            <p className="text-sky-400 font-bold text-lg mb-4">{celebrationTarget.label} goal 🎉</p>
+            <p className="text-slate-400 text-xs mb-6">
+              {celebrationTarget.target_value} {celebrationTarget.target_value === 1 ? "time" : "times"} — mission accomplished. Keep pushing!
+            </p>
+            <button
+              onClick={() => setCelebrationTarget(null)}
+              className="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-sky-400 text-white font-bold text-base hover:from-sky-400 hover:to-sky-300 transition-all active:scale-95"
+            >
+              Let's Go! 🏒
+            </button>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-sky-400" />
