@@ -111,8 +111,11 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
     prevCompletedRef.current = nowCompleted;
   }, [targets, sessions, seasonId]);
 
+  const existingStatKeys = new Set(targets.map(t => t.stat_key));
+
   const handleCreate = () => {
     if (!statKey || !targetValue || isNaN(Number(targetValue)) || Number(targetValue) <= 0) return;
+    if (existingStatKeys.has(statKey)) return;
     const option = STAT_OPTIONS.find(o => o.key === statKey);
     createMutation.mutate({
       profile_id: profileId,
