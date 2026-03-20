@@ -124,11 +124,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
               <Trophy className="w-10 h-10 text-white" />
             </div>
-            <div className="flex justify-center gap-1 mb-3">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-              ))}
-            </div>
+
             <h2 className="text-white font-bold text-2xl mb-1">Target Reached!</h2>
             <p className="text-slate-300 text-sm mb-1">You crushed your</p>
             <p className="text-sky-400 font-bold text-lg mb-4">{celebrationTarget.label} goal 🎉</p>
