@@ -52,6 +52,8 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
   const [showForm, setShowForm] = useState(false);
   const [statKey, setStatKey] = useState("");
   const [targetValue, setTargetValue] = useState("");
+  const [celebrationTarget, setCelebrationTarget] = useState(null);
+  const prevCompletedRef = useRef(new Set());
 
   const { data: targets = [] } = useQuery({
     queryKey: ["season-targets", seasonId],
