@@ -240,7 +240,15 @@ export default function Profile() {
       {/* Seasons List */}
       {seasons.length > 0 && (
         <div className="mb-5">
-          <h3 className="text-white font-semibold text-sm mb-3">Seasons</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white font-semibold text-sm">Seasons</h3>
+            <button
+              onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?profileId=${activeProfile?.id}`}
+              className="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center hover:bg-sky-500/30 transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5 text-sky-400" />
+            </button>
+          </div>
           <div className="space-y-2">
             {seasons.map((season) => {
               const seasonSessions = getSessionsForSeason(season);
