@@ -236,7 +236,7 @@ export default function Stats() {
                     <StatCard label="Shoot %" value={`${shootingPct}%`} icon={Flame} color="text-orange-400" />
                   )}
                   {(hasStat("goals") || hasStat("assists")) && games.length > 0 && (
-                    <StatCard label="Points/Game" value={ppg} icon={TrendingUp} color="text-violet-400" />
+                    <StatCard label="Points/Game" value={ppg} icon={Activity} color="text-violet-400" />
                   )}
                 </div>
               </SectionCard>
