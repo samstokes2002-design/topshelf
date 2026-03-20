@@ -76,6 +76,32 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["season-targets", seasonId] }),
   });
 
+  // Detect newly completed targets
+  useEffect(() => {
+    if (!targets.length || !sessions) return;
+    const nowCompleted = new Set();
+    targets.forEach((t) => {
+      const current = calculateProgress(t, sessions);
+      if (current >= t.target_value) nowCompleted.add(t.id);
+    });
+
+    // Find targets that just became completed
+    const newlyDone = [...nowCompleted].filter(id => !prevCompletedRef.current.has(id));
+    if (newlyDone.length > 0 && prevCompletedRef.current.size > 0) {
+      const completedTarget = targets.find(t => t.id === newlyDone[0]);
+      if (completedTarget) {
+        setCelebrationTarget(completedTarget);
+        // Fire confetti
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ["#38bdf8", "#34d399", "#fbbf24", "#f472b6", "#a78bfa"] });
+        setTimeout(() => {
+          confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.2 }, colors: ["#38bdf8", "#34d399", "#fbbf24"] });
+          confetti({ particleCount: 60, spread: 100, origin: { y: 0.5, x: 0.8 }, colors: ["#f472b6", "#a78bfa", "#fbbf24"] });
+        }, 300);
+      }
+    }
+    prevCompletedRef.current = nowCompleted;
+  }, [targets, sessions]);
+
   const handleCreate = () => {
     if (!statKey || !targetValue || isNaN(Number(targetValue)) || Number(targetValue) <= 0) return;
     const option = STAT_OPTIONS.find(o => o.key === statKey);
