@@ -11,6 +11,7 @@ const FREE_FEATURES = [
   "Log game, practice & training sessions",
   "Scoring stats only (Goals, Assists, Shots, +/-)",
   "Season Stats tab only",
+  "1 season target per season",
   "5 AI messages per week",
 ];
 
@@ -19,6 +20,7 @@ const PRO_FEATURES = [
   "All session types (incl. Shift Tracker)",
   "All stats categories (Defensive, Discipline, Advanced)",
   "All Stats tabs (Weekly, Monthly, Career)",
+  "Unlimited season targets",
   "Unlimited AI messages",
   "Period breakdowns & advanced analytics",
 ];
