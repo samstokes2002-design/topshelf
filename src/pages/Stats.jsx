@@ -283,11 +283,11 @@ export default function Stats() {
           {/* Advanced Stats */}
           {(() => {
             const advancedCards = [
-              { key: "faceoff_percentage", label: "FO%", icon: Target, color: "text-sky-400", value: `${faceoffPct}%`, show: (totalFaceoffWins + totalFaceoffLosses) > 0 },
-              { key: "power_play_goals", label: "PPG", icon: TrendingUp, color: "text-violet-400", value: totalPPG },
-              { key: "power_play_points", label: "PPP", icon: TrendingUp, color: "text-violet-400", value: totalPPP },
-              { key: "shorthanded_goals", label: "SHG", icon: TrendingUp, color: "text-emerald-400", value: totalSHG },
-              { key: "shorthanded_points", label: "SHP", icon: TrendingUp, color: "text-emerald-400", value: totalSHP },
+              { key: "faceoff_percentage", label: "FO%", icon: Percent, color: "text-sky-400", value: `${faceoffPct}%`, show: (totalFaceoffWins + totalFaceoffLosses) > 0 },
+              { key: "power_play_goals", label: "PPG", icon: Zap, color: "text-violet-400", value: totalPPG },
+              { key: "power_play_points", label: "PPP", icon: Layers, color: "text-violet-400", value: totalPPP },
+              { key: "shorthanded_goals", label: "SHG", icon: Swords, color: "text-emerald-400", value: totalSHG },
+              { key: "shorthanded_points", label: "SHP", icon: Activity, color: "text-emerald-400", value: totalSHP },
             ].filter(c => hasStat(c.key) && (c.show === undefined || c.show));
             const showAvgToi = shiftSessions.length > 0;
             if (advancedCards.length === 0 && !showAvgToi) return null;
