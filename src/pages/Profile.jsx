@@ -267,9 +267,32 @@ export default function Profile() {
                       <h4 className="text-white font-medium text-sm">{season.season_year}</h4>
                       {season.team_name && <p className="text-slate-400 text-xs">{season.team_name}</p>}
                     </div>
-                    {season.is_active && (
-                      <span className="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full">Active</span>
-                    )}
+                    <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                      {season.is_active ? (
+                        <span className="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full">Active</span>
+                      ) : (
+                        <button
+                          onClick={() => activateSeasonMutation.mutate(season.id)}
+                          disabled={activateSeasonMutation.isPending}
+                          className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full hover:bg-emerald-500/30 transition-colors"
+                        >
+                          Activate
+                        </button>
+                      )}
+                      <button
+                        onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
+                        className="text-slate-500 hover:text-sky-400 transition-colors"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => { if (confirm("Delete this season?")) deleteSeasonMutation.mutate(season.id); }}
+                        disabled={deleteSeasonMutation.isPending}
+                        className="text-slate-500 hover:text-red-400 transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                   <div className="flex gap-4 text-xs flex-wrap">
                     <span className="text-slate-400">{seasonGames.length} Games</span>
