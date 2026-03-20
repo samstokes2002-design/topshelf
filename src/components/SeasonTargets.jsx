@@ -112,6 +112,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
   }, [targets, sessions, seasonId]);
 
   const existingStatKeys = new Set(targets.map(t => t.stat_key));
+  const atFreeLimit = !isPro && targets.length >= 1;
 
   const handleCreate = () => {
     if (!statKey || !targetValue || isNaN(Number(targetValue)) || Number(targetValue) <= 0) return;
