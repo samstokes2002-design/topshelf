@@ -248,7 +248,8 @@ export default function CreateProfile() {
         <Button
           type="submit"
           disabled={!form.name || !form.position || mutation.isPending || !ageConfirmed}
-          className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl h-12 text-base"
+          className="w-full font-semibold rounded-xl h-12 text-base text-primary-foreground"
+          style={{ backgroundColor: "hsl(var(--primary))" }}
         >
           {mutation.isPending ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

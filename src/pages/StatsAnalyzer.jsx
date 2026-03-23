@@ -10,7 +10,7 @@ import { createPageUrl } from "@/utils";
 const FREE_AI_LIMIT = 5;
 const AI_USAGE_KEY = "ai_message_count_week";
 const CONV_CACHE_KEY = "ai_conv_cache";
-const CONV_TTL_MS = 24 * 60 * 60 * 1000; // 1 day
+const CONV_TTL_MS = 0; // Always refresh to get latest stats
 
 const SUGGESTIONS = [
   "What should I work on this season?",
