@@ -2,27 +2,28 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Palette, Check } from "lucide-react";
+import { applyTheme } from "@/hooks/useTheme";
 
 const PRESETS = {
-  primary: [
-    { label: "Sky", value: "#0EA5E9" },
-    { label: "Indigo", value: "#6366F1" },
-    { label: "Violet", value: "#8B5CF6" },
-    { label: "Rose", value: "#F43F5E" },
-    { label: "Amber", value: "#F59E0B" },
-    { label: "Emerald", value: "#10B981" },
-    { label: "Orange", value: "#F97316" },
-    { label: "Teal", value: "#14B8A6" },
+  background: [
+    { label: "Dark Navy", value: "#0B1120" },
+    { label: "Deep Blue", value: "#0D1B2A" },
+    { label: "Charcoal", value: "#111827" },
+    { label: "Near Black", value: "#09090B" },
+    { label: "Dark Slate", value: "#0F172A" },
+    { label: "Dark Green", value: "#052E16" },
+    { label: "Dark Purple", value: "#1A0A2E" },
+    { label: "Dark Red", value: "#1C0A0A" },
   ],
-  secondary: [
-    { label: "Slate", value: "#475569" },
-    { label: "Gray", value: "#4B5563" },
-    { label: "Zinc", value: "#52525B" },
-    { label: "Stone", value: "#57534E" },
-    { label: "Blue", value: "#3B82F6" },
-    { label: "Purple", value: "#A855F7" },
-    { label: "Pink", value: "#EC4899" },
-    { label: "Cyan", value: "#06B6D4" },
+  panel: [
+    { label: "Navy Panel", value: "#131F35" },
+    { label: "Blue Panel", value: "#162032" },
+    { label: "Gray Panel", value: "#1F2937" },
+    { label: "Zinc Panel", value: "#18181B" },
+    { label: "Slate Panel", value: "#1E293B" },
+    { label: "Green Panel", value: "#064E3B" },
+    { label: "Purple Panel", value: "#2D1B69" },
+    { label: "Red Panel", value: "#3B1515" },
   ],
   button: [
     { label: "Sky", value: "#0EA5E9" },
@@ -35,32 +36,6 @@ const PRESETS = {
     { label: "Teal", value: "#14B8A6" },
   ],
 };
-
-function hexToHsl(hex) {
-  let r = parseInt(hex.slice(1, 3), 16) / 255;
-  let g = parseInt(hex.slice(3, 5), 16) / 255;
-  let b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
-  if (max === min) { h = s = 0; } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
-    }
-  }
-  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-}
-
-function applyColors(primary, secondary, button) {
-  const root = document.documentElement;
-  root.style.setProperty("--primary", hexToHsl(primary));
-  root.style.setProperty("--ring", hexToHsl(primary));
-  root.style.setProperty("--secondary-accent", hexToHsl(secondary));
-  root.style.setProperty("--button-color", button);
-}
 
 export default function ThemeColorPicker() {
   const queryClient = useQueryClient();
@@ -79,22 +54,27 @@ export default function ThemeColorPicker() {
     enabled: !!user?.email,
   });
 
-  const [primary, setPrimary] = useState("#0EA5E9");
-  const [secondary, setSecondary] = useState("#475569");
+  const [background, setBackground] = useState("#0B1120");
+  const [panel, setPanel] = useState("#131F35");
   const [button, setButton] = useState("#0EA5E9");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (prefs) {
-      setPrimary(prefs.primary_color || "#0EA5E9");
-      setSecondary(prefs.secondary_color || "#475569");
+      setBackground(prefs.background_color || "#0B1120");
+      setPanel(prefs.panel_color || "#131F35");
       setButton(prefs.button_color || "#0EA5E9");
     }
   }, [prefs]);
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const data = { user_email: user.email, primary_color: primary, secondary_color: secondary, button_color: button };
+      const data = {
+        user_email: user.email,
+        background_color: background,
+        panel_color: panel,
+        button_color: button,
+      };
       if (prefs?.id) {
         return base44.entities.UserPreferences.update(prefs.id, data);
       } else {
@@ -103,16 +83,23 @@ export default function ThemeColorPicker() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userPreferences"] });
-      applyColors(primary, secondary, button);
+      applyTheme({ background_color: background, panel_color: panel, button_color: button });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     },
   });
 
   const handlePreview = (type, value) => {
-    if (type === "primary") { setPrimary(value); applyColors(value, secondary, button); }
-    if (type === "secondary") { setSecondary(value); applyColors(primary, value, button); }
-    if (type === "button") { setButton(value); applyColors(primary, secondary, value); }
+    if (type === "background") {
+      setBackground(value);
+      applyTheme({ background_color: value, panel_color: panel, button_color: button });
+    } else if (type === "panel") {
+      setPanel(value);
+      applyTheme({ background_color: background, panel_color: value, button_color: button });
+    } else if (type === "button") {
+      setButton(value);
+      applyTheme({ background_color: background, panel_color: panel, button_color: value });
+    }
   };
 
   const ColorRow = ({ label, type, value }) => (
@@ -154,8 +141,8 @@ export default function ThemeColorPicker() {
         <h3 className="text-white font-semibold text-sm">Interface Colors</h3>
       </div>
 
-      <ColorRow label="Primary Color" type="primary" value={primary} />
-      <ColorRow label="Secondary Color" type="secondary" value={secondary} />
+      <ColorRow label="Background Color" type="background" value={background} />
+      <ColorRow label="Panel Color" type="panel" value={panel} />
       <ColorRow label="Button Color" type="button" value={button} />
 
       <button
