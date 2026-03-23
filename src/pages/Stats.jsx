@@ -276,7 +276,7 @@ export default function Stats() {
                 </div>
               </SectionCard>
             ) : (
-              <ProLockedSection title="Discipline" icon={Flame} iconColor="text-orange-400" />
+              <ProLockedSection title="Discipline" icon={AlertTriangle} iconColor="text-red-400" />
             );
           })()}
 
