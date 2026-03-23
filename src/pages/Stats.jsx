@@ -270,7 +270,7 @@ export default function Stats() {
             ].filter(c => hasStat(c.key));
             if (disciplineStats.length === 0) return null;
             return isPro ? (
-              <SectionCard title="Discipline" icon={Flame} iconColor="text-orange-400">
+              <SectionCard title="Discipline" icon={AlertTriangle} iconColor="text-red-400">
                 <div className="grid grid-cols-2 gap-3">
                   {disciplineStats.map(c => <StatCard key={c.key} label={c.label} value={c.value} icon={c.icon} color={c.color} />)}
                 </div>
