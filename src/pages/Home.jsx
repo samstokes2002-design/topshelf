@@ -203,7 +203,7 @@ export default function Home() {
       {/* Recent Sessions */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-white font-semibold">Recent Activity</h2>
+          <h2 className="text-foreground font-semibold">Recent Activity</h2>
           <Link to={createPageUrl("Profile")} className="text-xs text-sky-400 hover:text-sky-300">
             View All
           </Link>
@@ -212,7 +212,7 @@ export default function Home() {
         {sessionsLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-slate-800/40 rounded-2xl h-24 animate-pulse" />
+              <div key={i} className="bg-card rounded-2xl h-24 animate-pulse" />
             ))}
           </div>
         ) : sessions.length === 0 ? (
