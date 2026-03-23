@@ -94,7 +94,7 @@ export default function ImageCropper({ file, onCrop, onCancel }) {
           <button onClick={onCancel} className="text-white/60 hover:text-white transition-colors">
             <X className="w-6 h-6" />
           </button>
-          <h2 className="text-white font-semibold text-base">Move & Zoom</h2>
+          <h2 className="text-white font-semibold text-base">Move & Position</h2>
           <div className="w-6" />
         </div>
 
