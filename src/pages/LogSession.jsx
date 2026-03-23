@@ -665,10 +665,11 @@ export default function LogSession() {
         )}
 
         {/* Submit */}
-        <Button
+        <button
           type="submit"
           disabled={isSubmitting || !form.profile_id}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl h-12 text-base"
+          className="w-full text-white font-semibold rounded-xl h-12 text-base transition-opacity disabled:opacity-50"
+          style={{ backgroundColor: "hsl(var(--primary))" }}
         >
           {isSubmitting ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -677,7 +678,7 @@ export default function LogSession() {
           ) : (
             "Log Session"
           )}
-        </Button>
+        </button>
       </form>
     </div>
   );
