@@ -79,9 +79,10 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
   });
 
   // Sync completed/total counts to season + detect celebrations
+  const lastSyncedRef = useRef({ completed: -1, total: -1 });
+
   useEffect(() => {
-    if (!sessions) return;
-    if (targets.length === 0) return;
+    if (!sessions || targets.length === 0) return;
 
     const nowCompleted = new Set();
     targets.forEach((t) => {
@@ -89,13 +90,19 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
       if (current >= t.target_value) nowCompleted.add(t.id);
     });
 
-    // Save to season entity
-    base44.entities.Season.update(seasonId, {
-      targets_completed: nowCompleted.size,
-      targets_total: targets.length,
-    }).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["seasons"] });
-    });
+    const completedCount = nowCompleted.size;
+    const totalCount = targets.length;
+
+    // Only write to the DB if the counts actually changed — prevents rate-limit loops
+    if (completedCount !== lastSyncedRef.current.completed || totalCount !== lastSyncedRef.current.total) {
+      lastSyncedRef.current = { completed: completedCount, total: totalCount };
+      base44.entities.Season.update(seasonId, {
+        targets_completed: completedCount,
+        targets_total: totalCount,
+      }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["seasons"] });
+      });
+    }
 
     // Find targets that just became completed (skip initial load)
     const newlyDone = [...nowCompleted].filter(id => !prevCompletedRef.current.has(id));
