@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Target, Check } from "lucide-react";
+import { Target, Check, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
@@ -26,45 +26,69 @@ export default function HomeTargets({ profileId, seasonId, sessions }) {
 
   if (targets.length === 0) return null;
 
+  // Find the target with the lowest completion % that isn't already done
+  const withProgress = targets.map(t => {
+    const current = calculateProgress(t, sessions);
+    const pct = Math.min(100, (current / t.target_value) * 100);
+    return { ...t, current, pct };
+  });
+
+  // Prefer incomplete targets sorted by lowest %; fall back to the completed one if all done
+  const incomplete = withProgress.filter(t => t.pct < 100).sort((a, b) => a.pct - b.pct);
+  const focus = incomplete.length > 0 ? incomplete[0] : withProgress.sort((a, b) => a.pct - b.pct)[0];
+  if (!focus) return null;
+
+  const done = focus.pct >= 100;
+  const displayPct = Math.round(focus.pct);
+  const remaining = Math.max(0, focus.target_value - focus.current);
+
   return (
-    <div className="mb-5">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-sky-400" />
-          <h2 className="text-white font-semibold text-sm">Season Targets</h2>
+    <Link to={createPageUrl("Profile")} className="block mb-5">
+      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-4 hover:bg-slate-800/80 transition-colors">
+        {/* Header row */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Target className="w-4 h-4 text-sky-400" />
+            <span className="text-white font-semibold text-sm">Focus Target</span>
+          </div>
+          <div className="flex items-center gap-1 text-slate-500">
+            <span className="text-xs">{targets.length > 1 ? `1 of ${targets.length}` : ""}</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </div>
         </div>
-        <Link to={createPageUrl("Profile")} className="text-xs text-sky-400 hover:text-sky-300">
-          View All
-        </Link>
+
+        {/* Target info */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
+            {done && <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />}
+            <span className={`text-base font-bold ${done ? "text-emerald-400" : "text-white"}`}>
+              {focus.label}
+            </span>
+          </div>
+          <span className="text-sm font-semibold">
+            <span className={done ? "text-emerald-400" : "text-white"}>{focus.current}</span>
+            <span className="text-slate-500"> / {focus.target_value}</span>
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-1.5">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${done ? "bg-emerald-400" : "bg-sky-500"}`}
+            style={{ width: `${displayPct}%` }}
+          />
+        </div>
+
+        <div className="flex justify-between items-center">
+          <span className="text-[11px] text-slate-500">{displayPct}% complete</span>
+          {!done && (
+            <span className="text-[11px] text-slate-500">{remaining} to go</span>
+          )}
+          {done && (
+            <span className="text-[11px] text-emerald-500 font-semibold">Target reached! 🎉</span>
+          )}
+        </div>
       </div>
-      <div className="space-y-2.5">
-        {targets.map(target => {
-          const current = calculateProgress(target, sessions);
-          const pct = Math.min(100, Math.round((current / target.target_value) * 100));
-          const done = current >= target.target_value;
-          return (
-            <div key={target.id} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-3">
-              <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-1.5">
-                  {done && <Check className="w-3 h-3 text-emerald-400 flex-shrink-0" />}
-                  <span className={`text-sm font-medium ${done ? "text-emerald-400" : "text-white"}`}>{target.label}</span>
-                </div>
-                <span className="text-xs text-slate-400">
-                  <span className={`font-bold ${done ? "text-emerald-400" : "text-white"}`}>{current}</span>
-                  <span className="text-slate-500"> / {target.target_value}</span>
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${done ? "bg-emerald-400" : "bg-sky-500"}`}
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-              <p className="text-[10px] text-slate-600 mt-1">{pct}% complete</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </Link>
   );
 }
