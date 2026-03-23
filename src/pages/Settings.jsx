@@ -93,18 +93,18 @@ export default function Settings() {
         <button onClick={() => navigate(createPageUrl("Profile"), { replace: true })} className="text-slate-400 hover:text-white transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-white font-bold text-xl">Settings</h1>
+        <h1 className="text-foreground font-bold text-xl">Settings</h1>
       </div>
 
       {/* Account Section */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-4">
+      <div className="bg-card border border-border rounded-2xl p-5 mb-4">
         <div className="flex items-center gap-3 mb-5">
           <div className="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center">
             <User className="w-6 h-6 text-sky-400" />
           </div>
           <div>
-            <h2 className="text-white font-semibold">{user?.full_name || "User"}</h2>
-            <p className="text-slate-400 text-xs">{user?.email}</p>
+            <h2 className="text-foreground font-semibold">{user?.full_name || "User"}</h2>
+            <p className="text-muted-foreground text-xs">{user?.email}</p>
           </div>
         </div>
 
@@ -115,8 +115,8 @@ export default function Settings() {
       <ThemeColorPicker />
 
       {/* About */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-        <h3 className="text-white font-semibold text-sm mb-3">About</h3>
+      <div className="bg-card border border-border rounded-2xl p-4 mb-4">
+        <h3 className="text-foreground font-semibold text-sm mb-3">About</h3>
         <div className="space-y-2 text-xs text-slate-400">
           <div className="flex justify-between">
             <span>App Version</span>
@@ -130,8 +130,8 @@ export default function Settings() {
       </div>
 
       {/* Subscription */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
-        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Subscription</h3>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-foreground font-semibold text-sm px-4 pt-4 pb-2">Subscription</h3>
         <Link to={createPageUrl("Plans")} className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
           <div className="flex items-center gap-3">
             <Crown className="w-4 h-4 text-amber-400" />
@@ -142,8 +142,8 @@ export default function Settings() {
       </div>
 
       {/* Legal */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
-        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Legal</h3>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-foreground font-semibold text-sm px-4 pt-4 pb-2">Legal</h3>
         <Link to={createPageUrl("PrivacyPolicy")} className="flex items-center justify-between px-4 py-3 hover:bg-slate-700/40 transition-colors border-t border-slate-700/50">
           <div className="flex items-center gap-3">
             <Shield className="w-4 h-4 text-sky-400" />
@@ -168,8 +168,8 @@ export default function Settings() {
       </div>
 
       {/* Account Deletion Web Link */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
-        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Account Deletion</h3>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-foreground font-semibold text-sm px-4 pt-4 pb-2">Account Deletion</h3>
         <a
           href="/DeleteAccount"
           target="_blank"
@@ -188,8 +188,8 @@ export default function Settings() {
       </div>
 
       {/* Account Management */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl overflow-hidden mb-4">
-        <h3 className="text-white font-semibold text-sm px-4 pt-4 pb-2">Account Management</h3>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
+        <h3 className="text-foreground font-semibold text-sm px-4 pt-4 pb-2">Account Management</h3>
         <button
           onClick={handleExport}
           disabled={isExporting}

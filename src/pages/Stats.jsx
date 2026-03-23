@@ -171,7 +171,7 @@ export default function Stats() {
   return (
     <div className="px-4 pb-24">
       <div className="flex items-center justify-between py-4">
-        <h1 className="text-white font-bold text-xl">Stats</h1>
+        <h1 className="text-foreground font-bold text-xl">Stats</h1>
         <ProfileSwitcher
           profiles={profiles}
           activeProfile={activeProfile}
@@ -181,7 +181,7 @@ export default function Stats() {
       </div>
 
       {/* Tab Selector */}
-      <div className="flex bg-slate-800/60 border border-slate-700/50 rounded-2xl p-1 mb-5">
+      <div className="flex bg-card border border-border rounded-2xl p-1 mb-5">
         {TABS.map((tab) => {
           const locked = !isPro && tab.id !== "season";
           return (
@@ -209,7 +209,7 @@ export default function Stats() {
       {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-slate-800/40 rounded-2xl h-20 animate-pulse" />
+            <div key={i} className="bg-card rounded-2xl h-20 animate-pulse" />
           ))}
         </div>
       ) : (
@@ -305,11 +305,11 @@ export default function Stats() {
 
           {/* Period Breakdown */}
           {hasPeriodData && isPro && (
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-              <h3 className="text-white font-semibold text-sm mb-3">Period Breakdown</h3>
+            <div className="bg-card border border-border rounded-2xl p-4 mb-4">
+              <h3 className="text-foreground font-semibold text-sm mb-3">Period Breakdown</h3>
               <div className="grid grid-cols-3 gap-2">
                 {periodStats.map((p) => (
-                  <div key={p.period} className={`rounded-xl p-3 border ${p.shifts > 0 ? "bg-slate-700/60 border-slate-600/50" : "bg-slate-800/30 border-slate-700/30 opacity-40"}`}>
+                  <div key={p.period} className={`rounded-xl p-3 border ${p.shifts > 0 ? "bg-card border-border" : "bg-card/30 border-border opacity-40"}`}>
                     <div className="text-center mb-2">
                       <span className="text-sky-400 font-bold text-sm">{p.label}</span>
                     </div>
@@ -350,8 +350,8 @@ export default function Stats() {
 
           {/* Type Breakdown */}
           {typeBreakdown.length > 0 && (
-            <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-              <h3 className="text-white font-semibold text-sm mb-3">Session Breakdown</h3>
+            <div className="bg-card border border-border rounded-2xl p-4 mb-4">
+              <h3 className="text-foreground font-semibold text-sm mb-3">Session Breakdown</h3>
               <div className="flex items-center">
                 <ResponsiveContainer width={120} height={120}>
                   <PieChart>
@@ -387,10 +387,10 @@ export default function Stats() {
 function ProLockedSection({ title, icon: Icon, iconColor }) {
   return (
     <Link to={createPageUrl("Plans")}>
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4 flex items-center justify-between opacity-70 hover:opacity-100 transition-opacity">
+      <div className="bg-card border border-border rounded-2xl p-4 mb-4 flex items-center justify-between opacity-70 hover:opacity-100 transition-opacity">
         <div className="flex items-center gap-2">
           <Icon className={`w-4 h-4 ${iconColor}`} />
-          <h3 className="text-white font-semibold text-sm">{title}</h3>
+          <h3 className="text-foreground font-semibold text-sm">{title}</h3>
         </div>
         <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-1.5">
           <Lock className="w-3 h-3 text-amber-400" />
@@ -404,10 +404,10 @@ function ProLockedSection({ title, icon: Icon, iconColor }) {
 
 function SectionCard({ title, icon: Icon, iconColor, children }) {
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+    <div className="bg-card border border-border rounded-2xl p-4 mb-4">
       <div className="flex items-center gap-2 mb-3">
         <Icon className={`w-4 h-4 ${iconColor}`} />
-        <h3 className="text-white font-semibold text-sm">{title}</h3>
+        <h3 className="text-foreground font-semibold text-sm">{title}</h3>
       </div>
       {children}
     </div>
@@ -416,12 +416,12 @@ function SectionCard({ title, icon: Icon, iconColor, children }) {
 
 function StatCard({ label, value, icon: Icon, color }) {
   return (
-    <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl p-3">
+    <div className="bg-card/60 border border-border rounded-xl p-3">
       <div className="flex items-center gap-1.5 mb-1">
         <Icon className={`w-3 h-3 ${color}`} />
-        <span className="text-[10px] text-slate-400 uppercase tracking-wider">{label}</span>
+        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{label}</span>
       </div>
-      <span className="text-xl font-bold text-white">{value}</span>
+      <span className="text-xl font-bold text-foreground">{value}</span>
     </div>
   );
 }
