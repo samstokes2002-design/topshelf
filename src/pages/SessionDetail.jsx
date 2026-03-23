@@ -77,8 +77,8 @@ export default function SessionDetail() {
     <div className="px-4 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between py-4">
-        <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white">
-          <ArrowLeft className="w-5 h-5" />
+        <button onClick={() => navigate(-1)} className="flex items-center justify-center w-10 h-10 -ml-2 rounded-xl text-slate-400 hover:text-white active:bg-slate-700/50 transition-colors">
+          <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="flex gap-2">
           <Link to={createPageUrl("LogSession") + `?editId=${session.id}&profileId=${session.profile_id}`}>
