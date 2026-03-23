@@ -13,10 +13,10 @@ const CONV_CACHE_KEY = "ai_conv_cache";
 const CONV_TTL_MS = 24 * 60 * 60 * 1000; // 1 day
 
 const SUGGESTIONS = [
-  "What should I work on to improve?",
-  "Compare last month vs this month",
+  "What should I work on this season?",
+  "How am I trending this month?",
   "How do I perform in wins vs losses?",
-  "What are my per-game averages?",
+  "Break down my per-game averages",
 ];
 
 function getWeeklyUsage() {
