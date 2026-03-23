@@ -136,7 +136,8 @@ export default function Home() {
           <Button 
             size="lg"
             onClick={() => window.location.href = createPageUrl("CreateProfile")}
-            className="bg-sky-500 hover:bg-sky-600 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg shadow-sky-500/30"
+            className="text-white rounded-2xl px-8 py-6 text-lg font-semibold"
+            style={{ backgroundColor: "hsl(var(--primary))" }}
           >
             <Plus className="w-5 h-5 mr-2" />
             Create Your Profile
@@ -158,10 +159,10 @@ export default function Home() {
         />
         {activeSeason ? (
           <Link to={createPageUrl("LogSession") + `?profileId=${activeProfile?.id || ""}`}>
-            <Button size="sm" className="bg-sky-500 hover:bg-sky-600 rounded-xl gap-1.5">
+            <button className="flex items-center gap-1.5 px-3 h-8 rounded-xl text-sm font-medium text-white transition-opacity hover:opacity-90" style={{ backgroundColor: "hsl(var(--primary))" }}>
               <Plus className="w-4 h-4" />
               Log
-            </Button>
+            </button>
           </Link>
         ) : (
           <Button
