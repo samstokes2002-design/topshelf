@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Palette, Check } from "lucide-react";
+import { Palette, Check, RotateCcw } from "lucide-react";
 import { applyTheme } from "@/hooks/useTheme";
 
 const PRESETS = {
@@ -173,20 +173,36 @@ export default function ThemeColorPicker() {
         </div>
       </div>
 
-      <button
-        onClick={() => saveMutation.mutate()}
-        disabled={saveMutation.isPending}
-        className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all mt-2 flex items-center justify-center gap-2 text-white"
-        style={{ backgroundColor: button }}
-      >
-        {saved ? (
-          <><Check className="w-4 h-4" /> Saved!</>
-        ) : saveMutation.isPending ? (
-          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-        ) : (
-          "Save Colors"
-        )}
-      </button>
+      <div className="flex gap-2 mt-2">
+        <button
+          onClick={() => {
+            const defaults = { background: "#0B1120", panel: "#131F35", button: "#0EA5E9", foreground: "white" };
+            setBackground(defaults.background);
+            setPanel(defaults.panel);
+            setButton(defaults.button);
+            setForeground(defaults.foreground);
+            applyTheme({ background_color: defaults.background, panel_color: defaults.panel, button_color: defaults.button, foreground_color: defaults.foreground });
+          }}
+          className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground border border-border hover:border-foreground/30 transition-all"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          Reset
+        </button>
+        <button
+          onClick={() => saveMutation.mutate()}
+          disabled={saveMutation.isPending}
+          className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-white"
+          style={{ backgroundColor: button }}
+        >
+          {saved ? (
+            <><Check className="w-4 h-4" /> Saved!</>
+          ) : saveMutation.isPending ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            "Save Colors"
+          )}
+        </button>
+      </div>
     </div>
   );
 }
