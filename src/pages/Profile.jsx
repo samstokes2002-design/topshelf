@@ -14,6 +14,7 @@ import { useSubscription } from "@/hooks/useSubscription";
 export default function Profile() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
+  const [sessionsBrowserSeasonId, setSessionsBrowserSeasonId] = useState(null);
   const queryClient = useQueryClient();
   const { isPro } = useSubscription();
 
