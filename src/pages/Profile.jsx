@@ -323,6 +323,16 @@ export default function Profile() {
                   {selectedSeasonId === season.id && (
                     <SeasonStats sessions={seasonSessions} selectedStats={season.selected_stats} />
                   )}
+                  {/* View Sessions Button */}
+                  {seasonSessions.length > 0 && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setSessionsBrowserSeasonId(season.id); }}
+                      className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-700/50 hover:bg-slate-700 transition-colors text-sky-400 text-xs font-semibold"
+                    >
+                      View Logged Sessions
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </button>
               );
             })}
