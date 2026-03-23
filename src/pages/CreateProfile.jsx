@@ -155,7 +155,7 @@ export default function CreateProfile() {
               {form.photo_url ? (
                 <img src={form.photo_url} alt="" className="w-full h-full object-cover" />
               ) : (
-                <Upload className="w-6 h-6 text-slate-500 group-hover:text-sky-400 transition-colors" />
+                <Upload className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
               )}
             </div>
             <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
@@ -164,37 +164,37 @@ export default function CreateProfile() {
         </div>
 
         <div>
-          <Label className="text-slate-400 text-xs mb-1.5 block">Player Name *</Label>
+          <Label className="text-muted-foreground text-xs mb-1.5 block">Player Name *</Label>
           <FilteredInput
             placeholder="Name"
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             required
-            className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+            className="bg-muted border-border text-foreground rounded-xl"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Player Number</Label>
+            <Label className="text-muted-foreground text-xs mb-1.5 block">Player Number</Label>
             <Input
               type="number"
               placeholder="#"
               value={form.player_number}
               onChange={(e) => setForm((f) => ({ ...f, player_number: e.target.value }))}
-              className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+              className="bg-muted border-border text-foreground rounded-xl"
               min="0"
             />
           </div>
           <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Position *</Label>
+            <Label className="text-muted-foreground text-xs mb-1.5 block">Position *</Label>
             <Select value={form.position} onValueChange={(v) => setForm((f) => ({ ...f, position: v }))}>
-              <SelectTrigger className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl">
+              <SelectTrigger className="bg-muted border-border text-foreground rounded-xl">
                 <SelectValue placeholder="Position" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent className="bg-card border-border">
                 {positions.map((p) => (
-                  <SelectItem key={p} value={p} className="text-white focus:bg-slate-700">{p}</SelectItem>
+                  <SelectItem key={p} value={p} className="text-foreground">{p}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -203,21 +203,21 @@ export default function CreateProfile() {
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Height</Label>
+            <Label className="text-muted-foreground text-xs mb-1.5 block">Height</Label>
             <div className="flex gap-1">
               <div className="relative flex-1">
-                <Input type="number" min="4" max="7" placeholder="ft" value={form.height_ft || ""} onChange={(e) => setForm((f) => ({ ...f, height_ft: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
-                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">ft</span>
+                <Input type="number" min="4" max="7" placeholder="ft" value={form.height_ft || ""} onChange={(e) => setForm((f) => ({ ...f, height_ft: e.target.value }))} className="bg-muted border-border text-foreground rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">ft</span>
               </div>
               <div className="relative flex-1">
-                <Input type="number" min="0" max="11" placeholder="in" value={form.height_in || ""} onChange={(e) => setForm((f) => ({ ...f, height_in: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl pr-7" />
-                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">in</span>
+                <Input type="number" min="0" max="11" placeholder="in" value={form.height_in || ""} onChange={(e) => setForm((f) => ({ ...f, height_in: e.target.value }))} className="bg-muted border-border text-foreground rounded-xl pr-7" />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">in</span>
               </div>
             </div>
           </div>
           <div>
-            <Label className="text-slate-400 text-xs mb-1.5 block">Weight (lbs)</Label>
-            <Input type="number" placeholder="lbs" value={form.weight || ""} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl" />
+            <Label className="text-muted-foreground text-xs mb-1.5 block">Weight (lbs)</Label>
+            <Input type="number" placeholder="lbs" value={form.weight || ""} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} className="bg-muted border-border text-foreground rounded-xl" />
           </div>
         </div>
 
@@ -232,16 +232,17 @@ export default function CreateProfile() {
           <div
             onClick={() => setAgeConfirmed(v => !v)}
             className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
-              ageConfirmed ? "bg-sky-500 border-sky-500" : "border-slate-600 bg-slate-800/60 group-hover:border-slate-400"
+              ageConfirmed ? "border-primary" : "border-border bg-muted"
             }`}
+            style={ageConfirmed ? { backgroundColor: "hsl(var(--primary))", borderColor: "hsl(var(--primary))" } : {}}
           >
             {ageConfirmed && <Check className="w-3 h-3 text-white" />}
           </div>
           <span className="text-slate-300 text-sm leading-relaxed">
             I confirm I am at least <strong className="text-white">13 years old</strong> and I agree to the{" "}
-            <a href={createPageUrl("TermsOfService")} className="text-sky-400 underline hover:text-sky-300" onClick={e => e.stopPropagation()}>Terms of Service</a>{" "}
+            <a href={createPageUrl("TermsOfService")} className="text-primary underline hover:opacity-80" onClick={e => e.stopPropagation()}>Terms of Service</a>{" "}
             and{" "}
-            <a href={createPageUrl("PrivacyPolicy")} className="text-sky-400 underline hover:text-sky-300" onClick={e => e.stopPropagation()}>Privacy Policy</a>.
+            <a href={createPageUrl("PrivacyPolicy")} className="text-primary underline hover:opacity-80" onClick={e => e.stopPropagation()}>Privacy Policy</a>.
           </span>
         </label>
 
