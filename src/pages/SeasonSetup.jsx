@@ -253,7 +253,7 @@ export default function SeasonSetup() {
             </div>
 
             <div>
-              <Label className="text-slate-400 text-xs mb-2 block">Team Name (Optional)</Label>
+              <Label className="text-muted-foreground text-xs mb-2 block">Team Name (Optional)</Label>
               <FilteredInput
                 placeholder="e.g., Thunder AAA"
                 value={teamName}
@@ -267,7 +267,7 @@ export default function SeasonSetup() {
         {/* Step 2: Stat Selection */}
         {(step === 2 || editId) && (
           <div className="space-y-4 mb-8">
-            <p className="text-slate-400 text-xs">
+            <p className="text-muted-foreground text-xs">
               Select the stats you want to track this season. You can change these later.
             </p>
             {["scoring", "defensive", "discipline", "advanced"].map((category) => {
@@ -277,7 +277,7 @@ export default function SeasonSetup() {
               return (
                 <div key={category} className="bg-card border border-border rounded-2xl p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-white font-semibold text-xs uppercase tracking-wider">
+                    <h3 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                       {category === "advanced" ? "Advanced Stats" : category}
                     </h3>
                     <button
@@ -299,7 +299,7 @@ export default function SeasonSetup() {
                           onCheckedChange={() => toggleStat(stat.id)}
                           className="border-slate-600"
                         />
-                        <span className="text-white text-sm">{stat.label}</span>
+                        <span className="text-foreground text-sm">{stat.label}</span>
                       </label>
                     ))}
                   </div>
@@ -321,7 +321,7 @@ export default function SeasonSetup() {
             <Button
               onClick={() => navigate(createPageUrl(from), { replace: true })}
               variant="outline"
-              className="flex-1 bg-slate-800/60 border-slate-700/50 text-white hover:bg-slate-800 rounded-xl h-12"
+              className="flex-1 bg-card border-border text-foreground rounded-xl h-12"
             >
               Cancel
             </Button>
@@ -330,7 +330,7 @@ export default function SeasonSetup() {
             <Button
               onClick={() => setStep(1)}
               variant="outline"
-              className="flex-1 bg-slate-800/60 border-slate-700/50 text-white hover:bg-slate-800 rounded-xl h-12"
+              className="flex-1 bg-card border-border text-foreground rounded-xl h-12"
             >
               Back
             </Button>
