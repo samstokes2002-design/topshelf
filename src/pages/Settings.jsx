@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, Download, Trash2, AlertTriangle, Crown, ExternalLink } from "lucide-react";
+import ThemeColorPicker from "@/components/ThemeColorPicker";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
 
