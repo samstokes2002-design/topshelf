@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 
-function hexToHsl(hex) {
+export function hexToHsl(hex) {
+  if (!hex || hex.length < 7) return null;
   let r = parseInt(hex.slice(1, 3), 16) / 255;
   let g = parseInt(hex.slice(3, 5), 16) / 255;
   let b = parseInt(hex.slice(5, 7), 16) / 255;
@@ -22,6 +23,33 @@ function hexToHsl(hex) {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
+export function applyTheme({ background_color, panel_color, button_color }) {
+  const root = document.documentElement;
+  const bg = background_color || "#0B1120";
+  const panel = panel_color || "#131F35";
+  const btn = button_color || "#0EA5E9";
+
+  const bgHsl = hexToHsl(bg);
+  const panelHsl = hexToHsl(panel);
+  const btnHsl = hexToHsl(btn);
+
+  if (bgHsl) {
+    root.style.setProperty("--background", bgHsl);
+  }
+  if (panelHsl) {
+    root.style.setProperty("--card", panelHsl);
+    root.style.setProperty("--popover", panelHsl);
+    root.style.setProperty("--muted", panelHsl);
+    root.style.setProperty("--accent", panelHsl);
+    root.style.setProperty("--input", panelHsl);
+    root.style.setProperty("--border", panelHsl);
+  }
+  if (btnHsl) {
+    root.style.setProperty("--primary", btnHsl);
+    root.style.setProperty("--ring", btnHsl);
+  }
+}
+
 export function useTheme() {
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -38,15 +66,11 @@ export function useTheme() {
   });
 
   useEffect(() => {
-    const root = document.documentElement;
-    const primary = prefs?.primary_color || "#0EA5E9";
-    const button = prefs?.button_color || "#0EA5E9";
-    const secondary = prefs?.secondary_color || "#475569";
-
-    root.style.setProperty("--primary", hexToHsl(primary));
-    root.style.setProperty("--ring", hexToHsl(primary));
-    root.style.setProperty("--button-color", button);
-    root.style.setProperty("--secondary-accent", hexToHsl(secondary));
+    applyTheme({
+      background_color: prefs?.background_color,
+      panel_color: prefs?.panel_color,
+      button_color: prefs?.button_color,
+    });
   }, [prefs]);
 
   return prefs;
