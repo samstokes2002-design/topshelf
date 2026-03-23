@@ -179,8 +179,8 @@ export default function SeasonSetup() {
   if (saved) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-4">
-        <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center mb-4 animate-in zoom-in-50">
-          <Check className="w-8 h-8 text-sky-400" />
+        <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 animate-in zoom-in-50" style={{ backgroundColor: "hsl(var(--primary) / 0.2)" }}>
+          <Check className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
         </div>
         <h2 className="text-white font-bold text-xl">Season Ready!</h2>
       </div>
@@ -192,8 +192,8 @@ export default function SeasonSetup() {
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center mx-auto mb-4">
-            <Trophy className="w-8 h-8 text-sky-400" />
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: "hsl(var(--primary) / 0.2)" }}>
+            <Trophy className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
           </div>
           <h1 className="text-white font-bold text-2xl mb-2">
             {editId ? "Edit Season" : "Season Setup"}
@@ -209,9 +209,8 @@ export default function SeasonSetup() {
             {[1, 2].map((s) => (
               <div
                 key={s}
-                className={`h-1 flex-1 rounded-full ${
-                  s <= step ? "bg-sky-500" : "bg-slate-700"
-                }`}
+                className={`h-1 flex-1 rounded-full transition-colors`}
+                style={{ backgroundColor: s <= step ? "hsl(var(--primary))" : "hsl(var(--muted))" }}
               />
             ))}
           </div>
@@ -230,8 +229,8 @@ export default function SeasonSetup() {
                     onClick={() => setSeasonType(type.value)}
                     className={`p-3 rounded-xl border text-sm font-medium transition-all ${
                       seasonType === type.value
-                        ? "bg-sky-500/20 text-sky-400 border-sky-500/50"
-                        : "bg-slate-800/60 border-slate-700/50 text-slate-400"
+                        ? "border-primary/50 text-primary bg-primary/10"
+                        : "bg-muted border-border text-muted-foreground"
                     }`}
                   >
                     {type.label.split(" ")[0]}
@@ -284,7 +283,7 @@ export default function SeasonSetup() {
                     <button
                       type="button"
                       onClick={() => selectAllInCategory(category)}
-                      className="text-xs text-sky-400 hover:text-sky-300 font-medium"
+                      className="text-xs font-medium text-primary hover:opacity-80"
                     >
                       {allSelected ? "Deselect All" : "Select All"}
                     </button>
@@ -345,7 +344,8 @@ export default function SeasonSetup() {
               }
             }}
             disabled={isSubmitting || selectedStats.length === 0}
-            className="flex-1 bg-sky-500 hover:bg-sky-600 text-white rounded-xl h-12 font-semibold"
+            className="flex-1 rounded-xl h-12 font-semibold text-primary-foreground"
+            style={{ backgroundColor: "hsl(var(--primary))" }}
           >
             {isSubmitting ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
