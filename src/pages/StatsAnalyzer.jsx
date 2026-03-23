@@ -201,7 +201,7 @@ export default function StatsAnalyzer() {
 
       await base44.agents.addMessage(conv, {
         role: "user",
-        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name} (id: ${activeProfile.id})\nHere are all their logged sessions as JSON. Use ONLY this data for all analysis:\n${sessionSummary}`,
+        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name} (id: ${activeProfile.id})\nActive season ID: ${activeSeason?.id || "none"} (${activeSeason?.season_year || "unknown season"})\nDefault scope: analyze ONLY sessions matching active_season_id unless user asks for all-time/career stats.\nHere are all their logged sessions as JSON:\n${sessionSummary}`,
       });
 
       setInitializing(false);
