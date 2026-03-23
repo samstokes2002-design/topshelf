@@ -217,7 +217,7 @@ export default function Stats() {
           {/* Scoring */}
           {(() => {
             const scoringCards = [
-              { key: "goals", label: "Goals", icon: Trophy, color: "text-sky-400" },
+              { key: "goals", label: "Goals", icon: Disc, color: "text-red-400" },
               { key: "assists", label: "Assists", icon: Users, color: "text-emerald-400" },
               { key: "goals+assists", label: "Points", icon: TrendingUp, color: "text-violet-400", always: hasStat("goals") && hasStat("assists") },
               { key: "plus_minus", label: "+/-", icon: totalPlusMinus >= 0 ? ArrowUpCircle : ArrowDownCircle, color: totalPlusMinus >= 0 ? "text-emerald-400" : "text-red-400", value: totalPlusMinus > 0 ? `+${totalPlusMinus}` : totalPlusMinus },
