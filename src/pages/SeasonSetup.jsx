@@ -275,7 +275,7 @@ export default function SeasonSetup() {
               if (categoryStats.length === 0) return null;
               const allSelected = categoryStats.every((s) => selectedStats.includes(s.id));
               return (
-                <div key={category} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+                <div key={category} className="bg-card border border-border rounded-2xl p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-white font-semibold text-xs uppercase tracking-wider">
                       {category === "advanced" ? "Advanced Stats" : category}
