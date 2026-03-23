@@ -23,27 +23,25 @@ export default function SessionDetail() {
   const sessionId = urlParams.get("id");
   const queryClient = useQueryClient();
 
-  const { data: sessions = [], isLoading } = useQuery({
+  const { data: session, isLoading } = useQuery({
     queryKey: ["session-detail", sessionId],
     queryFn: async () => {
+      if (!sessionId) return null;
+      // Use get() to fetch by ID directly — filter({ id }) does not work
+      const session = await base44.entities.Session.get(sessionId);
+      if (!session) return null;
+      // Verify ownership
       const currentUser = await base44.auth.me();
-      const sessions = await base44.entities.Session.filter({ id: sessionId });
-      const session = sessions[0];
-      
-      if (session) {
-        const profiles = await base44.entities.Profile.filter({ 
-          id: session.profile_id,
-          created_by: currentUser.email 
-        });
-        if (profiles.length === 0) return [];
-      }
-      
-      return sessions;
+      const profiles = await base44.entities.Profile.filter({
+        id: session.profile_id,
+        created_by: currentUser.email,
+      });
+      if (profiles.length === 0) return null;
+      return session;
     },
     enabled: !!sessionId,
+    retry: false,
   });
-
-  const session = sessions[0];
 
   const deleteMutation = useMutation({
     mutationFn: () => base44.entities.Session.delete(sessionId),
