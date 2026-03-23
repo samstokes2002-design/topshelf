@@ -147,11 +147,17 @@ export default function StatsAnalyzer() {
       }
 
       // Create a fresh conversation
-      const [sessions, seasons] = await Promise.all([
+      const [allSessions, seasons] = await Promise.all([
         base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200),
         base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true }),
       ]);
       const activeSeason = seasons[0] || null;
+
+      // Split sessions: current season vs career
+      const currentSeasonSessions = activeSeason
+        ? allSessions.filter((s) => s.season_id === activeSeason.id)
+        : allSessions; // fallback: if no active season, use all
+      const careerSessions = allSessions;
 
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
@@ -172,36 +178,51 @@ export default function StatsAnalyzer() {
       };
       setMessages([welcomeMsg]);
 
-      // Inject session data as hidden system context
-      const sessionSummary = JSON.stringify(
-        sessions.map((s) => ({
-          id: s.id,
-          date: s.date,
-          type: s.type,
-          result: s.result || null,
-          opponent: s.opponent || null,
-          goals: s.goals || 0,
-          assists: s.assists || 0,
-          shots: s.shots || 0,
-          plus_minus: s.plus_minus || 0,
-          hits: s.hits || 0,
-          blocked_shots: s.blocked_shots || 0,
-          takeaways: s.takeaways || 0,
-          giveaways: s.giveaways || 0,
-          penalty_minutes: s.penalty_minutes || 0,
-          faceoff_wins: s.faceoff_wins || 0,
-          faceoff_losses: s.faceoff_losses || 0,
-          power_play_goals: s.power_play_goals || 0,
-          power_play_points: s.power_play_points || 0,
-          shorthanded_goals: s.shorthanded_goals || 0,
-          time_on_ice: s.time_on_ice || 0,
-          rating: s.rating || null,
-        }))
-      );
+      const serializeSession = (s) => ({
+        id: s.id,
+        season_id: s.season_id || null,
+        date: s.date,
+        type: s.type,
+        result: s.result || null,
+        opponent: s.opponent || null,
+        goals: s.goals || 0,
+        assists: s.assists || 0,
+        shots: s.shots || 0,
+        plus_minus: s.plus_minus || 0,
+        hits: s.hits || 0,
+        blocked_shots: s.blocked_shots || 0,
+        takeaways: s.takeaways || 0,
+        giveaways: s.giveaways || 0,
+        penalty_minutes: s.penalty_minutes || 0,
+        faceoff_wins: s.faceoff_wins || 0,
+        faceoff_losses: s.faceoff_losses || 0,
+        power_play_goals: s.power_play_goals || 0,
+        power_play_points: s.power_play_points || 0,
+        shorthanded_goals: s.shorthanded_goals || 0,
+        time_on_ice: s.time_on_ice || 0,
+        rating: s.rating || null,
+      });
+
+      const contextMsg = [
+        `[SYSTEM CONTEXT — do not display this to the user]`,
+        `Profile: ${activeProfile.name} (id: ${activeProfile.id})`,
+        `Active season: ${activeSeason?.season_year || "none"} (id: ${activeSeason?.id || "none"})`,
+        ``,
+        `## SCOPE RULES — follow these strictly:`,
+        `- DEFAULT: When the user asks for any analysis, advice, stats, trends, or feedback → use ONLY the CURRENT SEASON sessions below.`,
+        `- CAREER/ALL-TIME: Only use the full career sessions if the user explicitly asks for "career", "all time", "all seasons", "full history", or similar.`,
+        `- Never mix current season and career data in the same analysis.`,
+        ``,
+        `## CURRENT SEASON SESSIONS (${activeSeason?.season_year || "active season"}) — ${currentSeasonSessions.length} sessions:`,
+        JSON.stringify(currentSeasonSessions.map(serializeSession)),
+        ``,
+        `## FULL CAREER SESSIONS (all seasons) — ${careerSessions.length} sessions — only use if user explicitly requests career/all-time analysis:`,
+        JSON.stringify(careerSessions.map(serializeSession)),
+      ].join("\n");
 
       await base44.agents.addMessage(conv, {
         role: "user",
-        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name} (id: ${activeProfile.id})\nActive season ID: ${activeSeason?.id || "none"} (${activeSeason?.season_year || "unknown season"})\nDefault scope: analyze ONLY sessions matching active_season_id unless user asks for all-time/career stats.\nHere are all their logged sessions as JSON:\n${sessionSummary}`,
+        content: contextMsg,
       });
 
       setInitializing(false);
