@@ -111,6 +111,9 @@ export default function Settings() {
 
       </div>
 
+      {/* Interface Colors */}
+      <ThemeColorPicker />
+
       {/* About */}
       <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
         <h3 className="text-white font-semibold text-sm mb-3">About</h3>
