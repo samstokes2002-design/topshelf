@@ -220,7 +220,7 @@ export default function SeasonSetup() {
         {(step === 1 || editId) && (
           <div className="space-y-5 mb-8">
             <div>
-              <Label className="text-slate-400 text-xs mb-2 block">Season Type</Label>
+              <Label className="text-muted-foreground text-xs mb-2 block">Season Type</Label>
               <div className="grid grid-cols-2 gap-2">
                 {SEASON_TYPES.map((type) => (
                   <button
@@ -240,14 +240,14 @@ export default function SeasonSetup() {
             </div>
 
             <div>
-              <Label className="text-slate-400 text-xs mb-2 block">Year</Label>
+              <Label className="text-muted-foreground text-xs mb-2 block">Year</Label>
               <Input
                 type="number"
                 value={year}
                 onChange={(e) => setYear(parseInt(e.target.value) || new Date().getFullYear())}
-                className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+                className="bg-muted border-border text-foreground rounded-xl"
               />
-              <p className="text-slate-500 text-xs mt-1">
+              <p className="text-muted-foreground text-xs mt-1">
                 Season: {SEASON_TYPES.find((t) => t.value === seasonType)?.format(year)}
               </p>
             </div>
@@ -258,7 +258,7 @@ export default function SeasonSetup() {
                 placeholder="e.g., Thunder AAA"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
-                className="bg-slate-800/60 border-slate-700/50 text-white rounded-xl"
+                className="bg-muted border-border text-foreground rounded-xl"
               />
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function SeasonSetup() {
                     {categoryStats.map((stat) => (
                       <label
                         key={stat.id}
-                        className="flex items-center gap-3 cursor-pointer hover:bg-slate-700/30 p-2 rounded-lg transition-colors"
+                        className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 p-2 rounded-lg transition-colors"
                       >
                         <Checkbox
                           checked={selectedStats.includes(stat.id)}
