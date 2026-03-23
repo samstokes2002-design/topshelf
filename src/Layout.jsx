@@ -50,7 +50,7 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Bottom Navigation */}
       {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 z-50">
+        <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-slate-800/80 z-50">
           <div className="max-w-lg mx-auto flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] pt-1">
             {navItems.map((item) => {
               const Icon = item.icon;
