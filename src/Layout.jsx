@@ -58,6 +58,7 @@ export default function Layout({ children, currentPageName }) {
           --popover-foreground: 210 40% 98%;
         }
       `}</style>
+        <ThemeStyleInjector />
 
       {/* Top Safe Area */}
       <div className="h-[env(safe-area-inset-top)] bg-slate-900" />
