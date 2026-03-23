@@ -41,24 +41,14 @@ export default function Layout({ children, currentPageName }) {
       <div className="min-h-screen bg-slate-900">
         <style>{`
         :root {
-          --background: 222.2 47.4% 6.2%;
           --foreground: 210 40% 98%;
-          --card: 222.2 47.4% 8%;
           --card-foreground: 210 40% 98%;
-          --primary: 199 89% 48%;
           --primary-foreground: 222.2 47.4% 6.2%;
-          --muted: 217.2 32.6% 17.5%;
           --muted-foreground: 215 20.2% 65.1%;
-          --border: 217.2 32.6% 17.5%;
-          --input: 217.2 32.6% 17.5%;
-          --ring: 199 89% 48%;
-          --accent: 217.2 32.6% 17.5%;
           --accent-foreground: 210 40% 98%;
-          --popover: 222.2 47.4% 8%;
           --popover-foreground: 210 40% 98%;
         }
       `}</style>
-        <ThemeStyleInjector />
 
       {/* Top Safe Area */}
       <div className="h-[env(safe-area-inset-top)] bg-slate-900" />
