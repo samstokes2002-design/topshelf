@@ -38,20 +38,10 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-slate-900">
-        <style>{`
-        :root {
-          --foreground: 210 40% 98%;
-          --card-foreground: 210 40% 98%;
-          --primary-foreground: 222.2 47.4% 6.2%;
-          --muted-foreground: 215 20.2% 65.1%;
-          --accent-foreground: 210 40% 98%;
-          --popover-foreground: 210 40% 98%;
-        }
-      `}</style>
+      <div className="min-h-screen bg-background">
 
       {/* Top Safe Area */}
-      <div className="h-[env(safe-area-inset-top)] bg-slate-900" />
+      <div className="h-[env(safe-area-inset-top)] bg-background" />
 
       {/* Content */}
       <div className="max-w-lg mx-auto">
