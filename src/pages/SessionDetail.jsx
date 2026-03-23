@@ -22,6 +22,7 @@ export default function SessionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get("id");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: session, isLoading } = useQuery({
     queryKey: ["session-detail", sessionId],
