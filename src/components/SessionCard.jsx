@@ -25,7 +25,7 @@ export default function SessionCard({ session, profileName, showProfile = false,
   return (
     <button
       onClick={onClick}
-      className="w-full text-left bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 hover:bg-slate-800/80 transition-all duration-200 active:scale-[0.98]"
+      className="w-full text-left bg-card backdrop-blur-sm border border-border rounded-2xl p-4 hover:opacity-90 transition-all duration-200 active:scale-[0.98]"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
@@ -34,14 +34,14 @@ export default function SessionCard({ session, profileName, showProfile = false,
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-white font-semibold text-sm">{config.label}</span>
+              <span className="text-foreground font-semibold text-sm">{config.label}</span>
               {session.type === "game" && session.result && (
                 <span className={cn("text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-md", resultBadge[session.result])}>
                   {session.result}
                 </span>
               )}
             </div>
-            <p className="text-slate-400 text-xs">
+            <p className="text-muted-foreground text-xs">
               {session.date ? format(parseISO(session.date + "T12:00:00"), "MMM d, yyyy") : ""}
               {session.opponent ? ` vs ${session.opponent}` : ""}
             </p>
@@ -81,7 +81,7 @@ export default function SessionCard({ session, profileName, showProfile = false,
             </div>
           </div>
           {((session.hits || 0) > 0 || (session.blocked_shots || 0) > 0 || (session.takeaways || 0) > 0 || (session.giveaways || 0) > 0) && (
-            <div className="flex gap-4 text-xs border-t border-slate-700/50 pt-2">
+            <div className="flex gap-4 text-xs border-t border-border pt-2">
               {(session.hits || 0) > 0 && (
                 <div className="flex items-center gap-1.5">
                   <span className="text-slate-500">H</span>

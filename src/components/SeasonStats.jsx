@@ -48,12 +48,12 @@ export default function SeasonStats({ sessions, selectedStats = [] }) {
   }
 
   return (
-    <div className="mt-3 pt-3 border-t border-slate-700/50">
+    <div className="mt-3 pt-3 border-t border-border">
       <div className="grid grid-cols-3 gap-2">
         {validStats.map((stat) => (
           <div key={stat} className="text-center">
-            <span className="text-sm font-semibold text-white">{calculateStat(stat)}</span>
-            <span className="text-[10px] text-slate-400 block">{statLabels[stat]}</span>
+            <span className="text-sm font-semibold text-foreground">{calculateStat(stat)}</span>
+            <span className="text-[10px] text-muted-foreground block">{statLabels[stat]}</span>
           </div>
         ))}
       </div>

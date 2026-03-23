@@ -44,12 +44,12 @@ export default function HomeTargets({ profileId, seasonId, sessions }) {
 
   return (
     <Link to={createPageUrl("Profile")} className="block mb-5">
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-4 hover:bg-slate-800/80 transition-colors">
+      <div className="bg-card border border-border rounded-2xl px-4 py-4 hover:opacity-90 transition-colors">
         {/* Header row */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4 text-sky-400" />
-            <span className="text-white font-semibold text-sm">Focus Target</span>
+            <span className="text-foreground font-semibold text-sm">Focus Target</span>
           </div>
           <div className="flex items-center gap-1 text-slate-500">
             <span className="text-xs">{targets.length > 1 ? `1 of ${targets.length}` : ""}</span>
@@ -61,18 +61,18 @@ export default function HomeTargets({ profileId, seasonId, sessions }) {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             {done && <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />}
-            <span className={`text-base font-bold ${done ? "text-emerald-400" : "text-white"}`}>
+            <span className={`text-base font-bold ${done ? "text-emerald-400" : "text-foreground"}`}>
               {focus.label}
             </span>
           </div>
           <span className="text-sm font-semibold">
-            <span className={done ? "text-emerald-400" : "text-white"}>{focus.current}</span>
+            <span className={done ? "text-emerald-400" : "text-foreground"}>{focus.current}</span>
             <span className="text-slate-500"> / {focus.target_value}</span>
           </span>
         </div>
 
         {/* Progress bar */}
-        <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden mb-1.5">
+        <div className="h-2 bg-border rounded-full overflow-hidden mb-1.5">
           <div
             className={`h-full rounded-full transition-all duration-500 ${done ? "bg-emerald-400" : "bg-sky-500"}`}
             style={{ width: `${displayPct}%` }}
