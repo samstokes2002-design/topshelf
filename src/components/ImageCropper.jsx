@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, ZoomIn, ZoomOut } from "lucide-react";
+import { X } from "lucide-react";
 
 const CROP_SIZE = 280;
 
