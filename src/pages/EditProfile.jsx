@@ -124,8 +124,8 @@ export default function EditProfile() {
         <ImageCropper file={cropFile} onCrop={handleCropDone} onCancel={() => setCropFile(null)} />
       )}
       <div className="flex items-center gap-3 py-4">
-        <button onClick={() => window.history.back()} className="text-slate-400 hover:text-white">
-          <ArrowLeft className="w-5 h-5" />
+        <button onClick={() => window.history.back()} className="flex items-center justify-center w-10 h-10 -ml-2 rounded-xl text-slate-400 hover:text-white active:bg-slate-700/50 transition-colors">
+          <ArrowLeft className="w-6 h-6" />
         </button>
         <h1 className="text-white font-bold text-lg">Edit Profile</h1>
       </div>
