@@ -125,7 +125,7 @@ export default function Profile() {
       </div>
 
       {/* Profile Card */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-5">
+      <div className="bg-card border border-border rounded-2xl p-5 mb-5">
         {/* Photo + Name + Position */}
         <div className="flex items-start gap-4 mb-4">
           <div className="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center overflow-hidden flex-shrink-0">
@@ -146,7 +146,7 @@ export default function Profile() {
               />
             ) : (
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-white font-bold text-lg">{activeProfile.name}</h2>
+                <h2 className="text-foreground font-bold text-lg">{activeProfile.name}</h2>
                 {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
                 {isPro && (
                   <span className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -155,7 +155,7 @@ export default function Profile() {
                 )}
               </div>
             )}
-            <p className="text-slate-400 text-sm">{activeProfile.position}</p>
+            <p className="text-muted-foreground text-sm">{activeProfile.position}</p>
           </div>
         </div>
 
@@ -164,31 +164,31 @@ export default function Profile() {
           <div className="border-t border-slate-700/50 pt-4 space-y-3">
             <div>
               <p className="text-slate-500 text-xs mb-0.5">Favourite Team</p>
-              <p className="text-white text-sm">{activeProfile.favorite_team}</p>
+              <p className="text-foreground text-sm">{activeProfile.favorite_team}</p>
             </div>
           </div>
         )}
 
         {/* Age/Height/Weight Stats */}
         {(activeProfile.age || activeProfile.height || activeProfile.weight) && (
-          <div className="mt-4 pt-4 border-t border-slate-700/50">
+          <div className="mt-4 pt-4 border-t border-border">
             <div className="flex gap-4">
               {activeProfile.age && (
                 <div className="text-center flex-1">
-                  <p className="text-white text-sm font-medium">{activeProfile.age}</p>
-                  <p className="text-slate-500 text-[10px]">Age</p>
+                  <p className="text-foreground text-sm font-medium">{activeProfile.age}</p>
+                  <p className="text-muted-foreground text-[10px]">Age</p>
                 </div>
               )}
               {activeProfile.height && (
                 <div className="text-center flex-1">
-                  <p className="text-white text-sm font-medium">{activeProfile.height}</p>
-                  <p className="text-slate-500 text-[10px]">Height</p>
+                  <p className="text-foreground text-sm font-medium">{activeProfile.height}</p>
+                  <p className="text-muted-foreground text-[10px]">Height</p>
                 </div>
               )}
               {activeProfile.weight && (
                 <div className="text-center flex-1">
-                  <p className="text-white text-sm font-medium">{activeProfile.weight} lbs</p>
-                  <p className="text-slate-500 text-[10px]">Weight</p>
+                  <p className="text-foreground text-sm font-medium">{activeProfile.weight} lbs</p>
+                  <p className="text-muted-foreground text-[10px]">Weight</p>
                 </div>
               )}
             </div>
@@ -197,8 +197,8 @@ export default function Profile() {
 
         {/* Current Season Totals */}
         {activeSeason && (
-          <div className="mt-4 pt-4 border-t border-slate-700/50">
-            <p className="text-xs text-slate-400 mb-2">Current Season</p>
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-xs text-muted-foreground mb-2">Current Season</p>
             <div className="grid grid-cols-4 gap-3">
               <div className="text-center">
                 <span className="text-lg font-bold text-white">{games.length}</span>
@@ -275,12 +275,12 @@ export default function Profile() {
                 <button
                   key={season.id}
                   onClick={() => setSelectedSeasonId(selectedSeasonId === season.id ? null : season.id)}
-                  className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 hover:bg-slate-700/60 transition-colors text-left"
+                  className="w-full bg-card border border-border rounded-xl p-3 hover:opacity-90 transition-colors text-left"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <h4 className="text-white font-medium text-sm">{season.season_year}</h4>
-                      {season.team_name && <p className="text-slate-400 text-xs">{season.team_name}</p>}
+                      <h4 className="text-foreground font-medium text-sm">{season.season_year}</h4>
+                      {season.team_name && <p className="text-muted-foreground text-xs">{season.team_name}</p>}
                     </div>
                     <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
                       {season.is_active ? (
@@ -311,9 +311,9 @@ export default function Profile() {
                     </div>
                   </div>
                   <div className="flex gap-4 text-xs flex-wrap">
-                    <span className="text-slate-400">{seasonGames.length} Games</span>
-                    <span className="text-slate-400">{seasonPractices.length} Practices</span>
-                    <span className="text-slate-400">{seasonTraining.length} Training</span>
+                    <span className="text-muted-foreground">{seasonGames.length} Games</span>
+                    <span className="text-muted-foreground">{seasonPractices.length} Practices</span>
+                    <span className="text-muted-foreground">{seasonTraining.length} Training</span>
                     {season.targets_total > 0 && (
                       <span className={`flex items-center gap-1 font-medium ${season.targets_completed === season.targets_total ? "text-emerald-400" : "text-sky-400"}`}>
                         🎯 {season.targets_completed}/{season.targets_total} targets

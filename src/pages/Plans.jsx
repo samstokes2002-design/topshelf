@@ -103,7 +103,7 @@ export default function Plans() {
 
       {/* Cancel Success Banner */}
       {cancelSuccess && (
-        <div className="bg-slate-700/60 border border-slate-600/50 rounded-2xl px-4 py-3 mb-5">
+        <div className="bg-card border border-border rounded-2xl px-4 py-3 mb-5">
           <p className="text-slate-300 font-semibold text-sm">Subscription Cancelled</p>
           <p className="text-slate-400 text-xs mt-0.5">
             Your Pro access continues until {currentPeriodEnd ? new Date(currentPeriodEnd).toLocaleDateString() : "the end of your billing period"} and won't renew.
@@ -148,11 +148,11 @@ export default function Plans() {
       )}
 
       {/* Free Plan */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5 mb-4">
+      <div className="bg-card border border-border rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-white font-bold text-lg">Free</h3>
-            <p className="text-slate-400 text-sm">Get started at no cost</p>
+            <h3 className="text-foreground font-bold text-lg">Free</h3>
+            <p className="text-muted-foreground text-sm">Get started at no cost</p>
           </div>
           <div className="text-right">
             <span className="text-white font-bold text-2xl">$0</span>

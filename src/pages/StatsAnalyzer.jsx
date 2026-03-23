@@ -73,7 +73,7 @@ function MessageBubble({ message }) {
         </div>
       )}
       <div className={`max-w-[85%] ${isUser ? "items-end flex flex-col" : ""}`}>
-        <div className={`rounded-2xl px-4 py-2.5 ${isUser ? "bg-sky-500 text-white" : "bg-slate-800/80 border border-slate-700/50"}`}>
+        <div className={`rounded-2xl px-4 py-2.5 ${isUser ? "bg-sky-500 text-white" : "bg-card border border-border"}`}>
           {isUser ? (
             <p className="text-sm">{message.content}</p>
           ) : (
@@ -301,7 +301,7 @@ export default function StatsAnalyzer() {
                 <div className="w-7 h-7 rounded-xl bg-sky-500/20 flex items-center justify-center mt-0.5 flex-shrink-0">
                   <Sparkles className="w-3.5 h-3.5 text-sky-400" />
                 </div>
-                <div className="bg-slate-800/80 border border-slate-700/50 rounded-2xl px-4 py-3">
+                <div className="bg-card border border-border rounded-2xl px-4 py-3">
                   <div className="flex gap-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "0ms" }} />
                     <div className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -321,7 +321,7 @@ export default function StatsAnalyzer() {
                     <button
                       key={s}
                       onClick={() => sendMessage(s)}
-                      className="text-xs bg-slate-800/60 border border-slate-700/50 text-slate-300 px-3 py-1.5 rounded-xl hover:bg-slate-700/60 transition-colors"
+                      className="text-xs bg-card border border-border text-foreground px-3 py-1.5 rounded-xl hover:opacity-80 transition-colors"
                     >
                       {s}
                     </button>
@@ -364,7 +364,7 @@ export default function StatsAnalyzer() {
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about your stats..."
                 disabled={isLoading || initializing || !conversation}
-                className="flex-1 bg-slate-800/60 border border-slate-700/50 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-sky-500/50 disabled:opacity-50"
+                className="flex-1 bg-card border border-border rounded-2xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 disabled:opacity-50"
               />
               <button
                 onClick={() => sendMessage(input)}
