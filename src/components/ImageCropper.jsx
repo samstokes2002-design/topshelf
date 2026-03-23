@@ -131,22 +131,7 @@ export default function ImageCropper({ file, onCrop, onCancel }) {
           </div>
         </div>
 
-        {/* Zoom slider */}
-        <div className="flex items-center gap-3 mb-8">
-          <ZoomOut className="w-5 h-5 text-white/50 flex-shrink-0" />
-          <input
-            type="range"
-            min="1"
-            max="4"
-            step="0.01"
-            value={scale}
-            onChange={(e) => setScale(parseFloat(e.target.value))}
-            className="flex-1 accent-sky-400 h-1"
-          />
-          <ZoomIn className="w-5 h-5 text-white/50 flex-shrink-0" />
-        </div>
-
-        <p className="text-slate-500 text-xs text-center mb-6">Drag to reposition · Slide to zoom</p>
+        <p className="text-slate-500 text-xs text-center mb-6">Drag to reposition</p>
 
         <Button
           onClick={handleCrop}
