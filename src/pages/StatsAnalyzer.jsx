@@ -369,7 +369,7 @@ export default function StatsAnalyzer() {
               <button
                 onClick={() => sendMessage(input)}
                 disabled={!input.trim() || isLoading || initializing || !conversation}
-                className="bg-sky-500 hover:bg-sky-600 disabled:opacity-40 disabled:cursor-not-allowed rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 transition-colors active:scale-95"
+                className="bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 transition-colors active:scale-95"
               >
                 <Send className="w-4 h-4 text-white" />
               </button>
