@@ -147,8 +147,8 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
               <Trophy className="w-10 h-10 text-white" />
             </div>
 
-            <h2 className="text-white font-bold text-2xl mb-1">Target Reached!</h2>
-            <p className="text-slate-300 text-sm mb-1">You crushed your</p>
+            <h2 className="text-foreground font-bold text-2xl mb-1">Target Reached!</h2>
+            <p className="text-muted-foreground text-sm mb-1">You crushed your</p>
             <p className="text-sky-400 font-bold text-lg mb-4">{celebrationTarget.label} goal 🎉</p>
             <p className="text-slate-400 text-xs mb-6">
               {celebrationTarget.target_value} {celebrationTarget.target_value === 1 ? "time" : "times"} — mission accomplished. Keep pushing!
@@ -165,7 +165,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-sky-400" />
-          <h3 className="text-white font-semibold text-sm">Season Targets</h3>
+          <h3 className="text-foreground font-semibold text-sm">Season Targets</h3>
         </div>
         {atFreeLimit ? (
           <Link
@@ -195,7 +195,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
 
       {/* Add Target Form */}
       {showForm && (
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-3">
+        <div className="bg-card border border-border rounded-2xl p-4 mb-3">
           <p className="text-slate-400 text-xs mb-3">Set a personal target for this season</p>
           <div className="space-y-3">
             <div>
@@ -257,7 +257,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
 
       {/* Target List */}
       {targets.length === 0 && !showForm ? (
-        <div className="bg-slate-800/40 border border-dashed border-slate-700/50 rounded-2xl p-6 text-center">
+        <div className="bg-card/50 border border-dashed border-border rounded-2xl p-6 text-center">
           <Target className="w-8 h-8 text-slate-600 mx-auto mb-2" />
           <p className="text-slate-500 text-sm">No targets set yet</p>
           <p className="text-slate-600 text-xs mt-1">Tap + to add a season goal</p>
@@ -269,15 +269,15 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
             const pct = Math.min(100, Math.round((current / target.target_value) * 100));
             const done = current >= target.target_value;
             return (
-              <div key={target.id} className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+              <div key={target.id} className="bg-card border border-border rounded-2xl p-4">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     {done && <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />}
-                    <span className={`text-sm font-medium ${done ? "text-emerald-400" : "text-white"}`}>{target.label}</span>
+                    <span className={`text-sm font-medium ${done ? "text-emerald-400" : "text-foreground"}`}>{target.label}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-400">
-                      <span className={`font-bold ${done ? "text-emerald-400" : "text-white"}`}>{current}</span>
+                      <span className={`font-bold ${done ? "text-emerald-400" : "text-foreground"}`}>{current}</span>
                       <span className="text-slate-500"> / {target.target_value}</span>
                     </span>
                     <button
@@ -289,7 +289,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
                   </div>
                 </div>
                 {/* Progress Bar */}
-                <div className="h-1.5 bg-slate-700/60 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-border rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${done ? "bg-emerald-400" : "bg-sky-500"}`}
                     style={{ width: `${pct}%` }}
