@@ -294,13 +294,7 @@ export default function Profile() {
                           Activate
                         </button>
                       )}
-                      <button
-                        onClick={() => setSessionsBrowserSeasonId(season.id)}
-                        className="text-slate-500 hover:text-sky-400 transition-colors"
-                        title="View sessions"
-                      >
-                        <List className="w-3.5 h-3.5" />
-                      </button>
+
                       <button
                         onClick={() => window.location.href = createPageUrl("SeasonSetup") + `?editId=${season.id}`}
                         className="text-slate-500 hover:text-sky-400 transition-colors"
