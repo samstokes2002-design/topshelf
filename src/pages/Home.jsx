@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import SessionCard from "@/components/SessionCard";
 import EmptyState from "@/components/EmptyState";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
+import HomeTargets from "@/components/HomeTargets";
 import { differenceInCalendarDays, parseISO, parse } from "date-fns";
 
 export default function Home() {
