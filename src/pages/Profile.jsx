@@ -221,6 +221,19 @@ export default function Profile() {
         )}
       </div>
 
+      {/* Sessions Browser Modal */}
+      {sessionsBrowserSeasonId && (() => {
+        const bSeason = seasons.find(s => s.id === sessionsBrowserSeasonId);
+        const bSessions = bSeason ? getSessionsForSeason(bSeason) : [];
+        return (
+          <SeasonSessionsModal
+            sessions={bSessions}
+            seasonYear={bSeason?.season_year || ""}
+            onClose={() => setSessionsBrowserSeasonId(null)}
+          />
+        );
+      })()}
+
       {/* No Season CTA */}
       {seasons.length === 0 && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
