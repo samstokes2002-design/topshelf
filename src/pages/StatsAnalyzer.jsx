@@ -147,11 +147,11 @@ export default function StatsAnalyzer() {
       }
 
       // Create a fresh conversation
-      const sessions = await base44.entities.Session.filter(
-        { profile_id: activeProfile.id },
-        "-date",
-        200
-      );
+      const [sessions, seasons] = await Promise.all([
+        base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200),
+        base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true }),
+      ]);
+      const activeSeason = seasons[0] || null;
 
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
@@ -159,6 +159,7 @@ export default function StatsAnalyzer() {
           name: `${activeProfile.name} Stats Analysis`,
           profile_id: activeProfile.id,
           profile_name: activeProfile.name,
+          active_season_id: activeSeason?.id || null,
         },
       });
 
@@ -167,7 +168,7 @@ export default function StatsAnalyzer() {
 
       const welcomeMsg = {
         role: "assistant",
-        content: `Hey! I'm your AI hockey analyst for **${activeProfile.name}**. I give specific, data-driven insights based on your actual stats — no generic advice.\n\nAsk me anything about your performance and I'll break it down with real numbers.`,
+        content: `Hey! Ask me anything about your stats this season — I'll give you the actual numbers and tell you what they mean.`,
       };
       setMessages([welcomeMsg]);
 
