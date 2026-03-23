@@ -23,15 +23,18 @@ export function hexToHsl(hex) {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
-export function applyTheme({ background_color, panel_color, button_color }) {
+export function applyTheme({ background_color, panel_color, button_color, foreground_color }) {
   const root = document.documentElement;
   const bg = background_color || "#0B1120";
   const panel = panel_color || "#131F35";
   const btn = button_color || "#0EA5E9";
+  const fg = foreground_color || "white";
 
   const bgHsl = hexToHsl(bg);
   const panelHsl = hexToHsl(panel);
   const btnHsl = hexToHsl(btn);
+  const fgHsl = fg === "black" ? "0 0% 5%" : "210 40% 98%";
+  const fgMutedHsl = fg === "black" ? "0 0% 35%" : "215 20.2% 65.1%";
 
   if (bgHsl) {
     root.style.setProperty("--background", bgHsl);
@@ -48,6 +51,11 @@ export function applyTheme({ background_color, panel_color, button_color }) {
     root.style.setProperty("--primary", btnHsl);
     root.style.setProperty("--ring", btnHsl);
   }
+  root.style.setProperty("--foreground", fgHsl);
+  root.style.setProperty("--card-foreground", fgHsl);
+  root.style.setProperty("--popover-foreground", fgHsl);
+  root.style.setProperty("--accent-foreground", fgHsl);
+  root.style.setProperty("--muted-foreground", fgMutedHsl);
 }
 
 export function useTheme() {
@@ -70,6 +78,7 @@ export function useTheme() {
       background_color: prefs?.background_color,
       panel_color: prefs?.panel_color,
       button_color: prefs?.button_color,
+      foreground_color: prefs?.foreground_color,
     });
   }, [prefs]);
 

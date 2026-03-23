@@ -57,6 +57,7 @@ export default function ThemeColorPicker() {
   const [background, setBackground] = useState("#0B1120");
   const [panel, setPanel] = useState("#131F35");
   const [button, setButton] = useState("#0EA5E9");
+  const [foreground, setForeground] = useState("white");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function ThemeColorPicker() {
       setBackground(prefs.background_color || "#0B1120");
       setPanel(prefs.panel_color || "#131F35");
       setButton(prefs.button_color || "#0EA5E9");
+      setForeground(prefs.foreground_color || "white");
     }
   }, [prefs]);
 
@@ -74,6 +76,7 @@ export default function ThemeColorPicker() {
         background_color: background,
         panel_color: panel,
         button_color: button,
+        foreground_color: foreground,
       };
       if (prefs?.id) {
         return base44.entities.UserPreferences.update(prefs.id, data);
@@ -83,31 +86,27 @@ export default function ThemeColorPicker() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userPreferences"] });
-      applyTheme({ background_color: background, panel_color: panel, button_color: button });
+      applyTheme({ background_color: background, panel_color: panel, button_color: button, foreground_color: foreground });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     },
   });
 
   const handlePreview = (type, value) => {
-    if (type === "background") {
-      setBackground(value);
-      applyTheme({ background_color: value, panel_color: panel, button_color: button });
-    } else if (type === "panel") {
-      setPanel(value);
-      applyTheme({ background_color: background, panel_color: value, button_color: button });
-    } else if (type === "button") {
-      setButton(value);
-      applyTheme({ background_color: background, panel_color: panel, button_color: value });
-    }
+    const next = { background, panel, button, foreground };
+    if (type === "background") { next.background = value; setBackground(value); }
+    else if (type === "panel") { next.panel = value; setPanel(value); }
+    else if (type === "button") { next.button = value; setButton(value); }
+    else if (type === "foreground") { next.foreground = value; setForeground(value); }
+    applyTheme({ background_color: next.background, panel_color: next.panel, button_color: next.button, foreground_color: next.foreground });
   };
 
   const ColorRow = ({ label, type, value }) => (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-slate-300 text-sm font-medium">{label}</span>
+        <span className="text-foreground text-sm font-medium">{label}</span>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full border-2 border-slate-600" style={{ backgroundColor: value }} />
+          <div className="w-6 h-6 rounded-full border-2 border-border" style={{ backgroundColor: value }} />
           <input
             type="color"
             value={value}
@@ -135,21 +134,50 @@ export default function ThemeColorPicker() {
   );
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
+    <div className="bg-card border border-border rounded-2xl p-4 mb-4">
       <div className="flex items-center gap-2 mb-4">
-        <Palette className="w-4 h-4 text-sky-400" />
-        <h3 className="text-white font-semibold text-sm">Interface Colors</h3>
+        <Palette className="w-4 h-4 text-primary" />
+        <h3 className="text-foreground font-semibold text-sm">Interface Colors</h3>
       </div>
 
       <ColorRow label="Background Color" type="background" value={background} />
       <ColorRow label="Panel Color" type="panel" value={panel} />
       <ColorRow label="Button Color" type="button" value={button} />
 
+      {/* Text Color Toggle */}
+      <div className="mb-4">
+        <span className="text-foreground text-sm font-medium block mb-2">Text Color</span>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handlePreview("foreground", "white")}
+            className="flex-1 py-2 rounded-xl border-2 text-sm font-semibold transition-all"
+            style={{
+              backgroundColor: "#1a1a2e",
+              color: "white",
+              borderColor: foreground === "white" ? "white" : "transparent",
+            }}
+          >
+            White
+          </button>
+          <button
+            onClick={() => handlePreview("foreground", "black")}
+            className="flex-1 py-2 rounded-xl border-2 text-sm font-semibold transition-all"
+            style={{
+              backgroundColor: "#f0f0f0",
+              color: "black",
+              borderColor: foreground === "black" ? "#333" : "transparent",
+            }}
+          >
+            Black
+          </button>
+        </div>
+      </div>
+
       <button
         onClick={() => saveMutation.mutate()}
         disabled={saveMutation.isPending}
-        className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all mt-2 flex items-center justify-center gap-2"
-        style={{ backgroundColor: button, color: "white" }}
+        className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all mt-2 flex items-center justify-center gap-2 text-white"
+        style={{ backgroundColor: button }}
       >
         {saved ? (
           <><Check className="w-4 h-4" /> Saved!</>
