@@ -191,6 +191,15 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Season Targets */}
+      {activeSeason && (
+        <HomeTargets
+          profileId={activeProfile?.id}
+          seasonId={activeSeason?.id}
+          sessions={sessions.filter(s => s.season_id === activeSeason?.id)}
+        />
+      )}
+
       {/* Recent Sessions */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
