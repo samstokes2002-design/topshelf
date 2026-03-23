@@ -265,7 +265,7 @@ export default function Stats() {
           {/* Discipline */}
           {(() => {
             const disciplineStats = [
-              { key: "penalty_minutes", label: "Penalty Min", icon: Flame, color: "text-orange-400", value: totalPenaltyMinutes },
+              { key: "penalty_minutes", label: "Penalty Min", icon: Timer, color: "text-red-400", value: totalPenaltyMinutes },
               { key: "giveaways", label: "Giveaways", icon: ArrowDownCircle, color: "text-red-400", value: totalGiveaways },
             ].filter(c => hasStat(c.key));
             if (disciplineStats.length === 0) return null;
