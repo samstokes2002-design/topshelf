@@ -151,7 +151,7 @@ export default function CreateProfile() {
         {/* Photo */}
         <div className="flex justify-center">
           <label className="cursor-pointer group">
-            <div className="w-24 h-24 rounded-2xl bg-slate-800/60 border-2 border-dashed border-slate-600 flex items-center justify-center overflow-hidden hover:border-sky-500/50 transition-colors">
+            <div className="w-24 h-24 rounded-2xl bg-muted border-2 border-dashed border-border flex items-center justify-center overflow-hidden hover:border-primary/50 transition-colors">
               {form.photo_url ? (
                 <img src={form.photo_url} alt="" className="w-full h-full object-cover" />
               ) : (
@@ -238,8 +238,8 @@ export default function CreateProfile() {
           >
             {ageConfirmed && <Check className="w-3 h-3 text-white" />}
           </div>
-          <span className="text-slate-300 text-sm leading-relaxed">
-            I confirm I am at least <strong className="text-white">13 years old</strong> and I agree to the{" "}
+          <span className="text-foreground text-sm leading-relaxed">
+            I confirm I am at least <strong className="text-foreground">13 years old</strong> and I agree to the{" "}
             <a href={createPageUrl("TermsOfService")} className="text-primary underline hover:opacity-80" onClick={e => e.stopPropagation()}>Terms of Service</a>{" "}
             and{" "}
             <a href={createPageUrl("PrivacyPolicy")} className="text-primary underline hover:opacity-80" onClick={e => e.stopPropagation()}>Privacy Policy</a>.
