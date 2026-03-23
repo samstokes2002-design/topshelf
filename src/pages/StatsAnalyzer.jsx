@@ -146,18 +146,16 @@ export default function StatsAnalyzer() {
         }
       }
 
-      // Create a fresh conversation
-      const [allSessions, seasons] = await Promise.all([
-        base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200),
+      // Create a fresh conversation — fetch active season sessions only
+      const [seasons] = await Promise.all([
         base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true }),
       ]);
       const activeSeason = seasons[0] || null;
 
-      // Split sessions: current season vs career
+      // Only fetch sessions for the active season
       const currentSeasonSessions = activeSeason
-        ? allSessions.filter((s) => s.season_id === activeSeason.id)
-        : allSessions; // fallback: if no active season, use all
-      const careerSessions = allSessions;
+        ? await base44.entities.Session.filter({ profile_id: activeProfile.id, season_id: activeSeason.id }, "-date", 200)
+        : await base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200);
 
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
@@ -180,7 +178,6 @@ export default function StatsAnalyzer() {
 
       const serializeSession = (s) => ({
         id: s.id,
-        season_id: s.season_id || null,
         date: s.date,
         type: s.type,
         result: s.result || null,
@@ -203,26 +200,9 @@ export default function StatsAnalyzer() {
         rating: s.rating || null,
       });
 
-      const contextMsg = [
-        `[SYSTEM CONTEXT — do not display this to the user]`,
-        `Profile: ${activeProfile.name} (id: ${activeProfile.id})`,
-        `Active season: ${activeSeason?.season_year || "none"} (id: ${activeSeason?.id || "none"})`,
-        ``,
-        `## SCOPE RULES — follow these strictly:`,
-        `- DEFAULT: When the user asks for any analysis, advice, stats, trends, or feedback → use ONLY the CURRENT SEASON sessions below.`,
-        `- CAREER/ALL-TIME: Only use the full career sessions if the user explicitly asks for "career", "all time", "all seasons", "full history", or similar.`,
-        `- Never mix current season and career data in the same analysis.`,
-        ``,
-        `## CURRENT SEASON SESSIONS (${activeSeason?.season_year || "active season"}) — ${currentSeasonSessions.length} sessions:`,
-        JSON.stringify(currentSeasonSessions.map(serializeSession)),
-        ``,
-        `## FULL CAREER SESSIONS (all seasons) — ${careerSessions.length} sessions — only use if user explicitly requests career/all-time analysis:`,
-        JSON.stringify(careerSessions.map(serializeSession)),
-      ].join("\n");
-
       await base44.agents.addMessage(conv, {
         role: "user",
-        content: contextMsg,
+        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. There is no other data. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
       });
 
       setInitializing(false);
