@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { X, Trophy, Target, Dumbbell, Timer, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { X, Trophy, Target, Dumbbell, Timer } from "lucide-react";
 import SessionCard from "@/components/SessionCard";
 import { createPageUrl } from "@/utils";
 
 const TABS = [
   { id: "all", label: "All" },
-  { id: "game", label: "Games", icon: Trophy },
-  { id: "shift_by_shift", label: "Shifts", icon: Timer },
-  { id: "practice", label: "Practice", icon: Target },
-  { id: "training", label: "Training", icon: Dumbbell },
+  { id: "game", label: "Games" },
+  { id: "shift_by_shift", label: "Shifts" },
+  { id: "practice", label: "Practice" },
+  { id: "training", label: "Training" },
 ];
 
 export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
   const [activeTab, setActiveTab] = useState("all");
+  const navigate = useNavigate();
 
   const filtered = activeTab === "all"
     ? sessions
@@ -20,13 +22,24 @@ export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
 
   const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  const handleSessionClick = (sessionId) => {
+    onClose();
+    // Use setTimeout to let the modal unmount cleanly before navigating
+    setTimeout(() => {
+      navigate(createPageUrl("SessionDetail") + `?id=${sessionId}`);
+    }, 50);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex flex-col">
-      <div className="flex-1 overflow-hidden flex flex-col max-w-lg mx-auto w-full mt-12 bg-slate-900 rounded-t-3xl">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex flex-col" onClick={onClose}>
+      <div
+        className="flex-1 overflow-hidden flex flex-col max-w-lg mx-auto w-full mt-12 bg-slate-900 rounded-t-3xl"
+        onClick={e => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-5 pb-3 border-b border-slate-800">
           <div>
-            <h2 className="text-white font-bold text-lg">Sessions</h2>
+            <h2 className="text-white font-bold text-lg">Logged Sessions</h2>
             <p className="text-slate-400 text-xs">{seasonYear}</p>
           </div>
           <button
@@ -38,7 +51,7 @@ export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 px-4 py-3 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-1.5 px-4 py-3 overflow-x-auto">
           {TABS.map(tab => (
             <button
               key={tab.id}
@@ -55,12 +68,12 @@ export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
         </div>
 
         {/* Count */}
-        <div className="px-4 pb-2">
+        <div className="px-4 pb-1">
           <p className="text-slate-500 text-xs">{sorted.length} session{sorted.length !== 1 ? "s" : ""}</p>
         </div>
 
         {/* Session List */}
-        <div className="flex-1 overflow-y-auto px-4 pb-8 space-y-3">
+        <div className="flex-1 overflow-y-auto px-4 pb-8 space-y-3 pt-2">
           {sorted.length === 0 ? (
             <div className="text-center py-12 text-slate-500 text-sm">No sessions in this category</div>
           ) : (
@@ -68,10 +81,7 @@ export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
               <SessionCard
                 key={session.id}
                 session={session}
-                onClick={() => {
-                  onClose();
-                  window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`;
-                }}
+                onClick={() => handleSessionClick(session.id)}
               />
             ))
           )}
