@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { User, Settings, UserCog, Trophy, Plus, Crown, Pencil, Trash2, List } from "lucide-react";
+import { User, Settings, UserCog, Trophy, Plus, Crown, Pencil, Trash2, ChevronRight } from "lucide-react";
 import SeasonSessionsModal from "@/components/SeasonSessionsModal";
 import { Button } from "@/components/ui/button";
 import ProfileSwitcher from "@/components/ProfileSwitcher";
