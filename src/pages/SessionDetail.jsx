@@ -113,10 +113,10 @@ export default function SessionDetail() {
           </div>
         </div>
 
-        {session.type === "game" && session.opponent && (
+        {session.type === "game" && (session.opponent || session.result) && (
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-slate-400 text-sm">vs</span>
-            <span className="text-white font-semibold">{session.opponent}</span>
+            {session.opponent && <span className="text-slate-400 text-sm">vs</span>}
+            {session.opponent && <span className="text-white font-semibold">{session.opponent}</span>}
             {session.result && (
               <span className={cn("text-sm font-bold uppercase", resultColors[session.result])}>
                 {session.result}

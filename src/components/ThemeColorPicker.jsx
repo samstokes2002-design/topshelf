@@ -107,13 +107,20 @@ export default function ThemeColorPicker() {
         <span className="text-foreground text-sm font-medium">{label}</span>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full border-2 border-border" style={{ backgroundColor: value }} />
-          <input
-            type="color"
-            value={value}
-            onChange={(e) => handlePreview(type, e.target.value)}
-            className="w-8 h-6 rounded cursor-pointer bg-transparent border-0 p-0"
-            title="Custom color"
-          />
+          <div className="relative" title="Pick custom color">
+            <input
+              type="color"
+              value={value}
+              onChange={(e) => handlePreview(type, e.target.value)}
+              className="w-8 h-8 rounded-lg cursor-pointer opacity-0 absolute inset-0"
+            />
+            <div
+              className="w-8 h-8 rounded-lg border-2 border-white/50 flex items-center justify-center text-[10px] font-bold text-white/80 pointer-events-none"
+              style={{ backgroundColor: value }}
+            >
+              +
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex gap-2 flex-wrap">
