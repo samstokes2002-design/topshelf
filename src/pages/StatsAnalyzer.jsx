@@ -221,17 +221,6 @@ export default function StatsAnalyzer() {
         }
       }
 
-      // Create a fresh conversation — fetch active season sessions only
-      const [seasons] = await Promise.all([
-        base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true }),
-      ]);
-      const activeSeason = seasons[0] || null;
-
-      // Only fetch sessions for the active season
-      const currentSeasonSessions = activeSeason
-        ? await base44.entities.Session.filter({ profile_id: activeProfile.id, season_id: activeSeason.id }, "-date", 200)
-        : await base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200);
-
       const conv = await base44.agents.createConversation({
         agent_name: "stats_analyzer",
         metadata: {
