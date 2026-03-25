@@ -31,6 +31,7 @@ export default function LogSession() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get("profileId");
   const editId = urlParams.get("editId");
+  const from = urlParams.get("from") || "Home";
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { isPro } = useSubscription();
@@ -154,8 +155,7 @@ export default function LogSession() {
   const { data: editSession } = useQuery({
     queryKey: ["session-edit", editId],
     queryFn: async () => {
-      const sessions = await base44.entities.Session.filter({ id: editId });
-      return sessions[0];
+      return base44.entities.Session.get(editId);
     },
     enabled: !!editId,
   });
@@ -238,9 +238,10 @@ export default function LogSession() {
       queryClient.invalidateQueries({ queryKey: ["sessions"] });
       queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
+      queryClient.invalidateQueries({ queryKey: ["session-detail", editId] });
       setSaved(true);
       setTimeout(() => {
-        navigate(createPageUrl("SessionDetail") + `?id=${editId}`);
+        navigate(createPageUrl("SessionDetail") + `?id=${editId}&from=${from}`);
       }, 800);
     },
   });

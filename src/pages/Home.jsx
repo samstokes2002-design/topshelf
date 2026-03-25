@@ -236,7 +236,7 @@ export default function Home() {
                 <SessionCard
                   key={session.id}
                   session={session}
-                  onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}`}
+                  onClick={() => window.location.href = createPageUrl("SessionDetail") + `?id=${session.id}&from=Home`}
                 />
               ))}
           </div>

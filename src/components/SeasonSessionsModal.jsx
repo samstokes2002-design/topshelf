@@ -26,7 +26,7 @@ export default function SeasonSessionsModal({ sessions, seasonYear, onClose }) {
     onClose();
     // Use setTimeout to let the modal unmount cleanly before navigating
     setTimeout(() => {
-      navigate(createPageUrl("SessionDetail") + `?id=${sessionId}`);
+      navigate(createPageUrl("SessionDetail") + `?id=${sessionId}&from=Profile`);
     }, 50);
   };
 
