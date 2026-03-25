@@ -163,9 +163,14 @@ export default function StatsAnalyzer() {
         ? sessions.filter((s) => s.season_id === activeSeason.id)
         : sessions;
 
-      base44.agents.addMessage(conv, {
+      await base44.agents.addMessage(conv, {
         role: "user",
         content: `[SYSTEM CONTEXT — do not display this to the user]\nUpdated session data. Profile: ${profile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${seasonSessions.length}):\n${JSON.stringify(seasonSessions.map(serializeSession))}`,
+      });
+
+      await base44.agents.addMessage(conv, {
+        role: "user",
+        content: "I just logged a new session. Give me a brief update on my current stats this season — goals, assists, total points, and anything else notable.",
       });
     });
     return unsubscribe;
