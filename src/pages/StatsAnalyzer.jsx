@@ -10,7 +10,7 @@ import { createPageUrl } from "@/utils";
 const FREE_AI_LIMIT = 5;
 const AI_USAGE_KEY = "ai_message_count_week";
 const CONV_CACHE_KEY = "ai_conv_cache";
-const CONV_TTL_MS = 0; // Always refresh to get latest stats
+const CONV_TTL_MS = 60 * 60 * 1000; // Cache for 1 hour
 
 const SUGGESTIONS = [
   "What should I work on this season?",
@@ -175,6 +175,7 @@ export default function StatsAnalyzer() {
         content: `Hey! Ask me anything about your stats this season — I'll give you the actual numbers and tell you what they mean.`,
       };
       setMessages([welcomeMsg]);
+      setInitializing(false);
 
       const serializeSession = (s) => ({
         id: s.id,
@@ -200,12 +201,11 @@ export default function StatsAnalyzer() {
         rating: s.rating || null,
       });
 
-      await base44.agents.addMessage(conv, {
+      // Fire system context in background — don't block the UI
+      base44.agents.addMessage(conv, {
         role: "user",
         content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. There is no other data. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
       });
-
-      setInitializing(false);
     };
 
     init();
