@@ -23,6 +23,7 @@ const PRO_FEATURES = [
   "Unlimited season targets",
   "Unlimited AI messages",
   "Period breakdowns & advanced analytics",
+  "Custom app color themes",
 ];
 
 export default function Plans() {
@@ -113,7 +114,7 @@ export default function Plans() {
 
       {/* Cancel Confirm Dialog */}
       {showCancelConfirm && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
             <h3 className="text-white font-bold text-lg mb-2">Cancel Pro?</h3>
             <p className="text-slate-400 text-sm mb-6 leading-relaxed">

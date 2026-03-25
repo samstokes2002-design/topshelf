@@ -137,16 +137,28 @@ export default function Profile() {
           </div>
           <div className="flex-1">
             {profiles.length > 1 ? (
-              <ProfileSwitcher
-                profiles={profiles}
-                activeProfile={activeProfile}
-                onSwitch={handleProfileSwitch}
-                onAdd={() => window.location.href = createPageUrl("CreateProfile")}
-                inline
-              />
+              <div>
+                <ProfileSwitcher
+                  profiles={profiles}
+                  activeProfile={activeProfile}
+                  onSwitch={handleProfileSwitch}
+                  onAdd={() => window.location.href = createPageUrl("CreateProfile")}
+                  inline
+                />
+                {isPro && (
+                  <span className="inline-flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1">
+                    <Crown className="w-2.5 h-2.5" /> PRO
+                  </span>
+                )}
+              </div>
             ) : (
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-foreground font-bold text-lg">{activeProfile.name}</h2>
+                {isPro && (
+                  <span className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    <Crown className="w-2.5 h-2.5" /> PRO
+                  </span>
+                )}
                 {activeProfile.player_number && <span className="text-sky-400 font-bold text-lg">#{activeProfile.player_number}</span>}
                 {isPro && (
                   <span className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">

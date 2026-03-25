@@ -8,11 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, LogOut, Save, ArrowLeft, Shield, FileText, ChevronRight, Mail, Download, Trash2, AlertTriangle, Crown, ExternalLink } from "lucide-react";
 import ThemeColorPicker from "@/components/ThemeColorPicker";
+import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/components/ui/use-toast";
 import { createPageUrl } from "@/utils";
 
 export default function Settings() {
   const { toast } = useToast();
+  const { isPro } = useSubscription();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [showDeleteProfileConfirm, setShowDeleteProfileConfirm] = useState(false);
@@ -112,7 +114,20 @@ export default function Settings() {
       </div>
 
       {/* Interface Colors */}
-      <ThemeColorPicker />
+      {isPro ? (
+        <ThemeColorPicker />
+      ) : (
+        <div className="bg-card border border-border rounded-2xl p-4 mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Crown className="w-4 h-4 text-amber-400" />
+            <div>
+              <p className="text-foreground text-sm font-semibold">Custom Colors</p>
+              <p className="text-muted-foreground text-xs">Pro feature — personalize your app theme</p>
+            </div>
+          </div>
+          <Link to={createPageUrl("Plans")} className="text-xs text-amber-400 font-semibold hover:text-amber-300">Upgrade</Link>
+        </div>
+      )}
 
       {/* About */}
       <div className="bg-card border border-border rounded-2xl p-4 mb-4">
