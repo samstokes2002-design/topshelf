@@ -89,6 +89,8 @@ function MessageBubble({ message }) {
 
 export default function StatsAnalyzer() {
   const [conversation, setConversation] = useState(null);
+  const convRef = useRef(null);
+  const activeProfileRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,6 +98,30 @@ export default function StatsAnalyzer() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [weeklyUsage, setWeeklyUsage] = useState(0);
   const bottomRef = useRef(null);
+
+  const serializeSession = (s) => ({
+    id: s.id,
+    date: s.date,
+    type: s.type,
+    result: s.result || null,
+    opponent: s.opponent || null,
+    goals: s.goals || 0,
+    assists: s.assists || 0,
+    shots: s.shots || 0,
+    plus_minus: s.plus_minus || 0,
+    hits: s.hits || 0,
+    blocked_shots: s.blocked_shots || 0,
+    takeaways: s.takeaways || 0,
+    giveaways: s.giveaways || 0,
+    penalty_minutes: s.penalty_minutes || 0,
+    faceoff_wins: s.faceoff_wins || 0,
+    faceoff_losses: s.faceoff_losses || 0,
+    power_play_goals: s.power_play_goals || 0,
+    power_play_points: s.power_play_points || 0,
+    shorthanded_goals: s.shorthanded_goals || 0,
+    time_on_ice: s.time_on_ice || 0,
+    rating: s.rating || null,
+  });
   const inputRef = useRef(null);
   const { isPro } = useSubscription();
 
@@ -114,6 +140,36 @@ export default function StatsAnalyzer() {
       setActiveProfile(saved || profiles[0]);
     }
   }, [profiles, activeProfile]);
+
+  // Keep refs in sync
+  useEffect(() => { convRef.current = conversation; }, [conversation]);
+  useEffect(() => { activeProfileRef.current = activeProfile; }, [activeProfile]);
+
+  // Re-send context when a session is created/updated for active profile
+  useEffect(() => {
+    const unsubscribe = base44.entities.Session.subscribe(async (event) => {
+      const profile = activeProfileRef.current;
+      const conv = convRef.current;
+      if (!conv || !profile) return;
+      if (event.data?.profile_id !== profile.id) return;
+      if (event.type !== "create" && event.type !== "update") return;
+
+      const [seasons, sessions] = await Promise.all([
+        base44.entities.Season.filter({ profile_id: profile.id, is_active: true }),
+        base44.entities.Session.filter({ profile_id: profile.id }, "-date", 200),
+      ]);
+      const activeSeason = seasons[0] || null;
+      const seasonSessions = activeSeason
+        ? sessions.filter((s) => s.season_id === activeSeason.id)
+        : sessions;
+
+      base44.agents.addMessage(conv, {
+        role: "user",
+        content: `[SYSTEM CONTEXT — do not display this to the user]\nUpdated session data. Profile: ${profile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${seasonSessions.length}):\n${JSON.stringify(seasonSessions.map(serializeSession))}`,
+      });
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     setWeeklyUsage(getWeeklyUsage().count || 0);
@@ -177,29 +233,7 @@ export default function StatsAnalyzer() {
       setMessages([welcomeMsg]);
       setInitializing(false);
 
-      const serializeSession = (s) => ({
-        id: s.id,
-        date: s.date,
-        type: s.type,
-        result: s.result || null,
-        opponent: s.opponent || null,
-        goals: s.goals || 0,
-        assists: s.assists || 0,
-        shots: s.shots || 0,
-        plus_minus: s.plus_minus || 0,
-        hits: s.hits || 0,
-        blocked_shots: s.blocked_shots || 0,
-        takeaways: s.takeaways || 0,
-        giveaways: s.giveaways || 0,
-        penalty_minutes: s.penalty_minutes || 0,
-        faceoff_wins: s.faceoff_wins || 0,
-        faceoff_losses: s.faceoff_losses || 0,
-        power_play_goals: s.power_play_goals || 0,
-        power_play_points: s.power_play_points || 0,
-        shorthanded_goals: s.shorthanded_goals || 0,
-        time_on_ice: s.time_on_ice || 0,
-        rating: s.rating || null,
-      });
+
 
       // Fire system context in background — don't block the UI
       base44.agents.addMessage(conv, {
