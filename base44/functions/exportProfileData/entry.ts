@@ -15,24 +15,10 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Profile not found or unauthorized' }, { status: 403 });
     }
 
-    const [sessions, seasons, allFriends, allProfiles] = await Promise.all([
+    const [sessions, seasons] = await Promise.all([
       base44.asServiceRole.entities.Session.filter({ profile_id: profileId }, '-date', 10000),
       base44.asServiceRole.entities.Season.filter({ profile_id: profileId }, '-created_date', 10000),
-      base44.asServiceRole.entities.Friend.list(null, 10000),
-      base44.asServiceRole.entities.Profile.list(null, 10000),
     ]);
-
-    const profileById = {};
-    for (const p of allProfiles) profileById[p.id] = p;
-
-    // Collect accepted friend records for this profile
-    const friends = allFriends
-      .filter(f => f.status === 'accepted' && (f.sender_profile_id === profileId || f.friend_profile_id === profileId))
-      .map(f => {
-        const otherProfileId = f.sender_profile_id === profileId ? f.friend_profile_id : f.sender_profile_id;
-        const other = profileById[otherProfileId] || {};
-        return { name: other.name || '', username: other.username || '', profile_id: otherProfileId };
-      });
 
     const exportData = {
       exported_at: new Date().toISOString(),
@@ -77,7 +63,6 @@ Deno.serve(async (req) => {
         rating: s.rating,
         notes: s.notes,
       })),
-      friends,
     };
 
     return Response.json(exportData);
