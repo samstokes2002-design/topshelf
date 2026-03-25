@@ -91,6 +91,8 @@ export default function StatsAnalyzer() {
   const [conversation, setConversation] = useState(null);
   const convRef = useRef(null);
   const activeProfileRef = useRef(null);
+  const sessionDataRef = useRef(null); // stores latest session data to prepend to first user message
+  const contextSentRef = useRef(false); // tracks if context has been sent in this conversation
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -145,12 +147,11 @@ export default function StatsAnalyzer() {
   useEffect(() => { convRef.current = conversation; }, [conversation]);
   useEffect(() => { activeProfileRef.current = activeProfile; }, [activeProfile]);
 
-  // Re-send context when a session is created/updated for active profile
+  // Keep session data fresh in ref whenever sessions change — no AI message sent
   useEffect(() => {
     const unsubscribe = base44.entities.Session.subscribe(async (event) => {
       const profile = activeProfileRef.current;
-      const conv = convRef.current;
-      if (!conv || !profile) return;
+      if (!profile) return;
       if (event.data?.profile_id !== profile.id) return;
       if (event.type !== "create" && event.type !== "update") return;
 
@@ -163,10 +164,9 @@ export default function StatsAnalyzer() {
         ? sessions.filter((s) => s.season_id === activeSeason.id)
         : sessions;
 
-      await base44.agents.addMessage(conv, {
-        role: "user",
-        content: `[SYSTEM CONTEXT — do not display this to the user]\nUpdated session data. Profile: ${profile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${seasonSessions.length}):\n${JSON.stringify(seasonSessions.map(serializeSession))}`,
-      });
+      // Just update the ref — don't send a message to the AI
+      sessionDataRef.current = { profile, activeSeason, sessions: seasonSessions };
+      contextSentRef.current = false; // mark context as stale so it gets re-sent with next user message
     });
     return unsubscribe;
   }, []);
@@ -202,12 +202,10 @@ export default function StatsAnalyzer() {
               (m) => !m.content?.startsWith("[SYSTEM CONTEXT")
             );
             setMessages(visible);
+            // Store fresh session data in ref for next user message
+            sessionDataRef.current = { profile: activeProfile, activeSeason, sessions: currentSeasonSessions };
+            contextSentRef.current = true; // existing conversation already has context
             setInitializing(false);
-            // Always re-send fresh context so AI is up to date
-            base44.agents.addMessage(existingConv, {
-              role: "user",
-              content: `[SYSTEM CONTEXT — SILENT UPDATE — do NOT reply to this message, do not generate any response, just silently update your knowledge]\nRefreshed session data. Profile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
-            });
             return;
           }
         } catch {
@@ -227,6 +225,9 @@ export default function StatsAnalyzer() {
 
       setCachedConv(activeProfile.id, conv.id);
       setConversation(conv);
+      // Store session data in ref to be sent with first user message
+      sessionDataRef.current = { profile: activeProfile, activeSeason, sessions: currentSeasonSessions };
+      contextSentRef.current = false;
 
       const welcomeMsg = {
         role: "assistant",
@@ -234,14 +235,6 @@ export default function StatsAnalyzer() {
       };
       setMessages([welcomeMsg]);
       setInitializing(false);
-
-
-
-      // Fire system context in background — don't block the UI
-      base44.agents.addMessage(conv, {
-        role: "user",
-        content: `[SYSTEM CONTEXT — do not reply to this message]\nProfile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
-      });
     };
 
     init();
@@ -282,10 +275,18 @@ export default function StatsAnalyzer() {
       setWeeklyUsage(newCount);
     }
 
+    // Prepend session context to the message if not yet sent (or stale)
+    let content = trimmed;
+    if (!contextSentRef.current && sessionDataRef.current) {
+      const { profile, activeSeason, sessions } = sessionDataRef.current;
+      content = `[SYSTEM CONTEXT — do not display this to the user, use it only as background knowledge to answer the question below]\nProfile: ${profile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${sessions.length}):\n${JSON.stringify(sessions.map(serializeSession))}\n\n---\n\nUser question: ${trimmed}`;
+      contextSentRef.current = true;
+    }
+
     try {
       await base44.agents.addMessage(conversation, {
         role: "user",
-        content: trimmed,
+        content,
       });
     } catch {
       setIsLoading(false);
