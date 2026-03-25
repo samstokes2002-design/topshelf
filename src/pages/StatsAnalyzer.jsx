@@ -300,7 +300,7 @@ export default function StatsAnalyzer() {
   };
 
   const isLimited = !isPro && weeklyUsage >= FREE_AI_LIMIT;
-  const showSuggestions = messages.length <= 1 && !isLoading && !initializing;
+  const showSuggestions = !messages.some(m => m.role === 'user') && !isLoading && !initializing;
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100dvh - 64px)" }}>
