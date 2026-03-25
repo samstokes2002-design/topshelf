@@ -188,6 +188,15 @@ export default function StatsAnalyzer() {
       setInitializing(true);
       setMessages([]);
 
+      // Fetch fresh session data upfront (always needed)
+      const [seasons] = await Promise.all([
+        base44.entities.Season.filter({ profile_id: activeProfile.id, is_active: true }),
+      ]);
+      const activeSeason = seasons[0] || null;
+      const currentSeasonSessions = activeSeason
+        ? await base44.entities.Session.filter({ profile_id: activeProfile.id, season_id: activeSeason.id }, "-date", 200)
+        : await base44.entities.Session.filter({ profile_id: activeProfile.id }, "-date", 200);
+
       // Try to resume a cached conversation from today
       const cachedConvId = getCachedConv(activeProfile.id);
       if (cachedConvId) {
@@ -195,12 +204,16 @@ export default function StatsAnalyzer() {
           const existingConv = await base44.agents.getConversation(cachedConvId);
           if (existingConv && existingConv.messages?.length > 0) {
             setConversation(existingConv);
-            // Filter out system context messages
             const visible = existingConv.messages.filter(
               (m) => !m.content?.startsWith("[SYSTEM CONTEXT")
             );
             setMessages(visible);
             setInitializing(false);
+            // Always re-send fresh context so AI is up to date
+            base44.agents.addMessage(existingConv, {
+              role: "user",
+              content: `[SYSTEM CONTEXT — do not display this to the user]\nRefreshed session data. Profile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
+            });
             return;
           }
         } catch {
