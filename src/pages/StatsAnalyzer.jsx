@@ -206,7 +206,7 @@ export default function StatsAnalyzer() {
             // Always re-send fresh context so AI is up to date
             base44.agents.addMessage(existingConv, {
               role: "user",
-              content: `[SYSTEM CONTEXT — do not display this to the user]\nRefreshed session data. Profile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
+              content: `[SYSTEM CONTEXT — SILENT UPDATE — do NOT reply to this message, do not generate any response, just silently update your knowledge]\nRefreshed session data. Profile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
             });
             return;
           }
@@ -240,7 +240,7 @@ export default function StatsAnalyzer() {
       // Fire system context in background — don't block the UI
       base44.agents.addMessage(conv, {
         role: "user",
-        content: `[SYSTEM CONTEXT — do not display this to the user]\nProfile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nYou have ONLY been given sessions from the current active season. There is no other data. Analyze exclusively from this list.\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
+        content: `[SYSTEM CONTEXT — do not reply to this message]\nProfile: ${activeProfile.name}\nCurrent season: ${activeSeason?.season_year || "unknown"}\n\nSessions (${currentSeasonSessions.length}):\n${JSON.stringify(currentSeasonSessions.map(serializeSession))}`,
       });
     };
 
