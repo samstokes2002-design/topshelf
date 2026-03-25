@@ -6,6 +6,10 @@ import { pagesConfig } from '@/pages.config';
 
 export default function NavigationTracker() {
     const location = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
     const { isAuthenticated } = useAuth();
     const { Pages, mainPage } = pagesConfig;
     const mainPageKey = mainPage ?? Object.keys(Pages)[0];
