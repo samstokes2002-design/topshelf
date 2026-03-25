@@ -125,7 +125,8 @@ export default function ThemeColorPicker() {
             className="w-7 h-7 rounded-full border-2 transition-all hover:scale-110 active:scale-95"
             style={{
               backgroundColor: preset.value,
-              borderColor: value === preset.value ? "white" : "transparent",
+              borderColor: value === preset.value ? "white" : "rgba(255,255,255,0.25)",
+              boxShadow: value === preset.value ? "0 0 0 2px rgba(255,255,255,0.6)" : "none",
             }}
           />
         ))}

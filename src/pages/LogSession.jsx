@@ -239,6 +239,8 @@ export default function LogSession() {
       queryClient.invalidateQueries({ queryKey: ["sessions-profile"] });
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
       queryClient.invalidateQueries({ queryKey: ["session-detail", editId] });
+      queryClient.refetchQueries({ queryKey: ["sessions"] });
+      queryClient.refetchQueries({ queryKey: ["sessions-profile"] });
       setSaved(true);
       setTimeout(() => {
         navigate(createPageUrl("SessionDetail") + `?id=${editId}&from=${from}`);
