@@ -55,7 +55,7 @@ export default function LogSession() {
     season_id: "",
     date: "",
     type: "game",
-    duration: "",
+    duration: "60",
     goals: 0,
     assists: 0,
     shots: 0,
