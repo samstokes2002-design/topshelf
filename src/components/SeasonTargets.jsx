@@ -55,7 +55,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
   const [statKey, setStatKey] = useState("");
   const [targetValue, setTargetValue] = useState("");
   const [celebrationTarget, setCelebrationTarget] = useState(null);
-  const prevCompletedRef = useRef(new Set());
+  const prevCompletedRef = useRef(null); // null = not yet initialized
 
   const { data: targets = [] } = useQuery({
     queryKey: ["season-targets", seasonId],
@@ -105,8 +105,10 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
     }
 
     // Find targets that just became completed (skip initial load)
-    const newlyDone = [...nowCompleted].filter(id => !prevCompletedRef.current.has(id));
-    if (newlyDone.length > 0 && prevCompletedRef.current.size > 0) {
+    const newlyDone = prevCompletedRef.current !== null
+      ? [...nowCompleted].filter(id => !prevCompletedRef.current.has(id))
+      : [];
+    if (newlyDone.length > 0) {
       const completedTarget = targets.find(t => t.id === newlyDone[0]);
       if (completedTarget) {
         setCelebrationTarget(completedTarget);
@@ -118,6 +120,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
       }
     }
     prevCompletedRef.current = nowCompleted;
+
   }, [targets, sessions, seasonId]);
 
   const existingStatKeys = new Set(targets.map(t => t.stat_key));
