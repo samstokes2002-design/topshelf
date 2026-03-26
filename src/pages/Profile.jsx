@@ -217,11 +217,11 @@ export default function Profile() {
                 <span className="text-[10px] text-slate-400 block">GP</span>
               </div>
               <div className="text-center">
-                <span className="text-lg font-bold text-sky-400">{totalGoals}</span>
+                <span className="text-lg font-bold text-white">{totalGoals}</span>
                 <span className="text-[10px] text-slate-400 block">G</span>
               </div>
               <div className="text-center">
-                <span className="text-lg font-bold text-emerald-400">{totalAssists}</span>
+                <span className="text-lg font-bold text-white">{totalAssists}</span>
                 <span className="text-[10px] text-slate-400 block">A</span>
               </div>
               <div className="text-center">
