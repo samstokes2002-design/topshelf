@@ -231,7 +231,7 @@ export default function StatsAnalyzer() {
 
       const welcomeMsg = {
         role: "assistant",
-        content: `Hey! Ask me anything about your stats this season — I'll give you the actual numbers and tell you what they mean.`,
+        content: `Welcome back! Ask me anything about your season stats. I'll break down your numbers, spot trends in your game, and help you figure out what to work on next.`,
       };
       setMessages([welcomeMsg]);
       setInitializing(false);
