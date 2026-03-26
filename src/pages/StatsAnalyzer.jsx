@@ -310,7 +310,6 @@ export default function StatsAnalyzer() {
   };
 
   const isLimited = !isPro && weeklyUsage >= FREE_AI_LIMIT;
-  const showSuggestions = !initializing && !isLoading;
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100dvh - 64px)" }}>

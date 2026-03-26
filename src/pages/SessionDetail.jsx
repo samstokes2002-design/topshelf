@@ -265,7 +265,7 @@ export default function SessionDetail() {
   );
 }
 
-function StatBlock({ label, value, color }) {
+function StatBlock({ label, value }) {
   return (
     <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 text-center">
       <span className="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">{label}</span>
