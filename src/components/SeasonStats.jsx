@@ -23,11 +23,29 @@ const statLabels = {
 export default function SeasonStats({ sessions, selectedStats = [] }) {
   const games = sessions.filter((s) => s.type === "game" || s.type === "shift_by_shift");
 
+  const calculateStat = (stat) => {
+    if (stat === "rating") {
+      const rated = games.filter((g) => g.rating);
+      if (rated.length === 0) return 0;
+      const total = rated.reduce((sum, g) => sum + g.rating, 0);
+      return (total / rated.length).toFixed(1);
+    }
+    if (stat === "time_on_ice") {
+      const shiftSessions = games.filter((s) => s.type === "shift_by_shift" && s.shifts && s.shifts.length > 0);
+      if (shiftSessions.length === 0) return "—";
+      const totalSeconds = shiftSessions.reduce((sum, s) =>
+        sum + s.shifts.reduce((ss, shift) => ss + (shift.duration_seconds || 0), 0), 0);
+      const avgSeconds = Math.round(totalSeconds / shiftSessions.length);
+      return `${Math.floor(avgSeconds / 60)}:${String(avgSeconds % 60).padStart(2, "0")}`;
+    }
+    return games.reduce((sum, g) => sum + (g[stat] || 0), 0);
+  };
+
   const totalHours = +(sessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60).toFixed(1);
 
   const validStats = selectedStats.filter((stat) => statLabels[stat]);
 
-  if (validStats.length === 0) {
+  if (validStats.length === 0 && totalHours === 0) {
     return null;
   }
 
