@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPageUrl } from "@/utils";
@@ -45,6 +45,8 @@ export default function SessionDetail() {
     retry: false,
   });
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const deleteMutation = useMutation({
     mutationFn: () => base44.entities.Session.delete(sessionId),
     onSuccess: () => {
@@ -76,6 +78,33 @@ export default function SessionDetail() {
 
   return (
     <div className="px-4 pb-24">
+      {/* Delete Confirm Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-800 border border-slate-600 rounded-3xl p-6 max-w-xs w-full text-center shadow-2xl">
+            <div className="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="w-7 h-7 text-red-400" />
+            </div>
+            <h2 className="text-white font-bold text-lg mb-2">Delete Session?</h2>
+            <p className="text-slate-400 text-sm mb-6">Are you sure you want to delete this session? This can't be undone.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 py-2.5 rounded-2xl bg-slate-700/50 text-slate-300 text-sm font-medium hover:bg-slate-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteMutation.mutate()}
+                className="flex-1 py-2.5 rounded-2xl bg-red-500/80 hover:bg-red-500 text-white text-sm font-semibold transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between py-4">
         <button onClick={() => navigate(createPageUrl(from))} className="flex items-center justify-center w-10 h-10 -ml-2 rounded-xl text-slate-400 hover:text-white active:bg-slate-700/50 transition-colors">
@@ -90,7 +119,7 @@ export default function SessionDetail() {
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => { if (confirm("Delete this session?")) deleteMutation.mutate(); }}
+            onClick={() => setShowDeleteConfirm(true)}
             className="text-red-400 hover:text-red-300 rounded-xl"
           >
             <Trash2 className="w-4 h-4" />
