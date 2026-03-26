@@ -382,7 +382,7 @@ export default function StatsAnalyzer() {
 
       {/* Input */}
       <div className="px-4 pb-4 pt-3 border-t border-slate-800/80 flex-shrink-0">
-        {isLimited ? (
+        {isLimited && !isLoading ? (
           <a
             href={createPageUrl("Plans")}
             className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl px-4 py-3"
