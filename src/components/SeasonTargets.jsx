@@ -55,6 +55,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
   const [statKey, setStatKey] = useState("");
   const [targetValue, setTargetValue] = useState("");
   const [celebrationTarget, setCelebrationTarget] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const prevCompletedRef = useRef(null); // null = not yet initialized
 
   const { data: targets = [] } = useQuery({
@@ -142,6 +143,33 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
 
   return (
     <div className="mb-5">
+      {/* Delete Confirm Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-800 border border-slate-600 rounded-3xl p-6 max-w-xs w-full text-center shadow-2xl">
+            <div className="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="w-7 h-7 text-red-400" />
+            </div>
+            <h2 className="text-white font-bold text-lg mb-2">Delete Target?</h2>
+            <p className="text-slate-400 text-sm mb-6">Are you sure you want to delete this target? This can't be undone.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                className="flex-1 py-2.5 rounded-2xl bg-slate-700/50 text-slate-300 text-sm font-medium hover:bg-slate-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { deleteMutation.mutate(deleteConfirmId); setDeleteConfirmId(null); }}
+                className="flex-1 py-2.5 rounded-2xl bg-red-500/80 hover:bg-red-500 text-white text-sm font-semibold transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Celebration Modal */}
       {celebrationTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
@@ -284,7 +312,7 @@ export default function SeasonTargets({ profileId, seasonId, sessions, isPro = f
                       <span className="text-slate-500"> / {target.target_value}</span>
                     </span>
                     <button
-                      onClick={() => deleteMutation.mutate(target.id)}
+                      onClick={() => setDeleteConfirmId(target.id)}
                       className="text-slate-600 hover:text-red-400 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
