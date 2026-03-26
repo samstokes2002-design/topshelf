@@ -357,29 +357,28 @@ export default function StatsAnalyzer() {
               </div>
             )}
 
-
+            <div className="pt-2 space-y-2">
+              <p className="text-slate-500 text-xs px-1 flex items-center gap-1.5">
+                <Lightbulb className="w-3 h-3" /> Try asking
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {SUGGESTIONS.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => sendMessage(s)}
+                    disabled={isLoading || initializing || !conversation}
+                    className="text-xs bg-card border border-border text-foreground px-3 py-1.5 rounded-xl hover:opacity-80 transition-colors disabled:opacity-40"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
           </>
         )}
 
         <div ref={bottomRef} />
       </div>
-
-      {/* Suggestions */}
-      {showSuggestions && (
-        <div className="px-4 pt-2 pb-1 flex-shrink-0 overflow-x-auto">
-          <div className="flex gap-2 flex-nowrap">
-            {SUGGESTIONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => sendMessage(s)}
-                className="text-xs bg-card border border-border text-foreground px-3 py-1.5 rounded-xl hover:opacity-80 transition-colors whitespace-nowrap flex-shrink-0"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Input */}
       <div className="px-4 pb-4 pt-3 border-t border-slate-800/80 flex-shrink-0">
