@@ -320,11 +320,18 @@ export default function Stats() {
                           "plus_minus", "shots",
                           ...allShiftStatKeys.filter(k => !["goals","assists","plus_minus","shots"].includes(k))
                         ].filter(k => allShiftStatKeys.includes(k));
+                        const getPeriodStatColor = (key, val) => {
+                          if (key === "plus_minus") return val > 0 ? "text-emerald-400" : val < 0 ? "text-red-400" : "text-white";
+                          if (["giveaways", "penalty_minutes"].includes(key)) return "text-red-400";
+                          if (["hits", "blocked_shots", "takeaways"].includes(key)) return "text-emerald-400";
+                          // goals, assists, shots, ppg, ppp, shg, shp, etc — emerald if > 0
+                          return val > 0 ? "text-emerald-400" : "text-white";
+                        };
                         return ordered.map(key => (
                           <React.Fragment key={key}>
                             <div className="flex justify-between">
                               <span className="text-slate-400">{PERIOD_STAT_LABELS[key] || key}</span>
-                              <span className={`font-medium ${key === "plus_minus" ? (p.stats[key] > 0 ? "text-emerald-400" : p.stats[key] < 0 ? "text-red-400" : "text-white") : key === "giveaways" ? "text-red-400" : key === "takeaways" ? "text-emerald-400" : "text-white"}`}>
+                              <span className={`font-medium ${getPeriodStatColor(key, p.stats[key])}`}>
                                 {key === "plus_minus" && p.stats[key] > 0 ? `+${p.stats[key]}` : p.stats[key]}
                               </span>
                             </div>
