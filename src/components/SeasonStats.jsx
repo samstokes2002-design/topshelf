@@ -25,6 +25,12 @@ export default function SeasonStats({ sessions, selectedStats = [] }) {
 
   const totalHours = +(sessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60).toFixed(1);
 
+  const validStats = selectedStats.filter((stat) => statLabels[stat]);
+
+  if (validStats.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-3 pt-3 border-t border-border">
       <div className="grid grid-cols-3 gap-2">
