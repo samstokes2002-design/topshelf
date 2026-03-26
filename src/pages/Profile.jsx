@@ -15,6 +15,7 @@ export default function Profile() {
   const [activeProfile, setActiveProfile] = useState(null);
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
   const [sessionsBrowserSeasonId, setSessionsBrowserSeasonId] = useState(null);
+  const [deleteSeasonConfirmId, setDeleteSeasonConfirmId] = useState(null);
   const queryClient = useQueryClient();
   const { isPro } = useSubscription();
 
@@ -108,6 +109,33 @@ export default function Profile() {
 
   return (
     <div className="px-4 pb-24">
+      {/* Delete Season Confirm Modal */}
+      {deleteSeasonConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-800 border border-slate-600 rounded-3xl p-6 max-w-xs w-full text-center shadow-2xl">
+            <div className="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="w-7 h-7 text-red-400" />
+            </div>
+            <h2 className="text-white font-bold text-lg mb-2">Delete Season?</h2>
+            <p className="text-slate-400 text-sm mb-6">Are you sure you want to delete this season? This can't be undone.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteSeasonConfirmId(null)}
+                className="flex-1 py-2.5 rounded-2xl bg-slate-700/50 text-slate-300 text-sm font-medium hover:bg-slate-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { deleteSeasonMutation.mutate(deleteSeasonConfirmId); setDeleteSeasonConfirmId(null); }}
+                className="flex-1 py-2.5 rounded-2xl bg-red-500/80 hover:bg-red-500 text-white text-sm font-semibold transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between py-4">
         <h1 className="text-white font-bold text-xl">Profile</h1>
@@ -314,7 +342,7 @@ export default function Profile() {
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
-                        onClick={() => { if (confirm("Delete this season?")) deleteSeasonMutation.mutate(season.id); }}
+                        onClick={() => setDeleteSeasonConfirmId(season.id)}
                         disabled={deleteSeasonMutation.isPending}
                         className="text-slate-500 hover:text-red-400 transition-colors"
                       >
