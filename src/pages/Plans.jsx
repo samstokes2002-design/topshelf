@@ -9,7 +9,7 @@ import { useSubscription } from "@/hooks/useSubscription";
 const FREE_FEATURES = [
   "1 profile per account",
   "Log game, practice & training sessions",
-  "Scoring stats only (Goals, Assists, Shots, +/-)",
+  "Scoring stats only (G, A, SOG, +/-)",
   "Season Stats tab only",
   "1 season target per season",
   "5 AI messages per week",
