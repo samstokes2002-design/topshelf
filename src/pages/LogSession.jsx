@@ -227,6 +227,7 @@ export default function LogSession() {
       queryClient.invalidateQueries({ queryKey: ["seasons"] });
       setSaved(true);
       setTimeout(() => {
+        window.scrollTo(0, 0);
         navigate(createPageUrl("Home"));
       }, 800);
     },
@@ -243,6 +244,7 @@ export default function LogSession() {
       queryClient.refetchQueries({ queryKey: ["sessions-profile"] });
       setSaved(true);
       setTimeout(() => {
+        window.scrollTo(0, 0);
         navigate(createPageUrl("SessionDetail") + `?id=${editId}&from=${from}`);
       }, 800);
     },

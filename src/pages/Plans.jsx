@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -29,6 +29,13 @@ const PRO_FEATURES = [
 export default function Plans() {
   const navigate = useNavigate();
   const { isPro, isLoading, currentPeriodEnd, refetch } = useSubscription();
+
+  // If user landed here after cancelling Stripe (cancelUrl), replace this page
+  // in history so pressing back doesn't return to Stripe
+  useEffect(() => {
+    // Replace the Plans page entry so back button skips over the Stripe redirect
+    window.history.replaceState(null, '', window.location.href);
+  }, []);
   const [checkingOut, setCheckingOut] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
