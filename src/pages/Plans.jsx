@@ -64,7 +64,7 @@ export default function Plans() {
       cancelUrl: window.location.origin + createPageUrl("Plans"),
     });
     if (res.data?.url) {
-      window.location.href = res.data.url;
+      window.location.replace(res.data.url);
     } else {
       alert("Something went wrong. Please try again.");
       setCheckingOut(false);
