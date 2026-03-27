@@ -1,0 +1,56 @@
+{
+  "name": "SeasonTarget",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "description": "ID of the profile this target belongs to"
+    },
+    "season_id": {
+      "type": "string",
+      "description": "ID of the season this target belongs to"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "stat",
+        "session_count"
+      ],
+      "description": "Whether this target tracks a stat or session count"
+    },
+    "stat_key": {
+      "type": "string",
+      "description": "The stat key (e.g. goals, assists) or session type (game, practice, training)"
+    },
+    "label": {
+      "type": "string",
+      "description": "Display label for the target"
+    },
+    "target_value": {
+      "type": "number",
+      "description": "The target amount to reach"
+    }
+  },
+  "required": [
+    "profile_id",
+    "season_id",
+    "target_type",
+    "stat_key",
+    "label",
+    "target_value"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
