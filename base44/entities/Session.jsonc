@@ -1,0 +1,211 @@
+{
+  "name": "Session",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "description": "ID of the profile this session belongs to"
+    },
+    "season_id": {
+      "type": "string",
+      "description": "ID of the season this session belongs to"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the session"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "game",
+        "practice",
+        "training",
+        "shift_by_shift"
+      ],
+      "description": "Type of session"
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration in minutes"
+    },
+    "goals": {
+      "type": "number",
+      "default": 0
+    },
+    "assists": {
+      "type": "number",
+      "default": 0
+    },
+    "shots": {
+      "type": "number",
+      "default": 0
+    },
+    "plus_minus": {
+      "type": "number",
+      "default": 0
+    },
+    "penalty_minutes": {
+      "type": "number",
+      "default": 0
+    },
+    "hits": {
+      "type": "number",
+      "default": 0
+    },
+    "blocked_shots": {
+      "type": "number",
+      "default": 0
+    },
+    "takeaways": {
+      "type": "number",
+      "default": 0
+    },
+    "giveaways": {
+      "type": "number",
+      "default": 0
+    },
+    "faceoff_wins": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of faceoffs won"
+    },
+    "faceoff_losses": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of faceoffs lost"
+    },
+    "power_play_goals": {
+      "type": "number",
+      "default": 0
+    },
+    "power_play_points": {
+      "type": "number",
+      "default": 0
+    },
+    "shorthanded_goals": {
+      "type": "number",
+      "default": 0
+    },
+    "shorthanded_points": {
+      "type": "number",
+      "default": 0
+    },
+    "time_on_ice": {
+      "type": "number",
+      "default": 0,
+      "description": "Time on ice in minutes"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Self rating 1-5"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Session notes"
+    },
+    "shifts": {
+      "type": "array",
+      "description": "Shift-by-shift timer data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "duration_seconds": {
+            "type": "number"
+          },
+          "label": {
+            "type": "string"
+          },
+          "period": {
+            "type": "number",
+            "description": "Period number (1, 2, or 3)"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Stats recorded during this shift",
+            "properties": {
+              "goals": {
+                "type": "number"
+              },
+              "assists": {
+                "type": "number"
+              },
+              "shots": {
+                "type": "number"
+              },
+              "plus_minus": {
+                "type": "number"
+              },
+              "hits": {
+                "type": "number"
+              },
+              "blocked_shots": {
+                "type": "number"
+              },
+              "takeaways": {
+                "type": "number"
+              },
+              "giveaways": {
+                "type": "number"
+              },
+              "penalty_minutes": {
+                "type": "number"
+              },
+              "faceoff_wins": {
+                "type": "number"
+              },
+              "faceoff_losses": {
+                "type": "number"
+              },
+              "power_play_goals": {
+                "type": "number"
+              },
+              "power_play_points": {
+                "type": "number"
+              },
+              "shorthanded_goals": {
+                "type": "number"
+              },
+              "shorthanded_points": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "opponent": {
+      "type": "string",
+      "description": "Opponent team name (for games)"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "win",
+        "loss",
+        "tie",
+        ""
+      ],
+      "description": "Game result"
+    }
+  },
+  "required": [
+    "profile_id",
+    "date",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
