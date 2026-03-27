@@ -1,0 +1,78 @@
+{
+  "name": "Profile",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Player name"
+    },
+    "age": {
+      "type": "number",
+      "description": "Player age"
+    },
+    "height": {
+      "type": "string",
+      "description": "Player height (e.g., 5'11\")"
+    },
+    "weight": {
+      "type": "number",
+      "description": "Player weight in lbs"
+    },
+    "position": {
+      "type": "string",
+      "enum": [
+        "Center",
+        "Left Wing",
+        "Right Wing",
+        "Defenseman",
+        "Goalie"
+      ],
+      "description": "Playing position"
+    },
+    "player_number": {
+      "type": "string",
+      "description": "Player jersey number"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Profile photo URL"
+    },
+    "username": {
+      "type": "string",
+      "description": "Unique username"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Currently active profile"
+    },
+    "show_on_profile": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to show extra profile details publicly"
+    },
+    "favorite_team": {
+      "type": "string",
+      "description": "Favorite NHL team"
+    }
+  },
+  "required": [
+    "name",
+    "position",
+    "username"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
