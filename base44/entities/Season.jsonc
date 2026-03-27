@@ -1,0 +1,65 @@
+{
+  "name": "Season",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "description": "ID of the profile this season belongs to"
+    },
+    "season_year": {
+      "type": "string",
+      "description": "Season year (e.g., 2025-2026, Spring 2025)"
+    },
+    "team_name": {
+      "type": "string",
+      "description": "Team name for this season"
+    },
+    "selected_stats": {
+      "type": "array",
+      "description": "Stats enabled for tracking",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "goals",
+        "assists",
+        "shots",
+        "plus_minus",
+        "rating"
+      ]
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Currently active season"
+    },
+    "targets_completed": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of season targets completed"
+    },
+    "targets_total": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of season targets set"
+    }
+  },
+  "required": [
+    "profile_id",
+    "season_year"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}
