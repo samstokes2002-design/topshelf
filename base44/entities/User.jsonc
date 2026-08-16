@@ -1,0 +1,40 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "user"
+    },
+    "notifications_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Master toggle for all notifications (push and email)"
+    },
+    "notifications_friend_request_received": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notify when receiving a friend request"
+    },
+    "notifications_friend_request_accepted": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notify when friend request is accepted"
+    },
+    "notifications_friend_request_declined": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notify when friend request is declined"
+    },
+    "notifications_friend_session_logged": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notify when a friend logs a session"
+    }
+  },
+  "required": []
+}
